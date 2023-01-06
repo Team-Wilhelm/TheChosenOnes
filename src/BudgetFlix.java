@@ -31,6 +31,7 @@ public class BudgetFlix extends Application {
     public static void main (String[] args) {
         //launch();
         MovieDAO movieDAO = new MovieDAO();
+        movieDAO.editMovie(new Movie(1, "Cats", "Nope", LocalDate.of(1477, 12, 31)));
         for (Movie m : movieDAO.getAllMovies()) {
             System.out.println(m.getName());
         }

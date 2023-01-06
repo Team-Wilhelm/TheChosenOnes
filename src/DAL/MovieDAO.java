@@ -71,6 +71,19 @@ public class MovieDAO {
         }
     }
 
+    public void editMovie(Movie movie){
+        //TODO rating :(
+        String sql = "UPDATE Movies SET movieName = '" + validateStringForSQL(movie.getName()) + "', "
+                + "fileLink = '" + validateStringForSQL(movie.getFileLink()) + "', "
+                + "lastView = '" + java.sql.Date.valueOf(movie.getLastView()) + "' "
+                + "WHERE id = " + movie.getId();
+        try (Connection connection = budgetConnection.getConnection()){
+            connection.createStatement().execute(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static String validateStringForSQL(String string) {
         if (string == null) return null;
         string = string.replace("'", "''");
