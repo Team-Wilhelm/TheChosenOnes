@@ -5,7 +5,7 @@ import javafx.stage.Stage;
  *
  * @author The Chosen Ones
  */
-public class PrivateMovieCollection extends Application {
+public class BudgetFlix extends Application {
 
     @Override
     public void start(Stage stage) throws Exception
