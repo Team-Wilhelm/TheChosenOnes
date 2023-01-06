@@ -4,7 +4,6 @@ import java.sql.Connection;
 import com.microsoft.sqlserver.jdbc.SQLServerDataSource;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 
-
 public class BudgetConnection {
        /**
      * Creates a connection to our database.

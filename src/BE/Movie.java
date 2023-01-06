@@ -9,12 +9,12 @@ public class Movie {
     //TODO add ratings please
 
 
-    public Movie(int id, String name, LocalDate lastView, String fileLink) {
-        this(name, lastView, fileLink);
+    public Movie(int id, String name, String fileLink, LocalDate lastView) {
+        this(name, fileLink, lastView);
         this.id = id;
     }
 
-    public Movie(String name, LocalDate lastView, String fileLink) {
+    public Movie(String name, String fileLink, LocalDate lastView) {
         this.name = name;
         this.lastView = lastView;
         this.fileLink = fileLink;
@@ -24,5 +24,15 @@ public class Movie {
         return name;
     }
 
+    public int getId() {
+        return id;
+    }
 
+    public String getFileLink() {
+        return fileLink;
+    }
+
+    public LocalDate getLastView() {
+        return lastView;
+    }
 }
