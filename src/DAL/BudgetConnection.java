@@ -6,6 +6,10 @@ import com.microsoft.sqlserver.jdbc.SQLServerException;
 
 
 public class BudgetConnection {
+    public static void main(String[] args) {
+        BudgetConnection bc = new BudgetConnection();
+        bc.getConnection();
+    }
 
     /**
      * Creates a connection to our database.
@@ -14,9 +18,9 @@ public class BudgetConnection {
     public Connection getConnection() {
         SQLServerDataSource ds;
         ds = new SQLServerDataSource();
-        ds.setDatabaseName("CSe22B_17_MyTunes");
-        ds.setUser("CSe22B_17");
-        ds.setPassword("CSe22B_17");
+        ds.setDatabaseName("budgetflix_CSE22B_theChosenOnes");
+        ds.setUser("CSe22B_14");
+        ds.setPassword("ExtremelySecurePassword_7");
         ds.setServerName("10.176.111.31");
         ds.setPortNumber(1433);
         ds.setTrustServerCertificate(true);
