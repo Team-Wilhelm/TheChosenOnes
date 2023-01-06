@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class MovieDAO {
+    //TODO RATING
     BudgetConnection budgetConnection = new BudgetConnection();
     public List<Movie> getAllMovies(){
         ArrayList<Movie> allMovies = new ArrayList<>();
@@ -39,7 +40,7 @@ public class MovieDAO {
     public Movie getMovie(int id){
         String sql = "SELECT * FROM Movies WHERE id = " + id;
         try (Connection connection = budgetConnection.getConnection()){
-            ResultSet rs = connection.prepareStatement(sql).executeQuery(sql);
+            ResultSet rs = connection.prepareStatement(sql).executeQuery();
             Movie movie = null;
             while (rs.next()){
                 String movieName = rs.getString("movieName");
@@ -57,7 +58,6 @@ public class MovieDAO {
     }
 
     public void addMovie(Movie movie){
-        //TODO rating, please ;)
         Date lastView = java.sql.Date.valueOf(movie.getLastView());
         String sql = "INSERT INTO Movies (movieName, fileLink, lastView) " +
                 "VALUES ('" + validateStringForSQL(movie.getName()) + "' , '"
@@ -72,11 +72,21 @@ public class MovieDAO {
     }
 
     public void editMovie(Movie movie){
-        //TODO rating :(
         String sql = "UPDATE Movies SET movieName = '" + validateStringForSQL(movie.getName()) + "', "
                 + "fileLink = '" + validateStringForSQL(movie.getFileLink()) + "', "
                 + "lastView = '" + java.sql.Date.valueOf(movie.getLastView()) + "' "
                 + "WHERE id = " + movie.getId();
+        try (Connection connection = budgetConnection.getConnection()){
+            connection.createStatement().execute(sql);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteMovie(Movie movie){
+        int id = movie.getId();
+        String sql = "DELETE FROM MovieGenreLink WHERE movieId = " + id + ";"
+                + "DELETE FROM Movies WHERE id = " + id;
         try (Connection connection = budgetConnection.getConnection()){
             connection.createStatement().execute(sql);
         } catch (SQLException e) {
