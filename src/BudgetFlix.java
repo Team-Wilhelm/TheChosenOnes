@@ -5,6 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.time.LocalDate;
 import java.util.Objects;
 
 /**
@@ -27,10 +29,11 @@ public class BudgetFlix extends Application {
 
 
     public static void main (String[] args) {
-        launch();
+        //launch();
         MovieDAO movieDAO = new MovieDAO();
         for (Movie m : movieDAO.getAllMovies()) {
             System.out.println(m.getName());
         }
+
     }
 }

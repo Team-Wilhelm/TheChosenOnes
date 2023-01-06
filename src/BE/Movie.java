@@ -23,4 +23,16 @@ public class Movie {
     public String getName() {
         return name;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getFileLink() {
+        return fileLink;
+    }
+
+    public LocalDate getLastView() {
+        return lastView;
+    }
 }
