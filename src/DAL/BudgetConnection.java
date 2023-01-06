@@ -6,8 +6,7 @@ import com.microsoft.sqlserver.jdbc.SQLServerException;
 
 
 public class BudgetConnection {
-
-    /**
+       /**
      * Creates a connection to our database.
      * @return database connection.
      */
