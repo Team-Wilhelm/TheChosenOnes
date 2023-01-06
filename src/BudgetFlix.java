@@ -1,3 +1,5 @@
+import BE.Movie;
+import DAL.MovieDAO;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -26,5 +28,9 @@ public class BudgetFlix extends Application {
 
     public static void main (String[] args) {
         launch();
+        MovieDAO movieDAO = new MovieDAO();
+        for (Movie m : movieDAO.getAllMovies()) {
+            System.out.println(m.getName());
+        }
     }
 }
