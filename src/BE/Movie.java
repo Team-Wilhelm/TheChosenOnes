@@ -3,9 +3,9 @@ package BE;
 import java.time.LocalDate;
 
 public class Movie {
-    int id;
-    String name, fileLink;
-    LocalDate lastView;
+    private int id;
+    private String name, fileLink;
+    private LocalDate lastView;
     //TODO add ratings please
 
 
@@ -23,4 +23,6 @@ public class Movie {
     public String getName() {
         return name;
     }
+
+
 }

@@ -1,8 +1,8 @@
 package BE;
 
 public class Genre {
-    int id;
-    String name;
+    private int id;
+    private String name;
 
     public Genre(String name){
         this.name = name;
