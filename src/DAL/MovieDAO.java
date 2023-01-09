@@ -11,7 +11,6 @@ import java.util.Date;
 import java.util.List;
 
 public class MovieDAO {
-    //TODO RATING
     BudgetConnection budgetConnection = new BudgetConnection();
     public List<Movie> getAllMovies(){
         ArrayList<Movie> allMovies = new ArrayList<>();
@@ -21,10 +20,11 @@ public class MovieDAO {
             while(rs.next()){
                 int id = rs.getInt("id");
                 String movieName = rs.getString("movieName");
-                double rating = rs.getDouble("rating");
                 String fileLink = rs.getString("fileLink");
                 LocalDate lastView = rs.getDate("lastView").toLocalDate();
-                allMovies.add(new Movie(id, movieName, fileLink, lastView));
+                double imdbRating = rs.getDouble("IMDBrating");
+                double userRating = rs.getDouble("userRating");
+                allMovies.add(new Movie(id, movieName, fileLink, lastView, imdbRating, userRating));
             }
             return allMovies;
         } catch (SQLException ex) {
@@ -40,10 +40,11 @@ public class MovieDAO {
             Movie movie = null;
             while (rs.next()){
                 String movieName = rs.getString("movieName");
-                double rating = rs.getDouble("rating");
                 String fileLink = rs.getString("fileLink");
                 LocalDate lastView = rs.getDate("lastView").toLocalDate();
-                movie = new Movie(id, movieName, fileLink, lastView);
+                double imdbRating = rs.getDouble("IMDBrating");
+                double userRating = rs.getDouble("userRating");
+                movie = new Movie(id, movieName, fileLink, lastView, imdbRating, userRating);
             }
             return movie;
 
@@ -55,13 +56,14 @@ public class MovieDAO {
 
     public void addMovie(Movie movie){
         Date lastView = java.sql.Date.valueOf(movie.getLastView());
-        String sql = "INSERT INTO Movies (movieName, fileLink, lastView) " +
+        String sql = "INSERT INTO Movies (movieName, fileLink, lastView, IMDBrating, userRating) " +
                 "VALUES ('" + validateStringForSQL(movie.getName()) + "' , '"
                 + validateStringForSQL(movie.getFileLink()) + "' , + '"
-                + lastView + "' )";
+                + lastView + "' , + '"
+                + movie.getImdbRating() + "', '"
+                + movie.getUserRating() + "' )";
         try (Connection connection = budgetConnection.getConnection()){
             connection.createStatement().execute(sql);
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -70,7 +72,9 @@ public class MovieDAO {
     public void editMovie(Movie movie){
         String sql = "UPDATE Movies SET movieName = '" + validateStringForSQL(movie.getName()) + "', "
                 + "fileLink = '" + validateStringForSQL(movie.getFileLink()) + "', "
-                + "lastView = '" + java.sql.Date.valueOf(movie.getLastView()) + "' "
+                + "lastView = '" + java.sql.Date.valueOf(movie.getLastView()) + "', "
+                + "IMDBrating = '" + movie.getImdbRating() + "', "
+                + "userRating = '" + movie.getUserRating() + "' "
                 + "WHERE id = " + movie.getId();
         try (Connection connection = budgetConnection.getConnection()){
             connection.createStatement().execute(sql);

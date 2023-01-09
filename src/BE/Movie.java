@@ -7,7 +7,7 @@ public class Movie {
     private String name, fileLink;
     private LocalDate lastView;
     private double imdbRating;
-    private double personalRating;
+    private double userRating;
 
     public Movie(String name, String fileLink, LocalDate lastView) {
         this.name = name;
@@ -20,10 +20,10 @@ public class Movie {
         this.id = id;
     }
 
-    public Movie(int id, String name, String fileLink, LocalDate lastView, double imdbRating, double personalRating){
+    public Movie(int id, String name, String fileLink, LocalDate lastView, double imdbRating, double userRating){
         this(id, name, fileLink, lastView);
         this.imdbRating = imdbRating;
-        this.personalRating = personalRating;
+        this.userRating = userRating;
     }
 
     public String getName() {
@@ -46,7 +46,7 @@ public class Movie {
         return imdbRating;
     }
 
-    public double getPersonalRating() {
-        return personalRating;
+    public double getUserRating() {
+        return userRating;
     }
 }
