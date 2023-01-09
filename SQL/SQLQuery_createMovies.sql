@@ -1,0 +1,7 @@
+CREATE TABLE Movies (
+    id INT PRIMARY KEY IDENTITY,
+    movieName NVARCHAR(255) NOT NULL,
+    rating DECIMAL(3,1),
+    fileLink NVARCHAR(500) NOT NULL UNIQUE,
+    lastView DATE
+)
