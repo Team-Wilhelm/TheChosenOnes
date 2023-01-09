@@ -1,20 +1,25 @@
 package BLL;
 
+import BE.Genre;
 import BE.Movie;
+import DAL.GenreDAO;
 import DAL.MovieDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import java.time.LocalDate;
+import java.util.List;
 
 public class LogicManager {
 
     private final ObservableList<Movie> allMovies;
+    private final ObservableList<Genre> allGenres;
     MovieDAO movieDAO = new MovieDAO();
+    GenreDAO genreDAO = new GenreDAO();
 
 
     public LogicManager() {
         allMovies = FXCollections.observableArrayList();
+        allGenres = FXCollections.observableArrayList();
     }
 
     public void getAllMovies(){
@@ -22,9 +27,11 @@ public class LogicManager {
         allMovies.addAll(movieDAO.getAllMovies());
     }
 
-    /**
-     * @return an observable list with all movies added.
-     */
+    public void getAllGenres(){
+        allGenres.clear();
+        allGenres.addAll(genreDAO.getAllGenres());
+    }
+
     public ObservableList<Movie> getMovieList(){
         getAllMovies();
         return allMovies;
@@ -42,6 +49,20 @@ public class LogicManager {
         movieDAO.editMovie(movie);
     }
 
+    public List<Movie> getMoviesInGenre(Genre genre){
+        return genreDAO.getMoviesInGenre(genre);
+    }
 
+    public ObservableList<Genre> getGenreList(){
+        getAllGenres();
+        return allGenres;
+    }
 
+    public void addGenre(String genre){
+        genreDAO.addGenreToDatabase(genre);
+    }
+
+    public void deleteGenre(Genre genre){
+        genreDAO.removeGenreFromDatabase(genre);
+    }
 }
