@@ -9,21 +9,17 @@ public class Movie {
     private double imdbRating;
     private double userRating;
 
-    public Movie(String name, String fileLink, LocalDate lastView) {
+    public Movie(String name, String fileLink, LocalDate lastView, double imdbRating, double userRating) {
         this.name = name;
         this.lastView = lastView;
         this.fileLink = fileLink;
-    }
-
-    public Movie(int id, String name, String fileLink, LocalDate lastView) {
-        this(name, fileLink, lastView);
-        this.id = id;
-    }
-
-    public Movie(int id, String name, String fileLink, LocalDate lastView, double imdbRating, double userRating){
-        this(id, name, fileLink, lastView);
         this.imdbRating = imdbRating;
         this.userRating = userRating;
+    }
+
+    public Movie(int id, String name, String fileLink, LocalDate lastView, double imdbRating, double userRating) {
+        this(name, fileLink, lastView, imdbRating, userRating);
+        this.id = id;
     }
 
     public String getName() {
