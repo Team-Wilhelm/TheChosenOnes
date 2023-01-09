@@ -29,11 +29,10 @@ public class BudgetFlix extends Application {
 
 
     public static void main (String[] args) {
-        //launch();
+        launch();
         MovieDAO movieDAO = new MovieDAO();
         for (Movie m : movieDAO.getAllMovies()) {
             System.out.println(m.getName());
         }
-
     }
 }
