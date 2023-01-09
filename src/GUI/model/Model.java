@@ -9,9 +9,11 @@ public class Model {
     Movie movieToEdit;
 
     public void editMovie(Movie movie) {
+        logicManager.editMovie(movie);
     }
 
     public void createMovie(Movie movie) {
+        logicManager.addMovie(movie);
     }
 
     public void setMovieToEdit(Movie movie){
@@ -32,9 +34,5 @@ public class Model {
 
     public void deleteMovie(Movie movie){
         logicManager.deleteMovie(movie);
-    }
-
-    public void editMovie(Movie movie){
-        logicManager.editMovie(movie);
     }
 }
