@@ -1,10 +1,14 @@
 package GUI.model;
 
+import BE.Genre;
 import BE.Movie;
 import BLL.LogicManager;
 import javafx.collections.ObservableList;
 
+import java.util.List;
+
 public class Model {
+
     LogicManager logicManager = new LogicManager();
     Movie movieToEdit;
 
@@ -34,5 +38,9 @@ public class Model {
 
     public void deleteMovie(Movie movie){
         logicManager.deleteMovie(movie);
+    }
+
+    public List<Movie> getMoviesInGenre(Genre genre){
+        return logicManager.getMoviesInGenre(genre);
     }
 }
