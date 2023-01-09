@@ -1,26 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-
-<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.controller.MainController">
+<AnchorPane prefHeight="600.0" prefWidth="695.0" stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.controller.MainController">
    <children>
-      <Button fx:id="btnAddMovie" layoutX="126.0" layoutY="492.0" mnemonicParsing="false" text="Add Movie" />
-      <Button fx:id="btnDeleteMovie" layoutX="210.0" layoutY="492.0" mnemonicParsing="false" text="Delete Movie" />
-      <Button fx:id="btnAddGenre" layoutX="511.0" layoutY="492.0" mnemonicParsing="false" text="Add Genre" />
-      <Button fx:id="btnDeleteGenre" layoutX="595.0" layoutY="492.0" mnemonicParsing="false" text="Delete Genre" />
-      <TableView layoutX="75.0" layoutY="47.0" prefHeight="418.0" prefWidth="650.0">
-        <columns>
-          <TableColumn fx:id="movieColumn" prefWidth="245.60003662109375" resizable="false" text="Movie Title" />
-          <TableColumn fx:id="genreColumn" prefWidth="404.0" resizable="false" text="Genres" />
-        </columns>
-      </TableView>
-      <TextField fx:id="searchBar" layoutX="125.0" layoutY="541.0" />
-      <ComboBox fx:id="genreBox" layoutX="520.0" layoutY="541.0" prefWidth="150.0" visibleRowCount="5" />
+      <Button fx:id="btnAddMovie" layoutX="75.0" layoutY="492.0" mnemonicParsing="false" text="Add Movie" />
+      <Button fx:id="btnEditMovie" layoutX="171.0" layoutY="492.0" mnemonicParsing="false" text="Edit Movie" />
+      <Button fx:id="btnDeleteMovie" layoutX="266.0" layoutY="492.0" mnemonicParsing="false" text="Delete Movie" />
+      <Button fx:id="btnAddGenre" layoutX="447.0" layoutY="492.0" mnemonicParsing="false" text="Add Genre" />
+      <Button fx:id="btnDeleteGenre" layoutX="545.0" layoutY="492.0" mnemonicParsing="false" text="Delete Genre" />
+      <ListView fx:id="moviesList" layoutX="75.0" layoutY="43.0" prefHeight="418.0" prefWidth="556.0" />
+      <TextField fx:id="searchBar" layoutX="75.0" layoutY="541.0" />
+      <ComboBox fx:id="genreBox" layoutX="481.0" layoutY="541.0" prefWidth="150.0" visibleRowCount="5" />
+
    </children>
 </AnchorPane>
