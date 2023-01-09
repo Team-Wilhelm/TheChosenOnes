@@ -22,6 +22,9 @@ public class MovieListCell extends ListCell<Movie> {
     public MovieListCell() {
         super();
 
+        movieName.setMinWidth(256);
+        movieName.setMaxWidth(256);
+
         layout.setSpacing(30);
 
         var titleStyle = "-fx-font-size: 20px;";
