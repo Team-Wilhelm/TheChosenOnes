@@ -42,4 +42,6 @@ public class LogicManager {
         movieDAO.editMovie(movie);
     }
 
+
+
 }
