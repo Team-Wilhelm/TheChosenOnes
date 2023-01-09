@@ -30,4 +30,12 @@ public class Model {
     public List<Movie> getMoviesInGenre(Genre genre){
         return logicManager.getMoviesInGenre(genre);
     }
+
+    public void addGenre(String genre){
+        logicManager.addGenre(genre);
+    }
+
+    public void deleteGenre(Genre genre){
+        logicManager.deleteGenre(genre);
+    }
 }
