@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -16,10 +17,10 @@ import java.util.Objects;
 public class BudgetFlix extends Application {
 
     @Override
-    public void start(Stage stage) throws Exception
+    public void start(Stage stage) throws IOException
     {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("GUI/view/MainView.fxml")));
-        Scene scene = new Scene(root);
+        FXMLLoader fxmlLoader = new FXMLLoader(BudgetFlix.class.getResource("GUI/view/MainView.fxml"));
+        Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
         stage.setResizable(false);
         stage.setTitle("BudgetFlix");
@@ -27,12 +28,7 @@ public class BudgetFlix extends Application {
         stage.show();
     }
 
-
     public static void main (String[] args) {
         launch();
-        MovieDAO movieDAO = new MovieDAO();
-        for (Movie m : movieDAO.getAllMovies()) {
-            System.out.println(m.getName());
-        }
     }
 }

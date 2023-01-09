@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -18,6 +19,7 @@ import javafx.stage.Window;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
@@ -29,12 +31,12 @@ public class MainController implements Initializable {
     private void refreshItems(){
         moviesList.setItems(model.getMovieList());
     }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         moviesList.setCellFactory(param -> new MovieListCell());
         refreshItems();
     }
-
 
     public void btnAddMovieAction(ActionEvent actionEvent) throws IOException {
         Stage stage = new Stage();
@@ -45,6 +47,11 @@ public class MainController implements Initializable {
         stage.setTitle("BudgetFlix");
         stage.centerOnScreen();
         stage.show();
+        Window window = scene.getWindow();
+        window.setOnHiding(event -> {
+            refreshItems();
+        });
+
         NewMovieController newMovieController = fxmlLoader.getController();
         newMovieController.setModel(model);
     }
@@ -63,12 +70,36 @@ public class MainController implements Initializable {
             stage.setTitle("BudgetFlix");
             stage.centerOnScreen();
             stage.show();
+            Window window = scene.getWindow();
+            window.setOnHiding(event -> {
+                refreshItems();
+            });
+
             NewMovieController newMovieController = fxmlLoader.getController();
             newMovieController.setModel(model);
+            newMovieController.setIsEditing();
         }
     }
 
     public void btnDeleteMovieAction(ActionEvent actionEvent) {
-    }
+        Movie movie = moviesList.getSelectionModel().getSelectedItem();
+        if (movie == null){
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setTitle("Error");
+            errorAlert.setHeaderText("No movie selected");
+            errorAlert.setContentText("Please, select a movie to delete");
+            errorAlert.showAndWait();
+        }
+        else{
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Delete a movie");
+            alert.setContentText("Do you really wish to delete this movie ?");
 
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                model.deleteMovie(movie);
+                refreshItems();
+            }
+        }
+    }
 }

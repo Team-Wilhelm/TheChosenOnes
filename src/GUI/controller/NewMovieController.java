@@ -20,7 +20,7 @@ public class NewMovieController {
     private TextField txtTitle, txtUserRating, txtIMDBRating, txtFilePath;
     @FXML
     private DatePicker dateLastView;
-    private Model model = new Model(); //TODO set to null afterwards
+    private Model model = null;
     private boolean isEditing = false;
 
     public void setModel(Model model){
@@ -39,6 +39,8 @@ public class NewMovieController {
         String userRatingString = txtUserRating.getText().trim();
         String imdbRatingString = txtIMDBRating.getText().trim();
         LocalDate lastView = null;
+        if (isEditing)
+            lastView = dateLastView.getValue();
 
         if (title.isEmpty() || filepath.isEmpty()){
             if (title.isEmpty())
