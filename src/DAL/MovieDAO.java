@@ -2,17 +2,13 @@ package DAL;
 
 import BE.Movie;
 
-import javax.print.attribute.Attribute;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class MovieDAO {
     //TODO RATING
