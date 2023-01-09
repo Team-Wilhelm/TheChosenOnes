@@ -26,10 +26,13 @@ public class MainController implements Initializable {
     @FXML
     public ListView<Movie> moviesList;
 
+    private void refreshItems(){
+        moviesList.setItems(model.getMovieList());
+    }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         moviesList.setCellFactory(param -> new MovieListCell());
-        moviesList.setItems(new LogicManager().getMovieList());
+        refreshItems();
     }
 
 
