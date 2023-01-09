@@ -5,6 +5,8 @@ import DAL.MovieDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.time.LocalDate;
+
 public class LogicManager {
 
     private final ObservableList<Movie> allMovies;
@@ -26,6 +28,18 @@ public class LogicManager {
     public ObservableList<Movie> getMovieList(){
         getAllMovies();
         return allMovies;
+    }
+
+    public void addMovie(Movie movie){
+        movieDAO.addMovie(movie);
+    }
+
+    public void deleteMovie(Movie movie){
+        movieDAO.deleteMovie(movie);
+    }
+
+    public void editMovie(Movie movie){
+        movieDAO.editMovie(movie);
     }
 
 }
