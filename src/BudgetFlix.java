@@ -32,8 +32,8 @@ public class BudgetFlix extends Application {
     }
 
     public static void main (String[] args) {
-        //launch();
-        test();
+        launch();
+        //test();
     }
 
     private static void test(){
@@ -44,6 +44,6 @@ public class BudgetFlix extends Application {
         genres.add(genreDAO.getGenre(1));
         genres.add(genreDAO.getGenre(2));
         //bll.addMovie(new Movie("Monday morning", "something", LocalDate.of(1566,6,6), 8,8, genres));
-        bll.deleteMovie(movieDAO.getMovie(52));
+        //bll.deleteMovie(movieDAO.getMovie(52));
     }
 }

@@ -59,7 +59,6 @@ public class MovieDAO {
     }
 
     public void addMovie(Movie movie){
-        //TODO genres
         Date lastView;
         if (movie.getLastView() != null)
              lastView = java.sql.Date.valueOf(movie.getLastView());
@@ -81,7 +80,6 @@ public class MovieDAO {
     }
 
     public void editMovie(Movie movie){
-        //TODO genres
         String sql = "UPDATE Movies SET movieName = '" + validateStringForSQL(movie.getName()) + "', "
                 + "fileLink = '" + validateStringForSQL(movie.getFileLink()) + "', "
                 + "lastView = '" + java.sql.Date.valueOf(movie.getLastView()) + "', "
@@ -90,6 +88,7 @@ public class MovieDAO {
                 + "WHERE id = " + movie.getId();
         try (Connection connection = budgetConnection.getConnection()){
             connection.createStatement().execute(sql);
+            connection.createStatement().execute("DELETE FROM MovieGenreLink WHERE movieId = " + movie.getId());
             addGenresToMovie(movie);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -119,7 +118,7 @@ public class MovieDAO {
         try (Connection connection = budgetConnection.getConnection()){
             ResultSet rs = connection.prepareStatement(sql).executeQuery();
             while (rs.next()){
-                int genreId = rs.getInt("movieId");
+                int genreId = rs.getInt("genreId");
                 GenreDAO genreDAO = new GenreDAO();
                 genres.add(genreDAO.getGenre(genreId));
             }
