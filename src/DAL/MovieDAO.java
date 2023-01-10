@@ -15,19 +15,13 @@ public class MovieDAO {
     BudgetConnection budgetConnection = new BudgetConnection();
 
     public List<Movie> getAllMovies(){
-        //TODO genres
         ArrayList<Movie> allMovies = new ArrayList<>();
         String sql = "SELECT * FROM Movies";
         try (Connection connection = budgetConnection.getConnection()){
             ResultSet rs = connection.prepareStatement(sql).executeQuery();
             while(rs.next()){
                 int id = rs.getInt("id");
-                String movieName = rs.getString("movieName");
-                String fileLink = rs.getString("fileLink");
-                LocalDate lastView = rs.getDate("lastView").toLocalDate();
-                double imdbRating = rs.getDouble("IMDBrating");
-                double userRating = rs.getDouble("userRating");
-                allMovies.add(new Movie(id, movieName, fileLink, lastView, imdbRating, userRating));
+                allMovies.add(createMovieFromDatabase(rs, id));
             }
             return allMovies;
         } catch (SQLException ex) {
@@ -37,18 +31,12 @@ public class MovieDAO {
     }
 
     public Movie getMovie(int id){
-        //TODO genres
         String sql = "SELECT * FROM Movies WHERE id = " + id;
         try (Connection connection = budgetConnection.getConnection()){
             ResultSet rs = connection.prepareStatement(sql).executeQuery();
             Movie movie = null;
             while (rs.next()){
-                String movieName = rs.getString("movieName");
-                String fileLink = rs.getString("fileLink");
-                LocalDate lastView = rs.getDate("lastView").toLocalDate();
-                double imdbRating = rs.getDouble("IMDBrating");
-                double userRating = rs.getDouble("userRating");
-                movie = new Movie(id, movieName, fileLink, lastView, imdbRating, userRating);
+                movie = createMovieFromDatabase(rs, id);
             }
             return movie;
 
@@ -129,7 +117,7 @@ public class MovieDAO {
         }
     }
 
-    //TODO make it much better
+    //TODO make it much better (preferably)
     public void addGenresToMovie(Movie movie){
         List<Genre> genres = movie.getGenres();
         String sql = "SELECT * FROM Movies WHERE fileLink = '" + movie.getFileLink() + "'";
@@ -152,5 +140,15 @@ public class MovieDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    private Movie createMovieFromDatabase(ResultSet rs, int id) throws SQLException {
+        String movieName = rs.getString("movieName");
+        String fileLink = rs.getString("fileLink");
+        LocalDate lastView = rs.getDate("lastView").toLocalDate();
+        double imdbRating = rs.getDouble("IMDBrating");
+        double userRating = rs.getDouble("userRating");
+        List<Genre> genres = getAllGenresFromMovie(id);
+        return new Movie(id, movieName, fileLink, lastView, imdbRating, userRating, genres);
     }
 }

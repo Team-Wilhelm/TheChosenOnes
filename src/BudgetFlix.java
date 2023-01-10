@@ -39,11 +39,9 @@ public class BudgetFlix extends Application {
     private static void test(){
         MovieDAO movieDAO = new MovieDAO();
         GenreDAO genreDAO = new GenreDAO();
-        LogicManager bll = new LogicManager();
-        List<Genre> genres = new ArrayList<>();
-        genres.add(genreDAO.getGenre(1));
-        genres.add(genreDAO.getGenre(2));
-        //bll.addMovie(new Movie("Monday morning", "something", LocalDate.of(1566,6,6), 8,8, genres));
-        //bll.deleteMovie(movieDAO.getMovie(52));
+        for (Movie m : movieDAO.getAllMovies()){
+            System.out.println(m.getGenres());
+        }
+        System.out.println(movieDAO.getMovie(55).getGenres());
     }
 }
