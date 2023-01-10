@@ -66,7 +66,9 @@ public class NewMovieController {
         double userRating = stringToDoubleConverter(userRatingString);
         double imdbRating = stringToDoubleConverter(imdbRatingString);
         if (userRating < 0 || userRating > 10 || imdbRating < 0 || imdbRating > 10)
-            showAlert();
+            showAlert("ERROR", "Invalid rating! \nPlease, put in a number between 0.0 and 10.0");
+        if (!txtFilePath.getText().trim().endsWith(".mp4") && !txtFilePath.getText().trim().endsWith(".mpeg4"))
+            showAlert("ERROR", "Selected file format is not supported!");
         else {
             if (isEditing)
                 model.editMovie(new Movie(title, filepath, lastView, imdbRating, userRating, genres));
@@ -117,7 +119,7 @@ public class NewMovieController {
                 result = Double.parseDouble(rating);
             }
             catch (NumberFormatException ex){
-                showAlert();
+                showAlert("ERROR", "Invalid rating! \nPlease, put in a number between 0.0 and 10.0");
             }
             return result;
         }
@@ -141,10 +143,10 @@ public class NewMovieController {
         }
     }
 
-    private void showAlert(){
-        Alert alert = new Alert(Alert.AlertType.ERROR);
+    private void showAlert(String type, String text){
+        Alert alert = new Alert(Alert.AlertType.valueOf(type));
         alert.setTitle("Error");
-        alert.setContentText("Invalid rating! \nPlease, put in a number between 0.0 and 10.0");
+        alert.setContentText(text);
         alert.showAndWait();
     }
 }
