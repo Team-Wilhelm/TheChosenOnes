@@ -17,11 +17,9 @@ import org.controlsfx.control.CheckComboBox;
 
 import java.io.File;
 import java.nio.file.Paths;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class NewMovieController {
     @FXML

@@ -36,7 +36,6 @@ public class BudgetFlix extends Application {
         //test();
     }
 
-
     private static void test(){
         MovieDAO movieDAO = new MovieDAO();
         GenreDAO genreDAO = new GenreDAO();

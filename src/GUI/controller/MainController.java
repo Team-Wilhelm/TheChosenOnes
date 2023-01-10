@@ -20,6 +20,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.controlsfx.control.CheckComboBox;
@@ -118,4 +119,17 @@ public class MainController implements Initializable {
         window.setOnHiding(event -> refreshItems());
         return fxmlLoader;
     }
+
+    @FXML
+    private void playMovie(MouseEvent mouseEvent) throws IOException {
+        if (mouseEvent.getClickCount() == 2){
+            Movie movie = moviesList.getSelectionModel().getSelectedItem();
+            String command = "C:\\Program Files\\Windows Media Player\\wmplayer.exe";
+            String arg = movie.getFileLink();
+            //Building a process
+            ProcessBuilder builder = new ProcessBuilder(command, arg);
+            //Starting the process
+            builder.start();
+        }
+    };
 }
