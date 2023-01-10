@@ -7,6 +7,7 @@ import DAL.MovieDAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class LogicManager {
@@ -35,6 +36,7 @@ public class LogicManager {
         getAllMovies();
         return allMovies;
     }
+
 
     public void addMovie(Movie movie){
         movieDAO.addMovie(movie);
