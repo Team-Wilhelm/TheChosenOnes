@@ -1,8 +1,12 @@
 package GUI.controller;
 
+import BE.Genre;
 import BE.Movie;
+import DAL.GenreDAO;
 import GUI.controller.cellFactory.MovieListCell;
 import GUI.model.Model;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,17 +17,21 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
 import javafx.stage.Stage;
 import javafx.stage.Window;
+import org.controlsfx.control.CheckComboBox;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class MainController implements Initializable {
 
     private final Model model = new Model();
     @FXML
     private ListView<Movie> moviesList;
+    @FXML
+    private CheckComboBox<String> genresDropDown = new CheckComboBox<String>(){};
 
     private void refreshItems(){
         moviesList.setItems(model.getMovieList());
@@ -33,6 +41,7 @@ public class MainController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         moviesList.setCellFactory(param -> new MovieListCell());
         refreshItems();
+        genresDropDown.getItems().addAll(FXCollections.observableList((new GenreDAO().getAllGenres()).stream().map(e -> e.getName()).collect(Collectors.toList())));
     }
 
     public void btnAddMovieAction(ActionEvent actionEvent) throws IOException {

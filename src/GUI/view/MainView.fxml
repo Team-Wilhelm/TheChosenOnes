@@ -8,6 +8,8 @@
 
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TableColumn?>
+<?import org.controlsfx.control.*?>
+
 <AnchorPane prefHeight="600.0" prefWidth="850.0" stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.controller.MainController">
    <children>
       <Button fx:id="btnAddMovie" layoutX="75.0" layoutY="492.0" mnemonicParsing="false" onAction="#btnAddMovieAction" text="Add Movie" />
@@ -16,7 +18,7 @@
       <Button fx:id="btnAddGenre" layoutX="448.0" layoutY="492.0" mnemonicParsing="false" text="Add Genre" />
       <Button fx:id="btnDeleteGenre" layoutX="540.0" layoutY="492.0" mnemonicParsing="false" text="Delete Genre" />
       <TextField fx:id="searchBar" layoutX="70.0" layoutY="541.0" />
-      <ComboBox fx:id="genreBox" layoutX="476.0" layoutY="541.0" prefWidth="150.0" visibleRowCount="5" />
+      <CheckComboBox fx:id="genresDropDown" layoutX="476.0" layoutY="541.0" prefWidth="150.0" />
       <TableView fx:id="movieTable" layoutX="15.0" layoutY="44.0" prefHeight="417.0" prefWidth="820.0">
         <columns>
           <TableColumn prefWidth="95.0" text="Name of Movie" />
