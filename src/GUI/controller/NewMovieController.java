@@ -40,6 +40,7 @@ public class NewMovieController {
         isEditing = false;
         //genresDropDown.getItems().addAll(FXCollections.observableList((new GenreDAO().getAllGenres()).stream().map(e -> e.getName()).collect(Collectors.toList())));
         genresDropDown.getItems().addAll(FXCollections.observableList(new GenreDAO().getAllGenres()));
+        dateLastView.setValue(LocalDate.now());
     }
 
     @FXML

@@ -26,7 +26,6 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-
 public class MainController implements Initializable {
     private final Model model = new Model();
     @FXML

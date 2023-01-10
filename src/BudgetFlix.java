@@ -37,5 +37,7 @@ public class BudgetFlix extends Application {
         for (Movie m : movieDAO.getAllMovies()){
             System.out.println(m.getGenres());
         }
+        System.out.println(movieDAO.getMovie(55).getName());
+        System.out.println(genreDAO.getGenre(1).getName());
     }
 }

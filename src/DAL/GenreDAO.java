@@ -46,7 +46,8 @@ public class GenreDAO {
 
     public void removeGenreFromDatabase(Genre genre) {
         int id = genre.getId();
-        String sql = "DELETE FROM Genre WHERE id='" + id + "';" + "DELETE FROM MovieGenreLink WHERE id='" + id + "';";
+        String sql = "DELETE FROM Genre WHERE id='" + id + "';"
+                + "DELETE FROM MovieGenreLink WHERE id='" + id + "';";
 
         try (Connection con = bc.getConnection();) {
             con.createStatement().execute(sql);
@@ -77,12 +78,9 @@ public class GenreDAO {
         String sql = "SELECT * FROM Genre WHERE id = " + genreId;
         try (Connection connection = bc.getConnection()) {
             ResultSet rs = connection.prepareStatement(sql).executeQuery();
-            Genre genre = null;
-            while (rs.next()) {
-                String name = rs.getString("genreName");
-                genre = new Genre(name);
-            }
-            return genre;
+            rs.next();
+            String name = rs.getString("genreName");
+            return new Genre(name);
         } catch (SQLException e) {
             e.printStackTrace();
             return null;

@@ -34,11 +34,8 @@ public class MovieDAO {
         String sql = "SELECT * FROM Movies WHERE id = " + id;
         try (Connection connection = budgetConnection.getConnection()){
             ResultSet rs = connection.prepareStatement(sql).executeQuery();
-            Movie movie = null;
-            while (rs.next()){
-                movie = createMovieFromDatabase(rs, id);
-            }
-            return movie;
+            rs.next();
+            return createMovieFromDatabase(rs, id);
 
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -60,8 +57,8 @@ public class MovieDAO {
                 + movie.getImdbRating() + "', '"
                 + movie.getUserRating() + "' )" + ";";
         try (Connection connection = budgetConnection.getConnection()){
-            connection.createStatement().execute(sql);
-            addGenresToMovie(movie);
+            connection.prepareStatement(sql).execute();
+            addGenresToMovie(movie, connection);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -77,7 +74,7 @@ public class MovieDAO {
         try (Connection connection = budgetConnection.getConnection()){
             connection.createStatement().execute(sql);
             connection.createStatement().execute("DELETE FROM MovieGenreLink WHERE movieId = " + movie.getId());
-            addGenresToMovie(movie);
+            addGenresToMovie(movie, connection);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -118,19 +115,18 @@ public class MovieDAO {
     }
 
     //TODO make it much better (preferably)
-    public void addGenresToMovie(Movie movie){
+    public void addGenresToMovie(Movie movie, Connection connection){
         List<Genre> genres = movie.getGenres();
         String sql = "SELECT * FROM Movies WHERE fileLink = '" + movie.getFileLink() + "'";
-        int movieId = 0;
-        try (Connection connection = budgetConnection.getConnection()){
+        int movieId;
+        try (connection){
             ResultSet resultSet = connection.prepareStatement(sql).executeQuery();
-            while (resultSet.next()){
-                movieId = resultSet.getInt("id");
-            }
+            resultSet.next();
+            movieId = resultSet.getInt("id");
+
             for (Genre genre: genres){
                 sql = "SELECT * FROM Genre WHERE genreName = '" + genre.getName() + "'";
                 resultSet = connection.prepareStatement(sql).executeQuery();
-
                 while (resultSet.next()){
                     int genreId = resultSet.getInt("id");
                     sql = "INSERT INTO MovieGenreLink (movieId, genreId) VALUES (" + movieId + ", " + genreId + ")";
