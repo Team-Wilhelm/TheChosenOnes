@@ -2,7 +2,9 @@ package GUI.controller;
 
 import BE.Genre;
 import BE.Movie;
+import DAL.GenreDAO;
 import GUI.model.Model;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -11,12 +13,14 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import org.controlsfx.control.CheckComboBox;
 
 import java.io.File;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class NewMovieController {
     @FXML
@@ -25,6 +29,8 @@ public class NewMovieController {
     private DatePicker dateLastView;
     private Model model = null;
     private boolean isEditing = false;
+    @FXML
+    private CheckComboBox<String> genresDropDown = new CheckComboBox<String>(){};
 
     public void setModel(Model model){
         this.model = model;
@@ -33,6 +39,8 @@ public class NewMovieController {
     @FXML
     public void initialize(){
         isEditing = false;
+        genresDropDown.getItems().addAll(FXCollections.observableList((new GenreDAO().getAllGenres()).stream().map(e -> e.getName()).collect(Collectors.toList())));
+
     }
 
     @FXML
