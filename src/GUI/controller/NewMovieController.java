@@ -17,6 +17,7 @@ import org.controlsfx.control.CheckComboBox;
 
 import java.io.File;
 import java.nio.file.Paths;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -129,6 +130,12 @@ public class NewMovieController {
         txtIMDBRating.setText(String.valueOf(movieToEdit.getImdbRating()));
         txtUserRating.setText(String.valueOf(movieToEdit.getUserRating()));
         dateLastView.setValue(movieToEdit.getLastView());
+        //TODO check selected items
+        List<Genre> genres = model.getAllGenresFromMovie(movieToEdit);
+        List<Integer> genreIndices = new ArrayList<>();
+        for (Genre genre: genres){
+            genreIndices.add(genresDropDown.getCheckModel().getItemIndex(genre));
+        }
     }
 
     private void showAlert(){
