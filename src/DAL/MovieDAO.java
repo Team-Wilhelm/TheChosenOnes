@@ -12,6 +12,7 @@ import java.util.List;
 
 public class MovieDAO {
     BudgetConnection budgetConnection = new BudgetConnection();
+
     public List<Movie> getAllMovies(){
         ArrayList<Movie> allMovies = new ArrayList<>();
         String sql = "SELECT * FROM Movies";
@@ -103,5 +104,9 @@ public class MovieDAO {
         if (string == null) return null;
         string = string.replace("'", "''");
         return string;
+    }
+
+    public void getAllGenresFromMovie(int movieId){
+
     }
 }
