@@ -8,34 +8,27 @@ import javafx.scene.layout.VBox;
 
 public class MovieListCell extends ListCell<Movie> {
     private final Label title = new Label();
-    private final Label detail = new Label();
-    private final VBox movieName = new VBox(title, detail);
 
-    private final Label userRatingTitle = new Label();
+    private final Label genres = new Label();
+    private final HBox genreRow = new HBox(new Label("|"), genres,  new Label("|"));
+
+    private final Label detail = new Label();
+    private final Label userRatingTitle = new Label("User Rating:");
     private final Label userRatingRating = new Label();
-    private final VBox userRating = new VBox(userRatingRating, userRatingTitle);
-    private final Label imdbRatingTitle = new Label();
+
+    private final Label imdbRatingTitle = new Label("IMDB Rating:");
     private final Label imdbRatingRating = new Label();
-    private final VBox imdbRating = new VBox(imdbRatingRating, imdbRatingTitle);
-    private final HBox layout = new HBox(movieName, userRating, imdbRating);
+
+    private final HBox otherData = new HBox(detail, new Label("|"), userRatingTitle, userRatingRating, new Label("|"), imdbRatingTitle, imdbRatingRating);
+    private final VBox layout = new VBox(title, genreRow, otherData);
 
     public MovieListCell() {
         super();
 
-        movieName.setMinWidth(256);
-        movieName.setMaxWidth(256);
-
-        layout.setSpacing(30);
-
-        var titleStyle = "-fx-font-size: 20px;";
-        var ratingStyle = "-fx-font-size: 18px;";
+        var titleStyle = "-fx-font-size: 24px;";
+        genreRow.setStyle("-fx-font-size: 18px");
         title.setStyle(titleStyle);
-        imdbRatingRating.setStyle(ratingStyle);
-        userRatingRating.setStyle(ratingStyle);
-
-        var padding = "-fx-padding: 3,40,0,40;";
-        userRating.setStyle(padding);
-        imdbRating.setStyle(padding);
+        otherData.setSpacing(10);
     }
 
     @Override
@@ -54,9 +47,7 @@ public class MovieListCell extends ListCell<Movie> {
                     ? item.getLastView().toString()
                     : "Never Watched"
             );
-            userRatingTitle.setText("User Rating:");
             userRatingRating.setText(item.getUserRating()+" / 10");
-            imdbRatingTitle.setText("IMDB Rating:");
             imdbRatingRating.setText(item.getImdbRating()+" / 10");
             setGraphic(layout);
         }
