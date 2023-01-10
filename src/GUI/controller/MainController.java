@@ -6,9 +6,11 @@ import DAL.GenreDAO;
 import GUI.controller.cellFactory.MovieListCell;
 import GUI.model.Model;
 import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.collections.FXCollections;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -45,16 +47,18 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         moviesList.setCellFactory(param -> new MovieListCell());
-        ChangeListener<String> listener = (new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                moviesList.getItems().clear();
-                moviesList.setItems(model.searchMovies(searchBar.getText(),genresDropDown.getCheckModel().getCheckedItems()));
-            }
+
+        searchBar.textProperty().addListener((observable, oldValue, newValue) -> {
+            moviesList.getItems().clear();
+            moviesList.setItems(model.searchMovies(searchBar.getText(),genresDropDown.getCheckModel().getCheckedItems()));
         });
-        searchBar.textProperty().addListener(listener);
+
+        genresDropDown.getCheckModel().getCheckedItems().addListener((ListChangeListener<? super Genre>) observable -> {
+            moviesList.getItems().clear();
+            moviesList.setItems(model.searchMovies(searchBar.getText(),genresDropDown.getCheckModel().getCheckedItems()));
+        });
+
         refreshItems();
-        //genresDropDown.getCheckModel().getCheckedItems().addListener();
 
         //genresDropDown.getItems().addAll(FXCollections.observableList((new GenreDAO().getAllGenres()).stream().map(e -> e.getName()).collect(Collectors.toList())));
         genresDropDown.getItems().addAll(FXCollections.observableList(new GenreDAO().getAllGenres()));
