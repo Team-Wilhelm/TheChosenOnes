@@ -20,7 +20,7 @@ public class NewMovieController {
     private TextField txtTitle, txtUserRating, txtIMDBRating, txtFilePath;
     @FXML
     private DatePicker dateLastView;
-    private Model model = new Model(); //TODO set to null afterwards
+    private Model model = null;
     private boolean isEditing = false;
 
     public void setModel(Model model){
@@ -40,17 +40,22 @@ public class NewMovieController {
         String imdbRatingString = txtIMDBRating.getText().trim();
         LocalDate lastView = null;
 
-        if (title.isEmpty() || filepath.isEmpty()){
+        if (title.isEmpty() || filepath.isEmpty()) {
+            //Checks if the title or filepath (obligatory fields) are filled out
             if (title.isEmpty())
                 txtTitle.setPromptText("Field must not be empty!");
             if (filepath.isEmpty())
                 txtFilePath.setPromptText("Field must not be empty!");
         }
-        else{
-            double userRating = stringToDoubleConverter(userRatingString);
-            double imdbRating = stringToDoubleConverter(imdbRatingString);
-            if (dateLastView.getValue() != null)
-                lastView = dateLastView.getValue();
+
+        if (dateLastView.getValue() != null)
+            lastView = dateLastView.getValue();
+
+        double userRating = stringToDoubleConverter(userRatingString);
+        double imdbRating = stringToDoubleConverter(imdbRatingString);
+        if (userRating < 0 || userRating > 10 || imdbRating < 0 || imdbRating > 10)
+            showAlert();
+        else {
             if (isEditing)
                 model.editMovie(new Movie(title, filepath, lastView, imdbRating, userRating));
             else
@@ -58,8 +63,8 @@ public class NewMovieController {
 
             Node node = (Node) actionEvent.getSource();
             node.getScene().getWindow().hide();
+            }
         }
-    }
 
     @FXML
     private void btnCancelAction(ActionEvent actionEvent) {
@@ -98,13 +103,10 @@ public class NewMovieController {
                 result = Double.parseDouble(rating);
             }
             catch (NumberFormatException ex){
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setContentText("Invalid rating! \nPlease put in a number between 0.0 and 10.0");
-                alert.showAndWait();
+                showAlert();
             }
+            return result;
         }
-        return result;
     }
 
     public void setIsEditing(){
@@ -115,5 +117,12 @@ public class NewMovieController {
         txtIMDBRating.setText(String.valueOf(movieToEdit.getImdbRating()));
         txtUserRating.setText(String.valueOf(movieToEdit.getUserRating()));
         dateLastView.setValue(movieToEdit.getLastView());
+    }
+
+    private void showAlert(){
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setContentText("Invalid rating! \nPlease, put in a number between 0.0 and 10.0");
+        alert.showAndWait();
     }
 }
