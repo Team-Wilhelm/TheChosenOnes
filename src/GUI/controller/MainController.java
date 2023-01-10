@@ -5,11 +5,7 @@ import BE.Movie;
 import DAL.GenreDAO;
 import GUI.controller.cellFactory.MovieListCell;
 import GUI.model.Model;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 import javafx.collections.FXCollections;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -29,10 +25,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
 
 public class MainController implements Initializable {
-
     private final Model model = new Model();
     @FXML
     private TextField searchBar;
@@ -65,13 +59,15 @@ public class MainController implements Initializable {
         genresDropDown.getItems().addAll(FXCollections.observableList(new GenreDAO().getAllGenres()));
     }
 
-    public void btnAddMovieAction(ActionEvent actionEvent) throws IOException {
+    @FXML
+    private void btnAddMovieAction(ActionEvent actionEvent) throws IOException {
         FXMLLoader fxmlLoader = openNewWindow();
         NewMovieController newMovieController = fxmlLoader.getController();
         newMovieController.setModel(model);
     }
 
-    public void btnEditMovieAction(ActionEvent actionEvent) throws IOException {
+    @FXML
+    private void btnEditMovieAction(ActionEvent actionEvent) throws IOException {
         Movie movie = moviesList.getSelectionModel().getSelectedItem();
         if (movie == null)
             new Alert(Alert.AlertType.ERROR, "Please, select a movie to edit").showAndWait();
@@ -84,7 +80,8 @@ public class MainController implements Initializable {
         }
     }
 
-    public void btnDeleteMovieAction(ActionEvent actionEvent) {
+    @FXML
+    private void btnDeleteMovieAction(ActionEvent actionEvent) {
         Movie movie = moviesList.getSelectionModel().getSelectedItem();
         if (movie == null){
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);

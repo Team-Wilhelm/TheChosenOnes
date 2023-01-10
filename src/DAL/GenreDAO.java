@@ -10,16 +10,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static DAL.Tools.*;
+
 public class GenreDAO {
-    BudgetConnection bc = new BudgetConnection();
     List<Genre> genreList;
     List<Movie> moviesInGenre;
+    BudgetConnection bc = new BudgetConnection();
 
     public List<Genre> getAllGenres() {
         genreList = new ArrayList<>();
 
-        try (Connection con = bc.getConnection();) {
-            ResultSet rs = con.createStatement().executeQuery("SELECT id, genreName FROM Genre");
+        try (ResultSet rs = executeSQLQueryWithResult("SELECT id, genreName FROM Genre")) {
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String name = rs.getString("genreName");
@@ -46,7 +47,8 @@ public class GenreDAO {
 
     public void removeGenreFromDatabase(Genre genre) {
         int id = genre.getId();
-        String sql = "DELETE FROM Genre WHERE id='" + id + "';" + "DELETE FROM MovieGenreLink WHERE id='" + id + "';";
+        String sql = "DELETE FROM Genre WHERE id='" + id + "';"
+                + "DELETE FROM MovieGenreLink WHERE id='" + id + "';";
 
         try (Connection con = bc.getConnection();) {
             con.createStatement().execute(sql);
@@ -59,9 +61,8 @@ public class GenreDAO {
         int genreId = genre.getId();
         moviesInGenre = new ArrayList<>();
         String sql = "SELECT movieID FROM MovieGenreLink WHERE genreId='" + genreId + "';";
-        try (Connection con = bc.getConnection();) {
-            ResultSet rs = con.createStatement().executeQuery(sql);
-            while (rs.next()) {
+        try (ResultSet rs = executeSQLQueryWithResult(sql)) {
+                while (rs.next()) {
                 int id = rs.getInt("movieId");
                 MovieDAO movieDAO = new MovieDAO();
                 moviesInGenre.add(movieDAO.getMovie(id));
@@ -75,14 +76,11 @@ public class GenreDAO {
 
     public Genre getGenre(int genreId) {
         String sql = "SELECT * FROM Genre WHERE id = " + genreId;
-        try (Connection connection = bc.getConnection()) {
-            ResultSet rs = connection.prepareStatement(sql).executeQuery();
-            Genre genre = null;
-            while (rs.next()) {
-                String name = rs.getString("genreName");
-                genre = new Genre(name);
-            }
-            return genre;
+        try {
+            ResultSet rs = executeSQLQueryWithResult(sql);
+            rs.next();
+            String name = rs.getString("genreName");
+            return new Genre(name);
         } catch (SQLException e) {
             e.printStackTrace();
             return null;

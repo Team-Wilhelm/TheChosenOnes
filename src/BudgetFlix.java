@@ -1,6 +1,4 @@
-import BE.Genre;
 import BE.Movie;
-import BLL.LogicManager;
 import DAL.GenreDAO;
 import DAL.MovieDAO;
 import javafx.application.Application;
@@ -9,9 +7,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
@@ -39,9 +34,10 @@ public class BudgetFlix extends Application {
     private static void test(){
         MovieDAO movieDAO = new MovieDAO();
         GenreDAO genreDAO = new GenreDAO();
-        for (Movie m : movieDAO.getAllMovies()){
+        for (Movie m : genreDAO.getMoviesInGenre(genreDAO.getGenre(2))){
             System.out.println(m.getGenres());
         }
-        System.out.println(movieDAO.getMovie(55).getGenres());
+        System.out.println(movieDAO.getMovie(59).getName());
+        System.out.println(genreDAO.getGenre(1).getName());
     }
 }

@@ -3,7 +3,6 @@ package DAL;
 import BE.Genre;
 import BE.Movie;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -11,14 +10,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static DAL.Tools.*;
+
 public class MovieDAO {
-    BudgetConnection budgetConnection = new BudgetConnection();
 
     public List<Movie> getAllMovies(){
         ArrayList<Movie> allMovies = new ArrayList<>();
         String sql = "SELECT * FROM Movies";
-        try (Connection connection = budgetConnection.getConnection()){
-            ResultSet rs = connection.prepareStatement(sql).executeQuery();
+        try (ResultSet rs = executeSQLQueryWithResult(sql)){
             while(rs.next()){
                 int id = rs.getInt("id");
                 allMovies.add(createMovieFromDatabase(rs, id));
@@ -32,14 +31,10 @@ public class MovieDAO {
 
     public Movie getMovie(int id){
         String sql = "SELECT * FROM Movies WHERE id = " + id;
-        try (Connection connection = budgetConnection.getConnection()){
-            ResultSet rs = connection.prepareStatement(sql).executeQuery();
-            Movie movie = null;
-            while (rs.next()){
-                movie = createMovieFromDatabase(rs, id);
-            }
-            return movie;
-
+        try {
+            ResultSet rs = executeSQLQueryWithResult(sql);
+            rs.next();
+            return createMovieFromDatabase(rs, id);
         } catch (SQLException ex) {
             ex.printStackTrace();
             return null;
@@ -59,8 +54,8 @@ public class MovieDAO {
                 + lastView + "' , + '"
                 + movie.getImdbRating() + "', '"
                 + movie.getUserRating() + "' )" + ";";
-        try (Connection connection = budgetConnection.getConnection()){
-            connection.createStatement().execute(sql);
+        try {
+            executeSQLQuery(sql);
             addGenresToMovie(movie);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -74,9 +69,9 @@ public class MovieDAO {
                 + "IMDBrating = '" + movie.getImdbRating() + "', "
                 + "userRating = '" + movie.getUserRating() + "' "
                 + "WHERE id = " + movie.getId();
-        try (Connection connection = budgetConnection.getConnection()){
-            connection.createStatement().execute(sql);
-            connection.createStatement().execute("DELETE FROM MovieGenreLink WHERE movieId = " + movie.getId());
+        try {
+            executeSQLQuery(sql);
+            executeSQLQuery("DELETE FROM MovieGenreLink WHERE movieId = " + movie.getId());
             addGenresToMovie(movie);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -87,24 +82,17 @@ public class MovieDAO {
         int id = movie.getId();
         String sql = "DELETE FROM MovieGenreLink WHERE movieId = " + id + ";"
                 + "DELETE FROM Movies WHERE id = " + id;
-        try (Connection connection = budgetConnection.getConnection()){
-            connection.createStatement().execute(sql);
+        try {
+            executeSQLQuery(sql);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public static String validateStringForSQL(String string) {
-        if (string == null) return null;
-        string = string.replace("'", "''");
-        return string;
-    }
-
     public List<Genre> getAllGenresFromMovie(int movieId){
-        String sql = "SELECT genreId FROM MovieGenreLink WHERE movieId = " + movieId;
+        String sql = "SELECT * FROM MovieGenreLink WHERE movieId = " + movieId;
         List<Genre> genres = new ArrayList<>();
-        try (Connection connection = budgetConnection.getConnection()){
-            ResultSet rs = connection.prepareStatement(sql).executeQuery();
+        try (ResultSet rs = executeSQLQueryWithResult(sql)){
             while (rs.next()){
                 int genreId = rs.getInt("genreId");
                 GenreDAO genreDAO = new GenreDAO();
@@ -121,20 +109,19 @@ public class MovieDAO {
     public void addGenresToMovie(Movie movie){
         List<Genre> genres = movie.getGenres();
         String sql = "SELECT * FROM Movies WHERE fileLink = '" + movie.getFileLink() + "'";
-        int movieId = 0;
-        try (Connection connection = budgetConnection.getConnection()){
-            ResultSet resultSet = connection.prepareStatement(sql).executeQuery();
-            while (resultSet.next()){
-                movieId = resultSet.getInt("id");
-            }
+        int movieId;
+        try {
+            ResultSet resultSet = executeSQLQueryWithResult(sql);
+            resultSet.next();
+            movieId = resultSet.getInt("id");
+
             for (Genre genre: genres){
                 sql = "SELECT * FROM Genre WHERE genreName = '" + genre.getName() + "'";
-                resultSet = connection.prepareStatement(sql).executeQuery();
-
+                resultSet = executeSQLQueryWithResult(sql);
                 while (resultSet.next()){
                     int genreId = resultSet.getInt("id");
                     sql = "INSERT INTO MovieGenreLink (movieId, genreId) VALUES (" + movieId + ", " + genreId + ")";
-                    connection.createStatement().execute(sql);
+                    executeSQLQuery(sql);
                 }
             }
         } catch (SQLException e) {
