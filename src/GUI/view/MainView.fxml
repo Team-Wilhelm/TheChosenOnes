@@ -17,10 +17,12 @@
       <Button fx:id="btnDeleteGenre" layoutX="540.0" layoutY="492.0" mnemonicParsing="false" text="Delete Genre" />
       <TextField fx:id="searchBar" layoutX="70.0" layoutY="541.0" />
       <ComboBox fx:id="genreBox" layoutX="476.0" layoutY="541.0" prefWidth="150.0" visibleRowCount="5" />
-      <TableView layoutX="15.0" layoutY="44.0" prefHeight="417.0" prefWidth="820.0">
+      <TableView fx:id="movieTable" layoutX="15.0" layoutY="44.0" prefHeight="417.0" prefWidth="820.0">
         <columns>
-          <TableColumn prefWidth="280.0" text="C1" />
-          <TableColumn prefWidth="95.0" text="C2" />
+          <TableColumn prefWidth="95.0" text="Name of Movie" />
+          <TableColumn prefWidth="95.0" text="Genres" />
+          <TableColumn prefWidth="95.0" text="User rating" />
+          <TableColumn prefWidth="95.0" text="IMDB rating" />
         </columns>
       </TableView>
       <ListView fx:id="moviesList" layoutX="15.0" layoutY="68.0" prefHeight="393.0" prefWidth="820.0" />
