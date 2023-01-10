@@ -17,7 +17,7 @@ public class Model {
         logicManager.editMovie(new Movie(movieToEdit.getId(), movie.getName(), movie.getFileLink(), movie.getLastView(), movie.getImdbRating(), movie.getUserRating(), movie.getGenres()));
     }
 
-    public ObservableList<Movie> searchMovies(String query)
+    public ObservableList<Movie> searchMovies(String query, ObservableList<Genre> genres)
     {
         ObservableList<Movie> movies = getMovieList();
         List<Movie> filtered = new ArrayList<>();
@@ -28,6 +28,7 @@ public class Model {
         }
         return FXCollections.observableArrayList(filtered);
     }
+
 
     public void createMovie(Movie movie) {
         logicManager.addMovie(movie);
