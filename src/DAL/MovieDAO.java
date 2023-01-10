@@ -90,6 +90,7 @@ public class MovieDAO {
                 + "WHERE id = " + movie.getId();
         try (Connection connection = budgetConnection.getConnection()){
             connection.createStatement().execute(sql);
+            addGenresToMovie(movie);
         } catch (SQLException e) {
             e.printStackTrace();
         }

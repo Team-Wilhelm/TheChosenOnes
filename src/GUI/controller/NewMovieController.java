@@ -30,7 +30,7 @@ public class NewMovieController {
     private Model model = null;
     private boolean isEditing = false;
     @FXML
-    private CheckComboBox<String> genresDropDown = new CheckComboBox<String>(){};
+    private CheckComboBox<Genre> genresDropDown = new CheckComboBox<Genre>(){};
 
     public void setModel(Model model){
         this.model = model;
@@ -39,8 +39,8 @@ public class NewMovieController {
     @FXML
     public void initialize(){
         isEditing = false;
-        genresDropDown.getItems().addAll(FXCollections.observableList((new GenreDAO().getAllGenres()).stream().map(e -> e.getName()).collect(Collectors.toList())));
-
+        //genresDropDown.getItems().addAll(FXCollections.observableList((new GenreDAO().getAllGenres()).stream().map(e -> e.getName()).collect(Collectors.toList())));
+        genresDropDown.getItems().addAll(FXCollections.observableList(new GenreDAO().getAllGenres()));
     }
 
     @FXML
@@ -50,6 +50,7 @@ public class NewMovieController {
         String userRatingString = txtUserRating.getText().trim();
         String imdbRatingString = txtIMDBRating.getText().trim();
         LocalDate lastView = null;
+        List<Genre> genres = genresDropDown.getCheckModel().getCheckedItems();
 
         if (title.isEmpty() || filepath.isEmpty()) {
             //Checks if the title or filepath (obligatory fields) are filled out
@@ -64,7 +65,6 @@ public class NewMovieController {
 
         double userRating = stringToDoubleConverter(userRatingString);
         double imdbRating = stringToDoubleConverter(imdbRatingString);
-        List<Genre> genres = new ArrayList<>();
         if (userRating < 0 || userRating > 10 || imdbRating < 0 || imdbRating > 10)
             showAlert();
         else {

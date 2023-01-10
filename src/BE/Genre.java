@@ -4,11 +4,11 @@ public class Genre {
     private int id;
     private String name;
 
-    public Genre(String name){
+    public Genre(String name) {
         this.name = name;
     }
 
-    public Genre(int id, String name){
+    public Genre(int id, String name) {
         this(name);
         this.id = id;
     }
@@ -18,6 +18,11 @@ public class Genre {
     }
 
     public String getName() {
+        return name;
+    }
+
+    @Override
+    public String toString() {
         return name;
     }
 }
