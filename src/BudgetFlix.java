@@ -32,9 +32,10 @@ public class BudgetFlix extends Application {
     }
 
     public static void main (String[] args) {
-        //launch();
-        test();
+        launch();
+        //test();
     }
+
 
     private static void test(){
         MovieDAO movieDAO = new MovieDAO();
