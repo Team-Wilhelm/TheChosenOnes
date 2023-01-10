@@ -1,5 +1,6 @@
 package GUI.controller;
 
+import BE.Genre;
 import BE.Movie;
 import GUI.model.Model;
 import javafx.event.ActionEvent;
@@ -14,6 +15,8 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class NewMovieController {
     @FXML
@@ -53,13 +56,14 @@ public class NewMovieController {
 
         double userRating = stringToDoubleConverter(userRatingString);
         double imdbRating = stringToDoubleConverter(imdbRatingString);
+        List<Genre> genres = new ArrayList<>();
         if (userRating < 0 || userRating > 10 || imdbRating < 0 || imdbRating > 10)
             showAlert();
         else {
             if (isEditing)
-                model.editMovie(new Movie(title, filepath, lastView, imdbRating, userRating));
+                model.editMovie(new Movie(title, filepath, lastView, imdbRating, userRating, genres));
             else
-                model.createMovie(new Movie(title, filepath, lastView, imdbRating, userRating));
+                model.createMovie(new Movie(title, filepath, lastView, imdbRating, userRating, genres));
 
             Node node = (Node) actionEvent.getSource();
             node.getScene().getWindow().hide();

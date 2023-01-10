@@ -13,7 +13,7 @@ public class Model {
     Movie movieToEdit;
 
     public void editMovie(Movie movie) {
-        logicManager.editMovie(new Movie(movieToEdit.getId(), movie.getName(), movie.getFileLink(), movie.getLastView(), movie.getImdbRating(), movie.getUserRating()));
+        logicManager.editMovie(new Movie(movieToEdit.getId(), movie.getName(), movie.getFileLink(), movie.getLastView(), movie.getImdbRating(), movie.getUserRating(), movie.getGenres()));
     }
 
     public void createMovie(Movie movie) {
@@ -38,6 +38,10 @@ public class Model {
 
     public List<Movie> getMoviesInGenre(Genre genre){
         return logicManager.getMoviesInGenre(genre);
+    }
+
+    public List<Genre> getAllGenresFromMovie(Movie movie){
+        return logicManager.getAllGenresFromMovie(movie);
     }
 
     public void addGenre(String genre){

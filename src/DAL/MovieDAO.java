@@ -1,5 +1,6 @@
 package DAL;
 
+import BE.Genre;
 import BE.Movie;
 
 import java.sql.Connection;
@@ -12,6 +13,7 @@ import java.util.List;
 
 public class MovieDAO {
     BudgetConnection budgetConnection = new BudgetConnection();
+
     public List<Movie> getAllMovies(){
         ArrayList<Movie> allMovies = new ArrayList<>();
         String sql = "SELECT * FROM Movies";
@@ -103,5 +105,22 @@ public class MovieDAO {
         if (string == null) return null;
         string = string.replace("'", "''");
         return string;
+    }
+
+    public List<Genre> getAllGenresFromMovie(int movieId){
+        String sql = "SELECT genreId FROM MovieGenreLink WHERE movieId = " + movieId;
+        List<Genre> genres = new ArrayList<>();
+        try (Connection connection = budgetConnection.getConnection()){
+            ResultSet rs = connection.prepareStatement(sql).executeQuery();
+            while (rs.next()){
+                int genreId = rs.getInt("movieId");
+                GenreDAO genreDAO = new GenreDAO();
+                genres.add(genreDAO.getGenre(genreId));
+            }
+            return genres;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }
