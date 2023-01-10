@@ -10,19 +10,17 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GenreDAO{
+public class GenreDAO {
     BudgetConnection bc = new BudgetConnection();
-    MovieDAO movieDAO = new MovieDAO();
     List<Genre> genreList;
     List<Movie> moviesInGenre;
 
-    public List<Genre> getAllGenres()
-    {
+    public List<Genre> getAllGenres() {
         genreList = new ArrayList<>();
 
-        try(Connection con = bc.getConnection();){
+        try (Connection con = bc.getConnection();) {
             ResultSet rs = con.createStatement().executeQuery("SELECT id, genreName FROM Genre");
-            while (rs.next()){
+            while (rs.next()) {
                 int id = rs.getInt("id");
                 String name = rs.getString("genreName");
                 genreList.add(new Genre(id, name));
@@ -33,12 +31,12 @@ public class GenreDAO{
         return genreList;
     }
 
-    public void addGenreToDatabase(String name){
+    public void addGenreToDatabase(String name) {
         String sql = "INSERT INTO Genre (genreName) VALUES (?)";
 
-        try(Connection con = bc.getConnection();) {
+        try (Connection con = bc.getConnection();) {
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1,name);
+            ps.setString(1, name);
             ps.execute();
 
         } catch (SQLException e) {
@@ -46,11 +44,11 @@ public class GenreDAO{
         }
     }
 
-    public void removeGenreFromDatabase(Genre genre){
+    public void removeGenreFromDatabase(Genre genre) {
         int id = genre.getId();
-        String sql ="DELETE FROM Genre WHERE id='" + id + "';"+"DELETE FROM MovieGenreLink WHERE id='" + id + "';";
+        String sql = "DELETE FROM Genre WHERE id='" + id + "';" + "DELETE FROM MovieGenreLink WHERE id='" + id + "';";
 
-        try(Connection con = bc.getConnection();) {
+        try (Connection con = bc.getConnection();) {
             con.createStatement().execute(sql);
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -60,13 +58,12 @@ public class GenreDAO{
     public List<Movie> getMoviesInGenre(Genre genre) {
         int genreId = genre.getId();
         moviesInGenre = new ArrayList<>();
-
         String sql = "SELECT movieID FROM MovieGenreLink WHERE genreId='" + genreId + "';";
-
         try (Connection con = bc.getConnection();) {
             ResultSet rs = con.createStatement().executeQuery(sql);
-            while (rs.next()){
+            while (rs.next()) {
                 int id = rs.getInt("movieId");
+                MovieDAO movieDAO = new MovieDAO();
                 moviesInGenre.add(movieDAO.getMovie(id));
             }
 
@@ -76,5 +73,19 @@ public class GenreDAO{
         return moviesInGenre;
     }
 
-
+    public Genre getGenre(int genreId) {
+        String sql = "SELECT * FROM Genre WHERE id = " + genreId;
+        try (Connection connection = bc.getConnection()) {
+            ResultSet rs = connection.prepareStatement(sql).executeQuery();
+            Genre genre = null;
+            while (rs.next()) {
+                String name = rs.getString("genreName");
+                genre = new Genre(name);
+            }
+            return genre;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

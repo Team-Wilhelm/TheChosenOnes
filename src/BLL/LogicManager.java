@@ -64,4 +64,8 @@ public class LogicManager {
     public void deleteGenre(Genre genre){
         genreDAO.removeGenreFromDatabase(genre);
     }
+
+    public List<Genre> getAllGenresFromMovie(Movie movie){
+        return movieDAO.getAllGenresFromMovie(movie.getId());
+    }
 }

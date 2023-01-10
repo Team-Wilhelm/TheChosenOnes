@@ -39,4 +39,8 @@ public class Model {
     public List<Movie> getMoviesInGenre(Genre genre){
         return logicManager.getMoviesInGenre(genre);
     }
+
+    public List<Genre> getAllGenresFromMovie(Movie movie){
+        return logicManager.getAllGenresFromMovie(movie);
+    }
 }
