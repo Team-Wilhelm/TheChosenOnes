@@ -16,7 +16,6 @@ public class LogicManager {
     MovieDAO movieDAO = new MovieDAO();
     GenreDAO genreDAO = new GenreDAO();
 
-
     public LogicManager() {
         allMovies = FXCollections.observableArrayList();
         allGenres = FXCollections.observableArrayList();

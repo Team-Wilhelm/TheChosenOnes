@@ -13,11 +13,15 @@ public class Model {
     Movie movieToEdit;
 
     public void editMovie(Movie movie) {
-        logicManager.editMovie(movie);
+        logicManager.editMovie(new Movie(movieToEdit.getId(), movie.getName(), movie.getFileLink(), movie.getLastView(), movie.getImdbRating(), movie.getUserRating()));
     }
 
     public void createMovie(Movie movie) {
         logicManager.addMovie(movie);
+    }
+
+    public void deleteMovie(Movie movie){
+        logicManager.deleteMovie(movie);
     }
 
     public void setMovieToEdit(Movie movie){
@@ -30,14 +34,6 @@ public class Model {
 
     public ObservableList<Movie> getMovieList(){
         return logicManager.getMovieList();
-    }
-
-    public void addMovie(Movie movie){
-        logicManager.addMovie(movie);
-    }
-
-    public void deleteMovie(Movie movie){
-        logicManager.deleteMovie(movie);
     }
 
     public List<Movie> getMoviesInGenre(Genre genre){

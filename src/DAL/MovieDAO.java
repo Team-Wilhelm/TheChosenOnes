@@ -55,7 +55,12 @@ public class MovieDAO {
     }
 
     public void addMovie(Movie movie){
-        Date lastView = java.sql.Date.valueOf(movie.getLastView());
+        Date lastView;
+        if (movie.getLastView() != null)
+             lastView = java.sql.Date.valueOf(movie.getLastView());
+        else {
+            lastView = java.sql.Date.valueOf(LocalDate.of(0,1,1)); //TODO fix this shit
+        }
         String sql = "INSERT INTO Movies (movieName, fileLink, lastView, IMDBrating, userRating) " +
                 "VALUES ('" + validateStringForSQL(movie.getName()) + "' , '"
                 + validateStringForSQL(movie.getFileLink()) + "' , + '"
