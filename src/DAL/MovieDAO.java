@@ -15,6 +15,7 @@ public class MovieDAO {
     BudgetConnection budgetConnection = new BudgetConnection();
 
     public List<Movie> getAllMovies(){
+        //TODO genres
         ArrayList<Movie> allMovies = new ArrayList<>();
         String sql = "SELECT * FROM Movies";
         try (Connection connection = budgetConnection.getConnection()){
@@ -36,6 +37,7 @@ public class MovieDAO {
     }
 
     public Movie getMovie(int id){
+        //TODO genres
         String sql = "SELECT * FROM Movies WHERE id = " + id;
         try (Connection connection = budgetConnection.getConnection()){
             ResultSet rs = connection.prepareStatement(sql).executeQuery();
@@ -57,6 +59,7 @@ public class MovieDAO {
     }
 
     public void addMovie(Movie movie){
+        //TODO genres
         Date lastView;
         if (movie.getLastView() != null)
              lastView = java.sql.Date.valueOf(movie.getLastView());
@@ -68,15 +71,17 @@ public class MovieDAO {
                 + validateStringForSQL(movie.getFileLink()) + "' , + '"
                 + lastView + "' , + '"
                 + movie.getImdbRating() + "', '"
-                + movie.getUserRating() + "' )";
+                + movie.getUserRating() + "' )" + ";";
         try (Connection connection = budgetConnection.getConnection()){
             connection.createStatement().execute(sql);
+            addGenresToMovie(movie);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     public void editMovie(Movie movie){
+        //TODO genres
         String sql = "UPDATE Movies SET movieName = '" + validateStringForSQL(movie.getName()) + "', "
                 + "fileLink = '" + validateStringForSQL(movie.getFileLink()) + "', "
                 + "lastView = '" + java.sql.Date.valueOf(movie.getLastView()) + "', "
@@ -121,6 +126,31 @@ public class MovieDAO {
         } catch (SQLException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    //TODO make it much better
+    public void addGenresToMovie(Movie movie){
+        List<Genre> genres = movie.getGenres();
+        String sql = "SELECT * FROM Movies WHERE fileLink = '" + movie.getFileLink() + "'";
+        int movieId = 0;
+        try (Connection connection = budgetConnection.getConnection()){
+            ResultSet resultSet = connection.prepareStatement(sql).executeQuery();
+            while (resultSet.next()){
+                movieId = resultSet.getInt("id");
+            }
+            for (Genre genre: genres){
+                sql = "SELECT * FROM Genre WHERE genreName = '" + genre.getName() + "'";
+                resultSet = connection.prepareStatement(sql).executeQuery();
+
+                while (resultSet.next()){
+                    int genreId = resultSet.getInt("id");
+                    sql = "INSERT INTO MovieGenreLink (movieId, genreId) VALUES (" + movieId + ", " + genreId + ")";
+                    connection.createStatement().execute(sql);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }
