@@ -90,6 +90,8 @@ public class NewMovieController {
         FileChooser fileChooser = new FileChooser();
         File file;
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home") + System.getProperty("file.separator") + "Videos"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("mp4", "*.mp4"));
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("mpeg4", "*.mpeg4"));
         fileChooser.setTitle("Choose a movie file");
         try { //if the window is already holding a path, open the directory
             if (txtFilePath.getText() != null && !txtFilePath.getText().isEmpty()) {
