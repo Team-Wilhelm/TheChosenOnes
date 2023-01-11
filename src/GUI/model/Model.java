@@ -19,10 +19,6 @@ public class Model {
         } return instance;
     }
 
-    public String editMovie(Movie movie) {
-        return logicManager.editMovie(new Movie(movieToEdit.getId(), movie.getName(), movie.getFileLink(), movie.getLastView(), movie.getImdbRating(), movie.getUserRating(), movie.getGenres()));
-    }
-
     public ObservableList<Movie> filterMovies(String query, ObservableList<Genre> genres) //TODO add personal & IMDB rating
     {
         ObservableList<Movie> movies = getMovieList();
@@ -52,9 +48,14 @@ public class Model {
         return FXCollections.observableArrayList(filtered);
     }
 
+    //Movie methods
 
     public String createMovie(Movie movie) {
         return logicManager.addMovie(movie);
+    }
+
+    public String editMovie(Movie movie) {
+        return logicManager.editMovie(new Movie(movieToEdit.getId(), movie.getName(), movie.getFileLink(), movie.getLastView(), movie.getImdbRating(), movie.getUserRating(), movie.getGenres()));
     }
 
     public void deleteMovie(Movie movie){
@@ -77,6 +78,7 @@ public class Model {
         return logicManager.getMoviesInGenre(genre);
     }
 
+    //Genre methods
     public List<Genre> getAllGenresFromMovie(Movie movie){
         return logicManager.getAllGenresFromMovie(movie);
     }
