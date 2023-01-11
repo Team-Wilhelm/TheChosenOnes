@@ -64,7 +64,7 @@ public class MainController implements Initializable {
     @FXML
     private void btnAddMovieAction(ActionEvent actionEvent) throws IOException {
         //TODO FXML Shit
-        openNewWindow();
+        openNewWindow("../view/NewMovieView.fxml");
     }
 
     @FXML
@@ -74,7 +74,7 @@ public class MainController implements Initializable {
             new Alert(Alert.AlertType.ERROR, "Please, select a movie to edit").showAndWait();
         else{
             model.setMovieToEdit(movie);
-            FXMLLoader fxmlLoader = openNewWindow();
+            FXMLLoader fxmlLoader = openNewWindow("../view/NewMovieView.fxml");
             NewMovieController newMovieController = fxmlLoader.getController();
             newMovieController.setIsEditing();
         }
@@ -96,8 +96,8 @@ public class MainController implements Initializable {
         }
     }
 
-    private FXMLLoader openNewWindow() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/NewMovieView.fxml"));
+    private FXMLLoader openNewWindow(String resource) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(resource));
         Stage stage = new Stage();
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
@@ -124,16 +124,7 @@ public class MainController implements Initializable {
     }
 
     public void btnAddGenreAction(ActionEvent actionEvent) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/NewGenreView.fxml"));
-        Stage stage = new Stage();
-        Scene scene = new Scene(fxmlLoader.load());
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.setTitle("BudgetFlix");
-        stage.centerOnScreen();
-        stage.show();
-        Window window = scene.getWindow();
-        window.setOnHiding(event -> refreshItems());
+        openNewWindow("../view/NewGenreView.fxml");
     }
 
     public void btnDeleteGenreAction(ActionEvent actionEvent) {
