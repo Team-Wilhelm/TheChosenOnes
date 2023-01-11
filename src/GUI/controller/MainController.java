@@ -42,21 +42,19 @@ public class MainController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         moviesList.setCellFactory(param -> new MovieListCell());
+        refreshItems();
 
         searchBar.textProperty().addListener((observable, oldValue, newValue) -> {
             moviesList.getItems().clear();
-            moviesList.setItems(model.searchMovies(searchBar.getText(),genresDropDown.getCheckModel().getCheckedItems()));
+            moviesList.setItems(model.filterMovies(searchBar.getText(),genresDropDown.getCheckModel().getCheckedItems()));
         });
 
         genresDropDown.getCheckModel().getCheckedItems().addListener((ListChangeListener<? super Genre>) observable -> {
             moviesList.getItems().clear();
-            moviesList.setItems(model.searchMovies(searchBar.getText(),genresDropDown.getCheckModel().getCheckedItems()));
+            moviesList.setItems(model.filterMovies(searchBar.getText(),genresDropDown.getCheckModel().getCheckedItems()));
         });
 
-        refreshItems();
-
-        //genresDropDown.getItems().addAll(FXCollections.observableList((new GenreDAO().getAllGenres()).stream().map(e -> e.getName()).collect(Collectors.toList())));
-        genresDropDown.getItems().addAll(FXCollections.observableList(new GenreDAO().getAllGenres()));
+        genresDropDown.getItems().addAll(FXCollections.observableList(model.getGenreList()));
     }
 
     @FXML
@@ -64,8 +62,6 @@ public class MainController implements Initializable {
         FXMLLoader fxmlLoader = openNewWindow();
         NewMovieController newMovieController = fxmlLoader.getController();
     }
-
-    // make util class for alerts to avoid creating multiple alerts
 
     @FXML
     private void btnEditMovieAction(ActionEvent actionEvent) throws IOException {

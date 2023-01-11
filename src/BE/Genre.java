@@ -1,8 +1,11 @@
 package BE;
 
+import java.util.List;
+
 public class Genre {
     private int id;
     private String name;
+    private List<Movie> movies;
 
     public Genre(String name) {
         this.name = name;
@@ -13,12 +16,20 @@ public class Genre {
         this.id = id;
     }
 
+    public Genre(List<Movie> movies){
+        this.movies = movies;
+    }
+
     public int getId() {
         return id;
     }
 
     public String getName() {
         return name;
+    }
+
+    public List<Movie> getMovies(){
+        return movies;
     }
 
     @Override

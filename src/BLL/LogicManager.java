@@ -12,20 +12,20 @@ public class LogicManager {
 
     private final ObservableList<Movie> allMovies;
     private final ObservableList<Genre> allGenres;
-    MovieDAO movieDAO = new MovieDAO();
-    GenreDAO genreDAO = new GenreDAO();
+    private MovieDAO movieDAO = new MovieDAO();
+    private GenreDAO genreDAO = new GenreDAO();
 
     public LogicManager() {
         allMovies = FXCollections.observableArrayList();
         allGenres = FXCollections.observableArrayList();
     }
 
-    public void getAllMovies(){
+    private void getAllMovies(){
         allMovies.clear();
         allMovies.addAll(movieDAO.getAllMovies());
     }
 
-    public void getAllGenres(){
+    private void getAllGenres(){
         allGenres.clear();
         allGenres.addAll(genreDAO.getAllGenres());
     }

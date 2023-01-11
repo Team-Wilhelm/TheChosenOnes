@@ -24,26 +24,31 @@ public class Model {
         logicManager.editMovie(new Movie(movieToEdit.getId(), movie.getName(), movie.getFileLink(), movie.getLastView(), movie.getImdbRating(), movie.getUserRating(), movie.getGenres()));
     }
 
-    public ObservableList<Movie> searchMovies(String query, ObservableList<Genre> genres)
+    public ObservableList<Movie> filterMovies(String query, ObservableList<Genre> genres) //TODO add personal & IMDB rating
     {
         ObservableList<Movie> movies = getMovieList();
         List<Movie> filtered = new ArrayList<>();
 
-        if (query.equals("")){
-            filtered.addAll(movies);
-        }
-
-        else {
+        if (!query.isEmpty()) {
             for (Movie m : movies) {
                 if (m.getName().toLowerCase().contains(query.toLowerCase()))
                     filtered.add(m);
             }
         }
 
-        /*
-        for (Genre genre:genres){
-            //TODO actually do something useful
-        }*/
+        if (!genres.equals(getGenreList())) {
+            for (Genre genre : genres) {
+                    for (Movie movie : logicManager.getMoviesInGenre(genre)){
+                        if(!filtered.contains(movie))
+                            filtered.add(movie);
+                    }
+            }
+        }
+
+
+        else { //is this else statement needed?
+            filtered.addAll(movies);
+        }
 
         return FXCollections.observableArrayList(filtered);
     }
@@ -83,5 +88,9 @@ public class Model {
 
     public void deleteGenre(Genre genre){
         logicManager.deleteGenre(genre);
+    }
+
+    public ObservableList<Genre> getGenreList(){
+        return logicManager.getGenreList();
     }
 }
