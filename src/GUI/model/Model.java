@@ -69,14 +69,6 @@ public class Model {
         allMovies.remove(movie);
     }
 
-    public void setMovieToEdit(Movie movie){
-        this.movieToEdit = movie;
-    }
-
-    public Movie getMovieToEdit() {
-        return movieToEdit;
-    }
-
     public void getMovieList(){
         allMovies.clear();
         allMovies.addAll(logicManager.getAllMovies());
@@ -86,16 +78,20 @@ public class Model {
         return allMovies;
     }
 
+    public void setMovieToEdit(Movie movie){
+        this.movieToEdit = movie;
+    }
+
+    public Movie getMovieToEdit() {
+        return movieToEdit;
+    }
+
     public ObservableList<Genre> getAllGenres(){
         return allGenres;
     }
 
     public List<Movie> getMoviesInGenre(Genre genre){
         return logicManager.getMoviesInGenre(genre);
-    }
-
-    public List<Genre> getAllGenresFromMovie(Movie movie){
-        return logicManager.getAllGenresFromMovie(movie);
     }
 
     public String addGenre(String genre){
@@ -110,5 +106,9 @@ public class Model {
     public void getGenreList(){
         allGenres.clear();
         allGenres.addAll(logicManager.getAllGenres());
+    }
+
+    public List<Genre> getAllGenresFromMovie(Movie movie){
+        return logicManager.getAllGenresFromMovie(movie);
     }
 }
