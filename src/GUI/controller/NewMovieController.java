@@ -74,14 +74,25 @@ public class NewMovieController {
             alertManager.getAlert("ERROR", "Selected file format is not supported!").showAndWait();
 
         else {
-            if (isEditing)
-                model.editMovie(new Movie(title, filepath, lastView, imdbRating, userRating, genres));
-            else
-                model.createMovie(new Movie(title, filepath, lastView, imdbRating, userRating, genres));
-            Node node = (Node) actionEvent.getSource();
-            node.getScene().getWindow().hide();
+            if (isEditing){
+                if (model.editMovie(new Movie(title, filepath, lastView, imdbRating, userRating, genres))){
+                    Node node = (Node) actionEvent.getSource();
+                    node.getScene().getWindow().hide();
+                }
+                else
+                    alertManager.getAlert("ERROR", "File path is already used by a different movie!").showAndWait();
+            }
+
+            else{
+                if (model.createMovie(new Movie(title, filepath, lastView, imdbRating, userRating, genres))){
+                    Node node = (Node) actionEvent.getSource();
+                    node.getScene().getWindow().hide();
+                }
+                else
+                    alertManager.getAlert("ERROR", "File path is already used by a different movie!").showAndWait();
             }
         }
+    }
 
     @FXML
     private void btnCancelAction(ActionEvent actionEvent) {

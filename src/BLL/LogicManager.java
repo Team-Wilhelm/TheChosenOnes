@@ -35,17 +35,16 @@ public class LogicManager {
         return allMovies;
     }
 
-
-    public void addMovie(Movie movie){
-        movieDAO.addMovie(movie);
+    public boolean addMovie(Movie movie){
+        return movieDAO.addMovie(movie);
     }
 
     public void deleteMovie(Movie movie){
         movieDAO.deleteMovie(movie);
     }
 
-    public void editMovie(Movie movie){
-        movieDAO.editMovie(movie);
+    public boolean editMovie(Movie movie){
+        return movieDAO.editMovie(movie);
     }
 
     public List<Movie> getMoviesInGenre(Genre genre){

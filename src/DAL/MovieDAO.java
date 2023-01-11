@@ -2,6 +2,7 @@ package DAL;
 
 import BE.Genre;
 import BE.Movie;
+import BLL.AlertManager;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -41,7 +42,7 @@ public class MovieDAO {
         }
     }
 
-    public void addMovie(Movie movie){
+    public boolean addMovie(Movie movie){
         Date lastView;
         if (movie.getLastView() != null)
              lastView = java.sql.Date.valueOf(movie.getLastView());
@@ -57,12 +58,17 @@ public class MovieDAO {
         try {
             executeSQLQuery(sql);
             addGenresToMovie(movie);
+            return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            if (e.getMessage().contains("Violation of UNIQUE KEY constraint")){
+            }
+            else
+                e.printStackTrace();
+            return false;
         }
     }
 
-    public void editMovie(Movie movie){
+    public boolean editMovie(Movie movie){
         String sql = "UPDATE Movies SET movieName = '" + validateStringForSQL(movie.getName()) + "', "
                 + "fileLink = '" + validateStringForSQL(movie.getFileLink()) + "', "
                 + "lastView = '" + java.sql.Date.valueOf(movie.getLastView()) + "', "
@@ -73,8 +79,10 @@ public class MovieDAO {
             executeSQLQuery(sql);
             executeSQLQuery("DELETE FROM MovieGenreLink WHERE movieId = " + movie.getId());
             addGenresToMovie(movie);
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            return false;
         }
     }
 

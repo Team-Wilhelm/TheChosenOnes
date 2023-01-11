@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Model {
-
     private static Model instance=null;
     LogicManager logicManager = new LogicManager();
     Movie movieToEdit;
@@ -20,8 +19,8 @@ public class Model {
         } return instance;
     }
 
-    public void editMovie(Movie movie) {
-        logicManager.editMovie(new Movie(movieToEdit.getId(), movie.getName(), movie.getFileLink(), movie.getLastView(), movie.getImdbRating(), movie.getUserRating(), movie.getGenres()));
+    public boolean editMovie(Movie movie) {
+        return logicManager.editMovie(new Movie(movieToEdit.getId(), movie.getName(), movie.getFileLink(), movie.getLastView(), movie.getImdbRating(), movie.getUserRating(), movie.getGenres()));
     }
 
     public ObservableList<Movie> searchMovies(String query, ObservableList<Genre> genres)
@@ -49,8 +48,8 @@ public class Model {
     }
 
 
-    public void createMovie(Movie movie) {
-        logicManager.addMovie(movie);
+    public boolean createMovie(Movie movie) {
+        return logicManager.addMovie(movie);
     }
 
     public void deleteMovie(Movie movie){

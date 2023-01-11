@@ -1,6 +1,5 @@
 package BLL;
 
-import GUI.model.Model;
 import javafx.scene.control.Alert;
 
 public class AlertManager {
