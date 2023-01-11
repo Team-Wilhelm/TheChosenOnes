@@ -12,11 +12,20 @@ public class Model {
     private static Model instance=null;
     LogicManager logicManager = new LogicManager();
     Movie movieToEdit;
+    private ObservableList<Movie> allMovies;
+    private ObservableList<Genre> allGenres;
 
     public static Model getInstance(){
         if(instance == null){
             instance = new Model();
         } return instance;
+    }
+
+    public Model(){
+        allMovies = FXCollections.observableArrayList();
+        allGenres = FXCollections.observableArrayList();
+        getMovieList();
+        getGenreList();
     }
 
     public String editMovie(Movie movie) {
@@ -25,19 +34,18 @@ public class Model {
 
     public ObservableList<Movie> filterMovies(String query, ObservableList<Genre> genres) //TODO add personal & IMDB rating
     {
-        ObservableList<Movie> movies = getMovieList();
         List<Movie> filtered = new ArrayList<>();
 
         if (!query.isEmpty()) {
-            for (Movie m : movies) {
+            for (Movie m : allMovies) {
                 if (m.getName().toLowerCase().contains(query.toLowerCase()))
                     filtered.add(m);
             }
         }
 
-        if (!genres.equals(getGenreList())) {
+        if (!genres.equals(allGenres)) {
             for (Genre genre : genres) {
-                    for (Movie movie : logicManager.getMoviesInGenre(genre)){
+                    for (Movie movie : genre.getMovies()){
                         if(!filtered.contains(movie))
                             filtered.add(movie);
                     }
@@ -46,7 +54,7 @@ public class Model {
 
 
         else { //is this else statement needed?
-            filtered.addAll(movies);
+            filtered.addAll(allMovies);
         }
 
         return FXCollections.observableArrayList(filtered);
@@ -69,8 +77,18 @@ public class Model {
         return movieToEdit;
     }
 
-    public ObservableList<Movie> getMovieList(){
-        return logicManager.getMovieList();
+
+    public void getMovieList(){
+        allMovies.clear();
+        allMovies.addAll(logicManager.getAllMovies());
+    }
+
+    public ObservableList<Movie> getAllMovies(){
+        return allMovies;
+    }
+
+    public ObservableList<Genre> getAllGenres(){
+        return allGenres;
     }
 
     public List<Movie> getMoviesInGenre(Genre genre){
@@ -89,7 +107,8 @@ public class Model {
         logicManager.deleteGenre(genre);
     }
 
-    public ObservableList<Genre> getGenreList(){
-        return logicManager.getGenreList();
+    public void getGenreList(){
+        allGenres.clear();
+        allGenres.addAll(logicManager.getAllGenres());
     }
 }

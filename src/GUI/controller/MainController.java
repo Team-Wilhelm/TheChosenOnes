@@ -36,13 +36,12 @@ public class MainController implements Initializable {
     private CheckComboBox<Genre> genresDropDown = new CheckComboBox<Genre>(){};
 
     private void refreshItems(){
-        moviesList.setItems(model.getMovieList());
+        moviesList.setItems(model.getAllMovies());
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         moviesList.setCellFactory(param -> new MovieListCell());
-        refreshItems();
 
         searchBar.textProperty().addListener((observable, oldValue, newValue) -> {
             moviesList.getItems().clear();
@@ -54,7 +53,9 @@ public class MainController implements Initializable {
             moviesList.setItems(model.filterMovies(searchBar.getText(),genresDropDown.getCheckModel().getCheckedItems()));
         });
 
-        genresDropDown.getItems().addAll(FXCollections.observableList(model.getGenreList()));
+        genresDropDown.getItems().addAll(FXCollections.observableList(model.getAllGenres()));
+
+        refreshItems();
     }
 
     @FXML

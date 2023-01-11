@@ -4,35 +4,20 @@ import BE.Genre;
 import BE.Movie;
 import DAL.GenreDAO;
 import DAL.MovieDAO;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import java.util.List;
 
 public class LogicManager {
 
-    private final ObservableList<Movie> allMovies;
-    private final ObservableList<Genre> allGenres;
     private MovieDAO movieDAO = new MovieDAO();
     private GenreDAO genreDAO = new GenreDAO();
 
-    public LogicManager() {
-        allMovies = FXCollections.observableArrayList();
-        allGenres = FXCollections.observableArrayList();
+
+    public List<Movie> getAllMovies(){
+        return movieDAO.getAllMovies();
     }
 
-    private void getAllMovies(){
-        allMovies.clear();
-        allMovies.addAll(movieDAO.getAllMovies());
-    }
-
-    private void getAllGenres(){
-        allGenres.clear();
-        allGenres.addAll(genreDAO.getAllGenres());
-    }
-
-    public ObservableList<Movie> getMovieList(){
-        getAllMovies();
-        return allMovies;
+    public List<Genre> getAllGenres(){
+        return genreDAO.getAllGenres();
     }
 
     public String addMovie(Movie movie){
@@ -49,11 +34,6 @@ public class LogicManager {
 
     public List<Movie> getMoviesInGenre(Genre genre){
         return genreDAO.getMoviesInGenre(genre);
-    }
-
-    public ObservableList<Genre> getGenreList(){
-        getAllGenres();
-        return allGenres;
     }
 
     public void addGenre(String genre){
