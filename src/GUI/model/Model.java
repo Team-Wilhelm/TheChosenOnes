@@ -19,7 +19,7 @@ public class Model {
         } return instance;
     }
 
-    public boolean editMovie(Movie movie) {
+    public String editMovie(Movie movie) {
         return logicManager.editMovie(new Movie(movieToEdit.getId(), movie.getName(), movie.getFileLink(), movie.getLastView(), movie.getImdbRating(), movie.getUserRating(), movie.getGenres()));
     }
 
@@ -53,7 +53,7 @@ public class Model {
     }
 
 
-    public boolean createMovie(Movie movie) {
+    public String createMovie(Movie movie) {
         return logicManager.addMovie(movie);
     }
 

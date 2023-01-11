@@ -75,7 +75,7 @@ public class NewMovieController {
 
         else {
             if (isEditing){
-                if (model.editMovie(new Movie(title, filepath, lastView, imdbRating, userRating, genres))){
+                if (model.editMovie(new Movie(title, filepath, lastView, imdbRating, userRating, genres)).isEmpty()){
                     Node node = (Node) actionEvent.getSource();
                     node.getScene().getWindow().hide();
                 }
@@ -84,7 +84,7 @@ public class NewMovieController {
             }
 
             else{
-                if (model.createMovie(new Movie(title, filepath, lastView, imdbRating, userRating, genres))){
+                if (model.createMovie(new Movie(title, filepath, lastView, imdbRating, userRating, genres)).isEmpty()){
                     Node node = (Node) actionEvent.getSource();
                     node.getScene().getWindow().hide();
                 }

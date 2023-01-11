@@ -1,5 +1,6 @@
 package BE;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Genre {
@@ -14,6 +15,7 @@ public class Genre {
     public Genre(int id, String name) {
         this(name);
         this.id = id;
+        movies = new ArrayList<>();
     }
 
     public Genre(List<Movie> movies){

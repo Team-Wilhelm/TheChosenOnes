@@ -35,7 +35,7 @@ public class LogicManager {
         return allMovies;
     }
 
-    public boolean addMovie(Movie movie){
+    public String addMovie(Movie movie){
         return movieDAO.addMovie(movie);
     }
 
@@ -43,7 +43,7 @@ public class LogicManager {
         movieDAO.deleteMovie(movie);
     }
 
-    public boolean editMovie(Movie movie){
+    public String editMovie(Movie movie){
         return movieDAO.editMovie(movie);
     }
 
