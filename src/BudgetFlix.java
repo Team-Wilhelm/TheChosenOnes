@@ -1,4 +1,6 @@
+import BE.Genre;
 import BE.Movie;
+import BLL.LogicManager;
 import DAL.GenreDAO;
 import DAL.MovieDAO;
 import javafx.application.Application;
