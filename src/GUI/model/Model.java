@@ -10,8 +10,15 @@ import java.util.List;
 
 public class Model {
 
+    private static Model instance=null;
     LogicManager logicManager = new LogicManager();
     Movie movieToEdit;
+
+    public static Model getInstance(){
+        if(instance == null){
+            instance = new Model();
+        } return instance;
+    }
 
     public void editMovie(Movie movie) {
         logicManager.editMovie(new Movie(movieToEdit.getId(), movie.getName(), movie.getFileLink(), movie.getLastView(), movie.getImdbRating(), movie.getUserRating(), movie.getGenres()));

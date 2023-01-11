@@ -26,14 +26,11 @@ public class NewMovieController {
     private TextField txtTitle, txtUserRating, txtIMDBRating, txtFilePath;
     @FXML
     private DatePicker dateLastView;
-    private Model model = null;
     private boolean isEditing = false;
     @FXML
     private CheckComboBox<Genre> genresDropDown = new CheckComboBox<Genre>(){};
 
-    public void setModel(Model model){
-        this.model = model;
-    }
+    private final Model model = Model.getInstance();
 
     @FXML
     public void initialize(){

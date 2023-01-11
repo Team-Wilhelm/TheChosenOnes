@@ -27,7 +27,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
-    private final Model model = new Model();
+    private final Model model = Model.getInstance();
     @FXML
     private TextField searchBar;
     @FXML
@@ -63,7 +63,6 @@ public class MainController implements Initializable {
     private void btnAddMovieAction(ActionEvent actionEvent) throws IOException {
         FXMLLoader fxmlLoader = openNewWindow();
         NewMovieController newMovieController = fxmlLoader.getController();
-        newMovieController.setModel(model);
     }
 
     // make util class for alerts to avoid creating multiple alerts
@@ -77,7 +76,6 @@ public class MainController implements Initializable {
             model.setMovieToEdit(movie);
             FXMLLoader fxmlLoader = openNewWindow();
             NewMovieController newMovieController = fxmlLoader.getController();
-            newMovieController.setModel(model);
             newMovieController.setIsEditing();
         }
     }
