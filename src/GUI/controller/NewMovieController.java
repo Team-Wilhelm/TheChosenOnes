@@ -65,8 +65,10 @@ public class NewMovieController {
 
         double userRating = stringToDoubleConverter(userRatingString);
         double imdbRating = stringToDoubleConverter(imdbRatingString);
+        //Opens an alert if the rating is outside the range 0 and 10
         if (userRating < 0 || userRating > 10 || imdbRating < 0 || imdbRating > 10)
             showAlert("ERROR", "Invalid rating! \nPlease, put in a number between 0.0 and 10.0");
+        //Opens an alert if the extension of the file is not .mp4 or .mpeg4
         if (!txtFilePath.getText().trim().endsWith(".mp4") && !txtFilePath.getText().trim().endsWith(".mpeg4"))
             showAlert("ERROR", "Selected file format is not supported!");
         else {
