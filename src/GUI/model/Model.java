@@ -22,10 +22,22 @@ public class Model {
         ObservableList<Movie> movies = getMovieList();
         List<Movie> filtered = new ArrayList<>();
 
-        for(Movie m: movies){
-            if(m.getName().toLowerCase().contains(query.toLowerCase()))
-                filtered.add(m);
+        if (query.equals("")){
+            filtered.addAll(movies);
         }
+
+        else {
+            for (Movie m : movies) {
+                if (m.getName().toLowerCase().contains(query.toLowerCase()))
+                    filtered.add(m);
+            }
+        }
+
+        /*
+        for (Genre genre:genres){
+            //TODO actually do something useful
+        }*/
+
         return FXCollections.observableArrayList(filtered);
     }
 

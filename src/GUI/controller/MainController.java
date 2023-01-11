@@ -66,6 +66,8 @@ public class MainController implements Initializable {
         newMovieController.setModel(model);
     }
 
+    // make util class for alerts to avoid creating multiple alerts
+
     @FXML
     private void btnEditMovieAction(ActionEvent actionEvent) throws IOException {
         Movie movie = moviesList.getSelectionModel().getSelectedItem();
@@ -114,7 +116,7 @@ public class MainController implements Initializable {
         stage.show();
         Window window = scene.getWindow();
         window.setOnHiding(event -> refreshItems());
-        return fxmlLoader;
+        return fxmlLoader; //resource heavy, make return void and add class to handle fxml loader once
     }
 
     @FXML
