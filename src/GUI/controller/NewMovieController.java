@@ -2,6 +2,7 @@ package GUI.controller;
 
 import BE.Genre;
 import BE.Movie;
+import BLL.AlertManager;
 import DAL.GenreDAO;
 import GUI.model.Model;
 import javafx.collections.FXCollections;
@@ -31,6 +32,7 @@ public class NewMovieController {
     private CheckComboBox<Genre> genresDropDown = new CheckComboBox<Genre>(){};
 
     private final Model model = Model.getInstance();
+    private final AlertManager alertManager = AlertManager.getInstance();
 
     @FXML
     public void initialize(){
@@ -62,18 +64,20 @@ public class NewMovieController {
 
         double userRating = stringToDoubleConverter(userRatingString);
         double imdbRating = stringToDoubleConverter(imdbRatingString);
+
         //Opens an alert if the rating is outside the range 0 and 10
         if (userRating < 0 || userRating > 10 || imdbRating < 0 || imdbRating > 10)
-            showAlert("ERROR", "Invalid rating! \nPlease, put in a number between 0.0 and 10.0");
+            alertManager.getAlert("ERROR", "Invalid rating! \nPlease, put in a number between 0.0 and 10.0").showAndWait();
+
         //Opens an alert if the extension of the file is not .mp4 or .mpeg4
-        if (!txtFilePath.getText().trim().endsWith(".mp4") && !txtFilePath.getText().trim().endsWith(".mpeg4"))
-            showAlert("ERROR", "Selected file format is not supported!");
+        else if (!txtFilePath.getText().trim().endsWith(".mp4") && !txtFilePath.getText().trim().endsWith(".mpeg4"))
+            alertManager.getAlert("ERROR", "Selected file format is not supported!").showAndWait();
+
         else {
             if (isEditing)
                 model.editMovie(new Movie(title, filepath, lastView, imdbRating, userRating, genres));
             else
                 model.createMovie(new Movie(title, filepath, lastView, imdbRating, userRating, genres));
-
             Node node = (Node) actionEvent.getSource();
             node.getScene().getWindow().hide();
             }
@@ -118,7 +122,7 @@ public class NewMovieController {
                 result = Double.parseDouble(rating);
             }
             catch (NumberFormatException ex){
-                showAlert("ERROR", "Invalid rating! \nPlease, put in a number between 0.0 and 10.0");
+                alertManager.getAlert("ERROR", "Invalid rating! \nPlease, put in a number between 0.0 and 10.0").showAndWait();
             }
             return result;
         }
@@ -140,12 +144,5 @@ public class NewMovieController {
         for (int i = 0; i < genreIndices.size(); i++){
             genresDropDown.getCheckModel().check(i);
         }
-    }
-
-    private void showAlert(String type, String text){
-        Alert alert = new Alert(Alert.AlertType.valueOf(type));
-        alert.setTitle("Error");
-        alert.setContentText(text);
-        alert.showAndWait();
     }
 }
