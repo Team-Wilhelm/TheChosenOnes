@@ -24,7 +24,9 @@ public class GenreDAO {
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String name = rs.getString("genreName");
-                genreList.add(new Genre(id, name));
+                Genre genre = new Genre(id, name);
+                genre.getMovies().addAll(getMoviesInGenre(genre));
+                genreList.add(genre);
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
