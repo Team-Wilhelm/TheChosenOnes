@@ -12,8 +12,8 @@ public class Model {
     private static Model instance=null;
     LogicManager logicManager = new LogicManager();
     Movie movieToEdit;
-    private ObservableList<Movie> allMovies;
-    private ObservableList<Genre> allGenres;
+    private final ObservableList<Movie> allMovies;
+    private final ObservableList<Genre> allGenres;
 
     public static Model getInstance(){
         if(instance == null){
@@ -26,10 +26,6 @@ public class Model {
         allGenres = FXCollections.observableArrayList();
         getMovieList();
         getGenreList();
-    }
-
-    public String editMovie(Movie movie) {
-        return logicManager.editMovie(new Movie(movieToEdit.getId(), movie.getName(), movie.getFileLink(), movie.getLastView(), movie.getImdbRating(), movie.getUserRating(), movie.getGenres()));
     }
 
     public ObservableList<Movie> filterMovies(String query, ObservableList<Genre> genres) //TODO add personal & IMDB rating
@@ -52,7 +48,6 @@ public class Model {
             }
         }
 
-
         else { //is this else statement needed?
             filtered.addAll(allMovies);
         }
@@ -60,13 +55,18 @@ public class Model {
         return FXCollections.observableArrayList(filtered);
     }
 
-
+    //Movie methods
     public String createMovie(Movie movie) {
         return logicManager.addMovie(movie);
     }
 
+    public String editMovie(Movie movie) {
+        return logicManager.editMovie(new Movie(movieToEdit.getId(), movie.getName(), movie.getFileLink(), movie.getLastView(), movie.getImdbRating(), movie.getUserRating(), movie.getGenres()));
+    }
+
     public void deleteMovie(Movie movie){
         logicManager.deleteMovie(movie);
+        allMovies.remove(movie);
     }
 
     public void setMovieToEdit(Movie movie){
@@ -76,7 +76,6 @@ public class Model {
     public Movie getMovieToEdit() {
         return movieToEdit;
     }
-
 
     public void getMovieList(){
         allMovies.clear();
@@ -99,12 +98,13 @@ public class Model {
         return logicManager.getAllGenresFromMovie(movie);
     }
 
-    public void addGenre(String genre){
-        logicManager.addGenre(genre);
+    public String addGenre(String genre){
+        return logicManager.addGenre(genre);
     }
 
     public void deleteGenre(Genre genre){
         logicManager.deleteGenre(genre);
+        allGenres.remove(genre);
     }
 
     public void getGenreList(){

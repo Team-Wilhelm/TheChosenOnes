@@ -2,7 +2,7 @@ package GUI.controller;
 
 import BE.Genre;
 import BE.Movie;
-import DAL.GenreDAO;
+import BLL.AlertManager;
 import GUI.controller.cellFactory.MovieListCell;
 import GUI.model.Model;
 import javafx.collections.FXCollections;
@@ -23,11 +23,13 @@ import org.controlsfx.control.CheckComboBox;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
     private final Model model = Model.getInstance();
+    private final AlertManager alertManager = AlertManager.getInstance();
     @FXML
     private TextField searchBar;
     @FXML
@@ -36,7 +38,10 @@ public class MainController implements Initializable {
     private CheckComboBox<Genre> genresDropDown = new CheckComboBox<Genre>(){};
 
     private void refreshItems(){
+        model.getMovieList();
         moviesList.setItems(model.getAllMovies());
+        model.getGenreList();
+        genresDropDown.getItems().setAll(FXCollections.observableList(model.getAllGenres()));
     }
 
     @Override
@@ -53,15 +58,13 @@ public class MainController implements Initializable {
             moviesList.setItems(model.filterMovies(searchBar.getText(),genresDropDown.getCheckModel().getCheckedItems()));
         });
 
-        genresDropDown.getItems().addAll(FXCollections.observableList(model.getAllGenres()));
-
         refreshItems();
     }
 
     @FXML
     private void btnAddMovieAction(ActionEvent actionEvent) throws IOException {
-        FXMLLoader fxmlLoader = openNewWindow();
-        NewMovieController newMovieController = fxmlLoader.getController();
+        //TODO FXML Shit
+        openNewWindow();
     }
 
     @FXML
@@ -81,17 +84,10 @@ public class MainController implements Initializable {
     private void btnDeleteMovieAction(ActionEvent actionEvent) {
         Movie movie = moviesList.getSelectionModel().getSelectedItem();
         if (movie == null){
-            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-            errorAlert.setTitle("Error");
-            errorAlert.setHeaderText("No movie selected");
-            errorAlert.setContentText("Please, select a movie to delete");
-            errorAlert.showAndWait();
+            alertManager.getAlert("ERROR", "Please, select a movie to delete!").showAndWait();
         }
         else{
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Delete a movie");
-            alert.setContentText("Do you really wish to delete this movie ?");
-
+            Alert alert = alertManager.getAlert("CONFIRMATION", "Do you really wish to delete this movie ?");
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 model.deleteMovie(movie);
@@ -101,8 +97,8 @@ public class MainController implements Initializable {
     }
 
     private FXMLLoader openNewWindow() throws IOException {
-        Stage stage = new Stage();
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/NewMovieView.fxml"));
+        Stage stage = new Stage();
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
         stage.setResizable(false);
@@ -125,5 +121,37 @@ public class MainController implements Initializable {
             //Starting the process
             builder.start();
         }
-    };
+    }
+
+    public void btnAddGenreAction(ActionEvent actionEvent) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../view/NewGenreView.fxml"));
+        Stage stage = new Stage();
+        Scene scene = new Scene(fxmlLoader.load());
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.setTitle("BudgetFlix");
+        stage.centerOnScreen();
+        stage.show();
+        Window window = scene.getWindow();
+        window.setOnHiding(event -> refreshItems());
+    }
+
+    public void btnDeleteGenreAction(ActionEvent actionEvent) {
+        ArrayList<Genre> genres = new ArrayList<>(genresDropDown.getCheckModel().getCheckedItems());
+        if (genres.size() == 0)
+            alertManager.getAlert("ERROR", "Please, select a genre to delete!").showAndWait();
+        else{
+            Alert alert = alertManager.getAlert("CONFIRMATION", "Do you really wish to delete this genre?");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                for (Genre genre : genres){
+                    genresDropDown.getCheckModel().isChecked(genre); //idk why it doesn't work without this
+                    model.deleteGenre(genre);
+                    genresDropDown.getCheckModel().clearCheck(genre);
+                    genresDropDown.getCheckModel().isChecked(genre);
+                }
+                refreshItems();
+            }
+        }
+    }
 }

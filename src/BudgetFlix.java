@@ -3,7 +3,10 @@ import BE.Movie;
 import BLL.LogicManager;
 import DAL.GenreDAO;
 import DAL.MovieDAO;
+import GUI.controller.MainController;
+import GUI.model.Model;
 import javafx.application.Application;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -36,10 +39,6 @@ public class BudgetFlix extends Application {
     private static void test(){
         MovieDAO movieDAO = new MovieDAO();
         GenreDAO genreDAO = new GenreDAO();
-        for (Movie m : genreDAO.getMoviesInGenre(genreDAO.getGenre(2))){
-            System.out.println(m.getGenres());
-        }
-        System.out.println(movieDAO.getMovie(59).getName());
-        System.out.println(genreDAO.getGenre(1).getName());
+        Model model = Model.getInstance();
     }
 }

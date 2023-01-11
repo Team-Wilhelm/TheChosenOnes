@@ -36,12 +36,12 @@ public class LogicManager {
         return genreDAO.getMoviesInGenre(genre);
     }
 
-    public void addGenre(String genre){
-        genreDAO.addGenreToDatabase(genre);
+    public String addGenre(String genre){
+        return genreDAO.addGenreToDatabase(genre);
     }
 
     public void deleteGenre(Genre genre){
-        genreDAO.removeGenreFromDatabase(genre);
+        genreDAO.deleteGenre(genre);
     }
 
     public List<Genre> getAllGenresFromMovie(Movie movie){
