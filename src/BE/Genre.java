@@ -40,9 +40,9 @@ public class Genre {
     }
     @Override
     public boolean equals(Object obj){
-        Genre genre = (Genre) obj;
-        if(genre == null)
+        if(obj == null)
             return false;
+        Genre genre = (Genre) obj;
         if (genre.name.equals(this.name) && genre.id == this.id)
             return true;
         else
