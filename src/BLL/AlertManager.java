@@ -3,7 +3,6 @@ package BLL;
 import javafx.scene.control.Alert;
 
 public class AlertManager {
-    //TODO same filePath alert
     Alert alert;
     private static AlertManager instance=null;
 

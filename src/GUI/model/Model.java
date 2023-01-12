@@ -29,7 +29,7 @@ public class Model {
         getGenreList();
     }
 
-    public ObservableList<Movie> filterMovies(String query, ObservableList<Genre> genres, double IMDBrating, double userRating) //TODO add personal & IMDB rating
+    public ObservableList<Movie> filterMovies(String query, ObservableList<Genre> genres, double IMDBrating, double userRating)
     {
         List<Movie> filtered = new ArrayList<>();
 
@@ -74,9 +74,7 @@ public class Model {
     }
 
     public void getMovieList(){
-        //allMovies.clear();
         allMovies.setAll(logicManager.getAllMovies());
-        //allMovies.addAll(logicManager.getAllMovies());
     }
 
     public ObservableList<Movie> getAllMovies(){
@@ -109,8 +107,6 @@ public class Model {
     }
 
     public void getGenreList(){
-        //allGenres.clear();
-        //allGenres.addAll(logicManager.getAllGenres());
         allGenres.setAll(logicManager.getAllGenres());
     }
 

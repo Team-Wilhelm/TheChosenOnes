@@ -139,7 +139,6 @@ public class NewMovieController {
         }
     }
 
-    //TODO an issue with the combobox checking genres
     public void setIsEditing(){
         isEditing = true;
         Movie movieToEdit = model.getMovieToEdit();

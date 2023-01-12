@@ -70,7 +70,6 @@ public class MainController implements Initializable {
 
     @FXML
     private void btnAddMovieAction(ActionEvent actionEvent) throws IOException {
-        //TODO FXML Shit
         openNewWindow("../view/NewMovieView.fxml");
     }
 
@@ -114,7 +113,7 @@ public class MainController implements Initializable {
         stage.show();
         Window window = scene.getWindow();
         window.setOnHiding(event -> refreshItems());
-        return fxmlLoader; //resource heavy, make return void and add class to handle fxml loader once
+        return fxmlLoader; //TODO resource heavy, make return void and add class to handle fxml loader once
     }
 
     @FXML
@@ -123,18 +122,18 @@ public class MainController implements Initializable {
             Movie movie = moviesList.getSelectionModel().getSelectedItem();
             String command = "C:\\Program Files\\Windows Media Player\\wmplayer.exe";
             String arg = movie.getFileLink();
-            //Building a process
             ProcessBuilder builder = new ProcessBuilder(command, arg);
-            //Starting the process
             builder.start();
         }
     }
 
-    public void btnAddGenreAction(ActionEvent actionEvent) throws IOException {
+    @FXML
+    private void btnAddGenreAction(ActionEvent actionEvent) throws IOException {
         openNewWindow("../view/NewGenreView.fxml");
     }
 
-    public void btnDeleteGenreAction(ActionEvent actionEvent) {
+    @FXML
+    private void btnDeleteGenreAction(ActionEvent actionEvent) {
         ArrayList<Genre> genres = new ArrayList<>(genresDropDown.getCheckModel().getCheckedItems());
         if (genres.size() == 0)
             alertManager.getAlert("ERROR", "Please, select a genre to delete!").showAndWait();
