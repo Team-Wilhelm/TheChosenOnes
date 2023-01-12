@@ -29,6 +29,7 @@ public class MovieListCell extends ListCell<Movie> {
         genreRow.setStyle("-fx-font-size: 18px");
         title.setStyle(titleStyle);
         otherData.setSpacing(10);
+        genreRow.setSpacing(5);
     }
 
     @Override
@@ -41,6 +42,7 @@ public class MovieListCell extends ListCell<Movie> {
             detail.setText(null);
             setGraphic(null);
         } else {
+            genres.setText(item.getGenres().toString().replace("[","").replace("]",""));
             title.setText(item.getName());
             detail.setText(
                 item.getLastView() != null
