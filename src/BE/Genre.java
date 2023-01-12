@@ -42,10 +42,18 @@ public class Genre {
     public boolean equals(Object obj){
         if(obj == null)
             return false;
-        Genre genre = (Genre) obj;
-        if (genre.name.equals(this.name) && genre.id == this.id)
-            return true;
-        else
-            return false;
+        try {
+            Genre genre = (Genre) obj;
+            if (genre.name.equals(this.name) && genre.id == this.id)
+                return true;
+            else
+                return false;
+        }catch (ClassCastException cce)
+        {
+            if (((String)obj).equals(this.name))
+                return true;
+            else
+                return false;
+        }
     }
 }
