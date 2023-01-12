@@ -93,9 +93,6 @@ public class Model {
         return allGenres;
     }
 
-    public List<Movie> getMoviesInGenre(Genre genre){
-        return logicManager.getMoviesInGenre(genre);
-    }
 
     public String addGenre(String genre){
         return logicManager.addGenre(genre);
@@ -108,9 +105,5 @@ public class Model {
 
     public void getGenreList(){
         allGenres.setAll(logicManager.getAllGenres());
-    }
-
-    public List<Genre> getAllGenresFromMovie(Movie movie){
-        return logicManager.getAllGenresFromMovie(movie);
     }
 }

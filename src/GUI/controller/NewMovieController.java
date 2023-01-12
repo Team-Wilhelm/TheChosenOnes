@@ -148,7 +148,7 @@ public class NewMovieController {
         txtUserRating.setText(String.valueOf(movieToEdit.getUserRating()));
         dateLastView.setValue(movieToEdit.getLastView());
 
-        List<Genre> genres = model.getAllGenresFromMovie(movieToEdit);
+        List<Genre> genres = movieToEdit.getGenres();
         for (Genre genre: genres){
             genresDropDown.getCheckModel().check(genre);
         }
