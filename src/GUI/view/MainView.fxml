@@ -13,19 +13,19 @@
       <Button fx:id="btnDeleteGenre" layoutX="540.0" layoutY="492.0" mnemonicParsing="false" onAction="#btnDeleteGenreAction" text="Delete Genre" AnchorPane.rightAnchor="25.0" />
       <TextField fx:id="searchBar" layoutX="70.0" layoutY="541.0" AnchorPane.leftAnchor="25.0" />
       <CheckComboBox fx:id="genresDropDown" layoutX="476.0" layoutY="541.0" prefWidth="150.0" AnchorPane.rightAnchor="25.0" />
-      <TableView fx:id="movieTable" layoutX="15.0" layoutY="44.0" prefHeight="417.0" prefWidth="820.0">
-        <columns>
-          <TableColumn prefWidth="95.0" text="Name of Movie" />
-          <TableColumn prefWidth="95.0" text="Genres" />
-          <TableColumn prefWidth="95.0" text="User rating" />
-          <TableColumn prefWidth="95.0" text="IMDB rating" />
-        </columns>
-      </TableView>
       <ListView fx:id="moviesList" layoutX="15.0" layoutY="68.0" onMouseClicked="#playMovie" prefHeight="393.0" prefWidth="820.0" />
-      <Slider id="sliderUserRating" fx:id="sliderIMDBRating" blockIncrement="1.0" layoutX="245.0" layoutY="548.0" majorTickUnit="1.0" max="10.0" minorTickCount="10" prefHeight="14.0" prefWidth="360.0" showTickLabels="true" showTickMarks="true" />
-      <Slider fx:id="sliderUserRating" blockIncrement="1.0" layoutX="245.0" layoutY="486.0" majorTickUnit="1.0" max="10.0" minorTickCount="10" prefHeight="14.0" prefWidth="360.0" showTickLabels="true" showTickMarks="true" />
-      <Label layoutX="245.0" layoutY="532.0" text="IMDB Rating:" />
-      <Label layoutX="245.0" layoutY="470.0" text="Your Rating:" />
-
+      <ButtonBar layoutX="19.0" layoutY="14.0" prefHeight="40.0" prefWidth="548.0">
+          <buttons>
+              <Label text="Sort by" />
+              <Button fx:id="nameSortButton" mnemonicParsing="false" text="Name" />
+              <Button fx:id="categorySortButton" layoutX="359.0" layoutY="18.0" mnemonicParsing="false" text="Category" />
+              <Button fx:id="userRatingSortButton" layoutX="359.0" layoutY="18.0" mnemonicParsing="false" text="User rating" />
+              <Button fx:id="imdbRatingSortButton" layoutX="359.0" layoutY="18.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="121.0" text="IMDB rating" />
+          </buttons>
+      </ButtonBar>
+       <Slider id="sliderUserRating" fx:id="sliderIMDBRating" blockIncrement="1.0" layoutX="245.0" layoutY="548.0" majorTickUnit="1.0" max="10.0" minorTickCount="10" prefHeight="14.0" prefWidth="360.0" showTickLabels="true" showTickMarks="true" />
+       <Slider fx:id="sliderUserRating" blockIncrement="1.0" layoutX="245.0" layoutY="486.0" majorTickUnit="1.0" max="10.0" minorTickCount="10" prefHeight="14.0" prefWidth="360.0" showTickLabels="true" showTickMarks="true" />
+       <Label layoutX="245.0" layoutY="532.0" text="IMDB Rating:" />
+       <Label layoutX="245.0" layoutY="470.0" text="Your Rating:" />
    </children>
 </AnchorPane>
