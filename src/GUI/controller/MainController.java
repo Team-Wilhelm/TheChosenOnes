@@ -30,6 +30,8 @@ public class MainController implements Initializable {
     private final Model model = Model.getInstance();
     private final AlertManager alertManager = AlertManager.getInstance();
     @FXML
+    public Button nameSortButton, categorySortButton, userRatingSortButton, imdbRatingSortButton;
+    @FXML
     private TextField searchBar;
     @FXML
     private ListView<Movie> moviesList;
@@ -132,8 +134,7 @@ public class MainController implements Initializable {
         openNewWindow("../view/NewGenreView.fxml");
     }
 
-    @FXML
-    private void btnDeleteGenreAction(ActionEvent actionEvent) {
+    public void btnDeleteGenreAction(ActionEvent actionEvent) {
         ArrayList<Genre> genres = new ArrayList<>(genresDropDown.getCheckModel().getCheckedItems());
         if (genres.size() == 0)
             alertManager.getAlert("ERROR", "Please, select a genre to delete!").showAndWait();
