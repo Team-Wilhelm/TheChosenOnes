@@ -8,6 +8,7 @@ import javafx.collections.ObservableList;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Model {
     private static Model instance=null;
     LogicManager logicManager = new LogicManager();
@@ -63,8 +64,9 @@ public class Model {
     }
 
     public void getMovieList(){
-        allMovies.clear();
-        allMovies.addAll(logicManager.getAllMovies());
+        //allMovies.clear();
+        allMovies.setAll(logicManager.getAllMovies());
+        //allMovies.addAll(logicManager.getAllMovies());
     }
 
     public ObservableList<Movie> getAllMovies(){
@@ -97,8 +99,9 @@ public class Model {
     }
 
     public void getGenreList(){
-        allGenres.clear();
-        allGenres.addAll(logicManager.getAllGenres());
+        //allGenres.clear();
+        //allGenres.addAll(logicManager.getAllGenres());
+        allGenres.setAll(logicManager.getAllGenres());
     }
 
     public List<Genre> getAllGenresFromMovie(Movie movie){
