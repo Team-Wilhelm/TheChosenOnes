@@ -49,12 +49,10 @@ public class MainController implements Initializable {
         moviesList.setCellFactory(param -> new MovieListCell());
 
         searchBar.textProperty().addListener((observable, oldValue, newValue) -> {
-            moviesList.getItems().clear();
             moviesList.setItems(model.filterMovies(searchBar.getText(),genresDropDown.getCheckModel().getCheckedItems()));
         });
 
         genresDropDown.getCheckModel().getCheckedItems().addListener((ListChangeListener<? super Genre>) observable -> {
-            moviesList.getItems().clear();
             moviesList.setItems(model.filterMovies(searchBar.getText(),genresDropDown.getCheckModel().getCheckedItems()));
         });
 
