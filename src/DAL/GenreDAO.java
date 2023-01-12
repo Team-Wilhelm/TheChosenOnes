@@ -61,12 +61,11 @@ public class GenreDAO {
         moviesInGenre = new ArrayList<>();
         String sql = "SELECT movieID FROM MovieGenreLink WHERE genreId='" + genreId + "';";
         try (ResultSet rs = executeSQLQueryWithResult(sql)) {
+            MovieDAO movieDAO = new MovieDAO();
                 while (rs.next()) {
-                int id = rs.getInt("movieId");
-                MovieDAO movieDAO = new MovieDAO();
-                moviesInGenre.add(movieDAO.getMovie(id));
-            }
-
+                    int id = rs.getInt("movieId");
+                    moviesInGenre.add(movieDAO.getMovie(id));
+                }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

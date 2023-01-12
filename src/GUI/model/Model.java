@@ -29,7 +29,7 @@ public class Model {
         getGenreList();
     }
 
-    public ObservableList<Movie> filterMovies(String query, ObservableList<Genre> genres) //TODO add personal & IMDB rating
+    public ObservableList<Movie> filterMovies(String query, ObservableList<Genre> genres, double IMDBrating, double userRating) //TODO add personal & IMDB rating
     {
         List<Movie> filtered = new ArrayList<>();
 
@@ -38,11 +38,21 @@ public class Model {
             if(!query.isEmpty())
                 if(!m.getName().toLowerCase().contains(query.toLowerCase()))
                     check1 = false;
+
             var check2 = true;
             if(genres.size() != 0)
                 if(!m.getGenres().containsAll(genres))
                     check2 = false;
-            if(check1 && check2)
+
+            var check3 = true;
+            if (m.getImdbRating() < IMDBrating)
+                check3 = false;
+
+            var check4 = true;
+            if (m.getUserRating() < userRating)
+                check4 = false;
+
+            if(check1 && check2 && check3 && check4)
                 filtered.add(m);
         }
 

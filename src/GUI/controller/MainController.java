@@ -5,6 +5,8 @@ import BE.Movie;
 import BLL.AlertManager;
 import GUI.controller.cellFactory.MovieListCell;
 import GUI.model.Model;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
@@ -12,10 +14,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.Window;
@@ -35,6 +34,8 @@ public class MainController implements Initializable {
     @FXML
     private ListView<Movie> moviesList;
     @FXML
+    private Slider sliderUserRating, sliderIMDBRating;
+    @FXML
     private CheckComboBox<Genre> genresDropDown = new CheckComboBox<Genre>(){};
 
     private void refreshItems(){
@@ -49,12 +50,18 @@ public class MainController implements Initializable {
         moviesList.setCellFactory(param -> new MovieListCell());
 
         searchBar.textProperty().addListener((observable, oldValue, newValue) -> {
-            moviesList.setItems(model.filterMovies(searchBar.getText(),genresDropDown.getCheckModel().getCheckedItems()));
+            moviesList.setItems(model.filterMovies(searchBar.getText(),genresDropDown.getCheckModel().getCheckedItems(), sliderIMDBRating.getValue(),sliderUserRating.getValue()));
         });
 
         genresDropDown.getCheckModel().getCheckedItems().addListener((ListChangeListener<? super Genre>) observable -> {
-            moviesList.setItems(model.filterMovies(searchBar.getText(),genresDropDown.getCheckModel().getCheckedItems()));
+            moviesList.setItems(model.filterMovies(searchBar.getText(),genresDropDown.getCheckModel().getCheckedItems(),sliderIMDBRating.getValue(),sliderUserRating.getValue()));
         });
+
+        sliderUserRating.valueProperty().addListener((observable, oldValue, newValue) ->
+                moviesList.setItems(model.filterMovies(searchBar.getText(),genresDropDown.getCheckModel().getCheckedItems(),sliderIMDBRating.getValue(), sliderUserRating.getValue())));
+
+        sliderIMDBRating.valueProperty().addListener((observable, oldValue, newValue) ->
+                moviesList.setItems(model.filterMovies(searchBar.getText(), genresDropDown.getCheckModel().getCheckedItems(), sliderIMDBRating.getValue(), sliderUserRating.getValue())));
 
         refreshItems();
     }
@@ -125,7 +132,8 @@ public class MainController implements Initializable {
         openNewWindow("../view/NewGenreView.fxml");
     }
 
-    public void btnDeleteGenreAction(ActionEvent actionEvent) {
+    @FXML
+    private void btnDeleteGenreAction(ActionEvent actionEvent) {
         ArrayList<Genre> genres = new ArrayList<>(genresDropDown.getCheckModel().getCheckedItems());
         if (genres.size() == 0)
             alertManager.getAlert("ERROR", "Please, select a genre to delete!").showAndWait();
