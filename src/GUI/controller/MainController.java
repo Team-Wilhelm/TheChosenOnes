@@ -136,10 +136,8 @@ public class MainController implements Initializable {
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 for (Genre genre : genres){
-                    genresDropDown.getCheckModel().isChecked(genre); //idk why it doesn't work without this
                     model.deleteGenre(genre);
-                    genresDropDown.getCheckModel().clearCheck(genre);
-                    genresDropDown.getCheckModel().isChecked(genre);
+                    genresDropDown.getItems().clear();
                 }
                 refreshItems();
             }
