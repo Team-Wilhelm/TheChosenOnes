@@ -41,6 +41,8 @@ public class Genre {
     @Override
     public boolean equals(Object obj){
         Genre genre = (Genre) obj;
+        if(genre == null)
+            return false;
         if (genre.name.equals(this.name) && genre.id == this.id)
             return true;
         else
