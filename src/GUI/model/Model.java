@@ -12,8 +12,8 @@ public class Model {
     private static Model instance=null;
     LogicManager logicManager = new LogicManager();
     Movie movieToEdit;
-    private final ObservableList<Movie> allMovies;
-    private final ObservableList<Genre> allGenres;
+    private static ObservableList<Movie> allMovies;
+    private static ObservableList<Genre> allGenres;
 
     public static Model getInstance(){
         if(instance == null){
@@ -32,24 +32,17 @@ public class Model {
     {
         List<Movie> filtered = new ArrayList<>();
 
-        if (!query.isEmpty()) {
-            for (Movie m : allMovies) {
-                if (m.getName().toLowerCase().contains(query.toLowerCase()))
-                    filtered.add(m);
-            }
-        }
-
-        if (!genres.equals(allGenres)) {
-            for (Genre genre : genres) {
-                    for (Movie movie : genre.getMovies()){
-                        if(!filtered.contains(movie))
-                            filtered.add(movie);
-                    }
-            }
-        }
-
-        else { //is this else statement needed?
-            filtered.addAll(allMovies);
+        for (Movie m : allMovies) {
+            var check1 = true;
+            if(!query.isEmpty())
+                if(!m.getName().toLowerCase().contains(query.toLowerCase()))
+                    check1 = false;
+            var check2 = true;
+            if(genres.size() != 0)
+                if(!m.getGenres().containsAll(genres))
+                    check2 = false;
+            if(check1 && check2)
+                filtered.add(m);
         }
 
         return FXCollections.observableArrayList(filtered);
