@@ -38,4 +38,12 @@ public class Genre {
     public String toString() {
         return name;
     }
+    @Override
+    public boolean equals(Object obj){
+        Genre genre = (Genre) obj;
+        if (genre.name.equals(this.name) && genre.id == this.id)
+            return true;
+        else
+            return false;
+    }
 }
