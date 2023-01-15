@@ -147,13 +147,10 @@ public class NewMovieController {
         txtIMDBRating.setText(String.valueOf(movieToEdit.getImdbRating()));
         txtUserRating.setText(String.valueOf(movieToEdit.getUserRating()));
         dateLastView.setValue(movieToEdit.getLastView());
-        List<Genre> genres = model.getAllGenresFromMovie(movieToEdit);
-        List<Integer> genreIndices = new ArrayList<>();
+
+        List<Genre> genres = movieToEdit.getGenres();
         for (Genre genre: genres){
-            genreIndices.add(genresDropDown.getCheckModel().getItemIndex(genre));
-        }
-        for (int i = 0; i < genreIndices.size(); i++){
-            genresDropDown.getCheckModel().check(i);
+            genresDropDown.getCheckModel().check(genre);
         }
     }
 }

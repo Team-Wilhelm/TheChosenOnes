@@ -27,10 +27,6 @@ public class LogicManager {
         return movieDAO.getAllMovies();
     }
 
-    public List<Genre> getAllGenresFromMovie(Movie movie){
-        return movieDAO.getAllGenresFromMovie(movie.getId());
-    }
-
     public String addGenre(String genre){
         return genreDAO.addGenreToDatabase(genre);
     }
@@ -43,7 +39,4 @@ public class LogicManager {
         return genreDAO.getAllGenres();
     }
 
-    public List<Movie> getMoviesInGenre(Genre genre){
-        return genreDAO.getMoviesInGenre(genre);
-    }
 }
