@@ -1,6 +1,7 @@
 package BE;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 
 public class Movie {
@@ -60,5 +61,9 @@ public class Movie {
 
     public List<Genre> getGenres(){
         return genres;
+    }
+    public String getGenresToString(){
+        var a = genres.toString();
+        return genres.toString();
     }
 }

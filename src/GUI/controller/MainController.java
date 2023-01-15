@@ -5,6 +5,8 @@ import BE.Movie;
 import BLL.AlertManager;
 import GUI.controller.cellFactory.MovieListCell;
 import GUI.model.Model;
+import com.google.common.collect.Comparators;
+import com.google.common.collect.Ordering;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -22,9 +24,7 @@ import org.controlsfx.control.CheckComboBox;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class MainController implements Initializable {
     private final Model model = Model.getInstance();
@@ -149,5 +149,33 @@ public class MainController implements Initializable {
                 refreshItems();
             }
         }
+    }
+
+    public void btnNameSortAction(ActionEvent actionEvent) {
+        sortData(Comparator.comparing(Movie::getName));
+    }
+
+    public void btnCategorySortAction(ActionEvent actionEvent) {
+        sortData(Comparator.comparing(Movie::getGenresToString));
+    }
+
+    public void btnUserRatingSortAction(ActionEvent actionEvent) {
+        sortData(Comparator.comparing(Movie::getUserRating));
+    }
+
+    public void btnImdbRatingSortAction(ActionEvent actionEvent) {
+        sortData(Comparator.comparing(Movie::getImdbRating));
+    }
+
+
+    public void sortData(Comparator<Movie> movieComparator)
+    {
+        var listOfMovies = moviesList.getItems();
+        boolean sorted = Comparators.isInOrder(listOfMovies,movieComparator);
+        if(!sorted)
+            Collections.sort(listOfMovies,movieComparator);
+        else
+            Collections.sort(listOfMovies,movieComparator.reversed());
+        moviesList.setItems(listOfMovies);
     }
 }

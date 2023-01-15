@@ -17,10 +17,10 @@
       <ButtonBar layoutX="19.0" layoutY="14.0" prefHeight="40.0" prefWidth="548.0">
           <buttons>
               <Label text="Sort by" />
-              <Button fx:id="nameSortButton" mnemonicParsing="false" text="Name" />
-              <Button fx:id="categorySortButton" layoutX="359.0" layoutY="18.0" mnemonicParsing="false" text="Category" />
-              <Button fx:id="userRatingSortButton" layoutX="359.0" layoutY="18.0" mnemonicParsing="false" text="User rating" />
-              <Button fx:id="imdbRatingSortButton" layoutX="359.0" layoutY="18.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="121.0" text="IMDB rating" />
+              <Button fx:id="nameSortButton" mnemonicParsing="false" text="Name" onAction="#btnNameSortAction" />
+              <Button fx:id="categorySortButton" layoutX="359.0" layoutY="18.0" mnemonicParsing="false" text="Category" onAction="#btnCategorySortAction"  />
+              <Button fx:id="userRatingSortButton" layoutX="359.0" layoutY="18.0" mnemonicParsing="false" text="User rating" onAction="#btnUserRatingSortAction" />
+              <Button fx:id="imdbRatingSortButton" layoutX="359.0" layoutY="18.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="121.0" text="IMDB rating" onAction="#btnImdbRatingSortAction" />
           </buttons>
       </ButtonBar>
        <Slider id="sliderUserRating" fx:id="sliderIMDBRating" blockIncrement="1.0" layoutX="245.0" layoutY="548.0" majorTickUnit="1.0" max="10.0" minorTickCount="10" prefHeight="14.0" prefWidth="360.0" showTickLabels="true" showTickMarks="true" />
