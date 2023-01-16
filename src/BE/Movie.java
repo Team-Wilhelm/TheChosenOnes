@@ -63,7 +63,6 @@ public class Movie {
         return genres;
     }
     public String getGenresToString(){
-        var a = genres.toString();
-        return genres.toString();
+        return genres.toString().replace("[","").replace("]","");
     }
 }

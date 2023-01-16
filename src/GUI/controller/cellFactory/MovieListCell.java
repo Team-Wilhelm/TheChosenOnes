@@ -42,7 +42,7 @@ public class MovieListCell extends ListCell<Movie> {
             detail.setText(null);
             setGraphic(null);
         } else {
-            genres.setText(item.getGenres().toString().replace("[","").replace("]",""));
+            genres.setText(item.getGenresToString());
             title.setText(item.getName());
             detail.setText(
                 item.getLastView() != null
