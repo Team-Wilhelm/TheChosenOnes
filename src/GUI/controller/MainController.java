@@ -17,11 +17,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.controlsfx.control.CheckComboBox;
 
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
@@ -126,10 +130,8 @@ public class MainController implements Initializable {
     private void playMovie(MouseEvent mouseEvent) throws IOException {
         if (mouseEvent.getClickCount() == 2){
             Movie movie = moviesList.getSelectionModel().getSelectedItem();
-            String command = "C:\\Program Files\\Windows Media Player\\wmplayer.exe";
-            String arg = movie.getFileLink();
-            ProcessBuilder builder = new ProcessBuilder(command, arg);
-            builder.start();
+            File mediaFile = new File(movie.getFileLink());
+            Desktop.getDesktop().open(mediaFile);
         }
     }
 
