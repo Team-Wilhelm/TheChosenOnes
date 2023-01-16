@@ -124,4 +124,8 @@ public class Model {
     public void getGenreList(){
         allGenres.setAll(logicManager.getAllGenres());
     }
+
+    public void deleteMovies(List<Movie> moviesToDelete) {
+        logicManager.deleteMovies(moviesToDelete);
+    }
 }

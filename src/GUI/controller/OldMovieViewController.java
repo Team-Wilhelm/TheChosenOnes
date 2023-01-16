@@ -2,6 +2,7 @@ package GUI.controller;
 
 import BE.Movie;
 import BLL.AlertManager;
+import DAL.MovieDAO;
 import GUI.controller.cellFactory.MovieListCell;
 import GUI.model.Model;
 import javafx.event.ActionEvent;
@@ -48,9 +49,14 @@ public class OldMovieViewController implements Initializable {
 
 
     public void btnDeleteAllMovies(ActionEvent actionEvent) {
-        for (Movie m: model.getOldMovies()){
-            btnDeleteMovieAction(actionEvent);
+        List<Movie> moviesToDelete = moviesList.getItems();
+        Alert alert = alertManager.getAlert("CONFIRMATION", "Do you really wish to delete all movies?", actionEvent);
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            model.deleteMovies(moviesToDelete);
+            moviesToDelete.clear();
         }
+        refreshMovieItems();
     }
 
     private void refreshMovieItems() {

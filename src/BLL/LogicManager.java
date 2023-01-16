@@ -39,4 +39,7 @@ public class LogicManager {
         return genreDAO.getAllGenres();
     }
 
+    public void deleteMovies(List<Movie> moviesToDelete) {
+        movieDAO.deleteMovies(moviesToDelete);
+    }
 }

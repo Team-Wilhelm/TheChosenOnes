@@ -100,6 +100,19 @@ public class MovieDAO {
         }
     }
 
+    public void deleteMovies(List<Movie> movies){
+        for (Movie movie: movies){
+            int id = movie.getId();
+            String sql = "DELETE FROM MovieGenreLink WHERE movieId = " + id + ";"
+                    + "DELETE FROM Movies WHERE id = " + id;
+            try {
+                executeSQLQuery(sql);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public List<Genre> getAllGenresFromMovie(int movieId){
         String sql = "SELECT * FROM MovieGenreLink WHERE movieId = " + movieId;
         List<Genre> genres = new ArrayList<>();
