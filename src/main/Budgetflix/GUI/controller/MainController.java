@@ -7,6 +7,7 @@ import Budgetflix.BudgetFlix;
 import Budgetflix.GUI.controller.cellFactory.MovieListCell;
 import Budgetflix.GUI.model.Model;
 import com.google.common.collect.Comparators;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
@@ -19,11 +20,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.controlsfx.control.CheckComboBox;
 
+import javax.naming.Binding;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -42,7 +45,12 @@ public class MainController implements Initializable {
     private Slider sliderUserRating, sliderIMDBRating;
     @FXML
     private CheckComboBox<Genre> genresDropDown = new CheckComboBox<Genre>(){};
+    @FXML
+    private Label lblUserValue, lblIMDBValue;
 
+    private static final String SLIDER_STYLE_FORMAT =
+            "-slider-track-color: linear-gradient(to right, -slider-filled-track-color 0%%, "
+                    + "-slider-filled-track-color %1$f%%, -fx-base %1$f%%, -fx-base 100%%);";
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -57,11 +65,28 @@ public class MainController implements Initializable {
             moviesList.setItems(model.filterMovies(searchBar.getText(),genresDropDown.getCheckModel().getCheckedItems(),sliderIMDBRating.getValue(),sliderUserRating.getValue()));
         });
 
-        sliderUserRating.valueProperty().addListener((observable, oldValue, newValue) ->
-                moviesList.setItems(model.filterMovies(searchBar.getText(),genresDropDown.getCheckModel().getCheckedItems(),sliderIMDBRating.getValue(), sliderUserRating.getValue())));
+        sliderUserRating.valueProperty().addListener((observable, oldValue, newValue) -> {
+            moviesList.setItems(model.filterMovies(searchBar.getText(), genresDropDown.getCheckModel().getCheckedItems(),
+                    sliderIMDBRating.getValue(), sliderUserRating.getValue()));
+            lblUserValue.setText(String.format(Locale.US,"%.2f",sliderUserRating.getValue()));
+        });
 
-        sliderIMDBRating.valueProperty().addListener((observable, oldValue, newValue) ->
-                moviesList.setItems(model.filterMovies(searchBar.getText(), genresDropDown.getCheckModel().getCheckedItems(), sliderIMDBRating.getValue(), sliderUserRating.getValue())));
+        sliderIMDBRating.valueProperty().addListener((observable, oldValue, newValue) -> {
+                moviesList.setItems(model.filterMovies(searchBar.getText(), genresDropDown.getCheckModel().getCheckedItems(),
+                        sliderIMDBRating.getValue(), sliderUserRating.getValue()));
+                lblIMDBValue.setText(String.format(Locale.US,"%.2f",sliderIMDBRating.getValue()));
+        });
+
+        //Slider changes colour when moved
+        sliderUserRating.styleProperty().bind(Bindings.createStringBinding(() -> {
+            double percentage = (sliderUserRating.getValue() - sliderUserRating.getMin()) / (sliderUserRating.getMax() - sliderUserRating.getMin()) * 100.0 ;
+            return String.format(Locale.US, SLIDER_STYLE_FORMAT, percentage);
+        }, sliderUserRating.valueProperty(), sliderUserRating.minProperty(), sliderUserRating.maxProperty()));
+
+        sliderIMDBRating.styleProperty().bind(Bindings.createStringBinding(() -> {
+            double percentage = ( sliderIMDBRating.getValue() -  sliderIMDBRating.getMin()) / ( sliderIMDBRating.getMax() -  sliderIMDBRating.getMin()) * 100.0 ;
+            return String.format(Locale.US, SLIDER_STYLE_FORMAT, percentage);
+        },  sliderIMDBRating.valueProperty(),  sliderIMDBRating.minProperty(),  sliderIMDBRating.maxProperty()));
 
         refreshMovieItems();
         refreshGenresItems();

@@ -1,3 +1,25 @@
 .label{
     -fx-alignment: center;
 }
+
+.button{
+    -fx-background-color: #E50914;
+    -fx-text-fill: white;
+}
+
+#backgroundPane{
+    -fx-background-color: rgb(35, 32, 32);
+}
+
+.slider {
+    -slider-filled-track-color: #E50914 ;
+    -slider-track-color: -slider-filled-track-color ;
+}
+.slider .thumb{
+    -fx-background-color: -slider-filled-track-color;
+}
+
+.slider .track{
+    -fx-background-color: -slider-track-color;
+}
+
