@@ -68,13 +68,13 @@ public class MainController implements Initializable {
         sliderUserRating.valueProperty().addListener((observable, oldValue, newValue) -> {
             moviesList.setItems(model.filterMovies(searchBar.getText(), genresDropDown.getCheckModel().getCheckedItems(),
                     sliderIMDBRating.getValue(), sliderUserRating.getValue()));
-            lblUserValue.setText(String.format(Locale.US,"%.2f",sliderUserRating.getValue()));
+            lblUserValue.setText(String.format(Locale.US,"%.1f",sliderUserRating.getValue()));
         });
 
         sliderIMDBRating.valueProperty().addListener((observable, oldValue, newValue) -> {
                 moviesList.setItems(model.filterMovies(searchBar.getText(), genresDropDown.getCheckModel().getCheckedItems(),
                         sliderIMDBRating.getValue(), sliderUserRating.getValue()));
-                lblIMDBValue.setText(String.format(Locale.US,"%.2f",sliderIMDBRating.getValue()));
+                lblIMDBValue.setText(String.format(Locale.US,"%.1f",sliderIMDBRating.getValue()));
         });
 
         //Slider changes colour when moved
