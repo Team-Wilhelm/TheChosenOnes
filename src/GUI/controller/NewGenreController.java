@@ -23,7 +23,7 @@ public class NewGenreController {
                 node.getScene().getWindow().hide();
             }
             else
-                AlertManager.getInstance().getAlert("ERROR", "Genre already exists!").showAndWait();
+                AlertManager.getInstance().getAlert("ERROR", "Genre already exists!", actionEvent).showAndWait();
         }
     }
 

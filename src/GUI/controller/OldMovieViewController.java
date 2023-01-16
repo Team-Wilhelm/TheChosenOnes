@@ -15,6 +15,7 @@ import javafx.scene.control.ListView;
 import java.awt.*;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -33,12 +34,10 @@ public class OldMovieViewController implements Initializable {
     public void btnDeleteMovieAction(ActionEvent actionEvent) {
         Movie movie = moviesList.getSelectionModel().getSelectedItem();
         if (movie == null){
-            alertManager.getAlert("ERROR", "Please, select a movie to delete!").showAndWait();
+            alertManager.getAlert("ERROR", "Please, select a movie to delete!", actionEvent).showAndWait();
         }
         else{
-            Node node = (Node) actionEvent.getSource();
-            Alert alert = alertManager.getAlert("CONFIRMATION", "Do you really wish to delete this movie?");
-            alert.initOwner(node.getScene().getWindow());
+            Alert alert = alertManager.getAlert("CONFIRMATION", "Do you really wish to delete this movie?", actionEvent);
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 model.deleteMovie(movie);
@@ -49,6 +48,9 @@ public class OldMovieViewController implements Initializable {
 
 
     public void btnDeleteAllMovies(ActionEvent actionEvent) {
+        for (Movie m: model.getOldMovies()){
+            btnDeleteMovieAction(actionEvent);
+        }
     }
 
     private void refreshMovieItems() {

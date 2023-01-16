@@ -7,6 +7,7 @@ import DAL.GenreDAO;
 import GUI.model.Model;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
@@ -67,11 +68,11 @@ public class NewMovieController {
 
         //Opens an alert if the rating is outside the range 0 and 10
         if (userRating < 0 || userRating > 10 || imdbRating < 0 || imdbRating > 10)
-            alertManager.getAlert("ERROR", "Invalid rating! \nPlease, put in a number between 0.0 and 10.0").showAndWait();
+            alertManager.getAlert("ERROR", "Invalid rating! \nPlease, put in a number between 0.0 and 10.0", actionEvent).showAndWait();
 
         //Opens an alert if the extension of the file is not .mp4 or .mpeg4
         else if (!txtFilePath.getText().trim().endsWith(".mp4") && !txtFilePath.getText().trim().endsWith(".mpeg4"))
-            alertManager.getAlert("ERROR", "Selected file format is not supported!").showAndWait();
+            alertManager.getAlert("ERROR", "Selected file format is not supported!", actionEvent).showAndWait();
 
         else {
             if (isEditing){
@@ -80,7 +81,7 @@ public class NewMovieController {
                     node.getScene().getWindow().hide();
                 }
                 else
-                    alertManager.getAlert("ERROR", "File path is already used by a different movie!").showAndWait();
+                    alertManager.getAlert("ERROR", "File path is already used by a different movie!", actionEvent).showAndWait();
             }
 
             else{
@@ -89,7 +90,7 @@ public class NewMovieController {
                     node.getScene().getWindow().hide();
                 }
                 else
-                    alertManager.getAlert("ERROR", "File path is already used by a different movie!").showAndWait();
+                    alertManager.getAlert("ERROR", "File path is already used by a different movie!", actionEvent).showAndWait();
             }
         }
     }
@@ -133,7 +134,7 @@ public class NewMovieController {
                 result = Double.parseDouble(rating);
             }
             catch (NumberFormatException ex){
-                alertManager.getAlert("ERROR", "Invalid rating! \nPlease, put in a number between 0.0 and 10.0!").showAndWait();
+                result = -1;
             }
             return result;
         }

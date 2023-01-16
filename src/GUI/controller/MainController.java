@@ -113,10 +113,10 @@ public class MainController implements Initializable {
     private void btnDeleteMovieAction(ActionEvent actionEvent) {
         Movie movie = moviesList.getSelectionModel().getSelectedItem();
         if (movie == null){
-            alertManager.getAlert("ERROR", "Please, select a movie to delete!").showAndWait();
+            alertManager.getAlert("ERROR", "Please, select a movie to delete!", actionEvent).showAndWait();
         }
         else{
-            Alert alert = alertManager.getAlert("CONFIRMATION", "Do you really wish to delete this movie?");
+            Alert alert = alertManager.getAlert("CONFIRMATION", "Do you really wish to delete this movie?", actionEvent);
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 model.deleteMovie(movie);
@@ -152,7 +152,7 @@ public class MainController implements Initializable {
             try {
                 Desktop.getDesktop().open(mediaFile);
             } catch (Exception ex){
-                alertManager.getAlert("ERROR", "File not found!\nCannot play the selected movie.").showAndWait();
+                alertManager.getAlert("ERROR", "File not found!\nCannot play the selected movie.", mouseEvent).showAndWait();
             }
         }
     }
@@ -166,9 +166,9 @@ public class MainController implements Initializable {
     private void btnDeleteGenreAction(ActionEvent actionEvent) {
         ArrayList<Genre> genres = new ArrayList<>(genresDropDown.getCheckModel().getCheckedItems());
         if (genres.size() == 0)
-            alertManager.getAlert("ERROR", "Please, select a genre to delete!").showAndWait();
+            alertManager.getAlert("ERROR", "Please, select a genre to delete!", actionEvent).showAndWait();
         else{
-            Alert alert = alertManager.getAlert("CONFIRMATION", "Do you really wish to delete this genre?");
+            Alert alert = alertManager.getAlert("CONFIRMATION", "Do you really wish to delete this genre?", actionEvent);
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 for (Genre genre : genres){

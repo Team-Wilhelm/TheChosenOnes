@@ -1,6 +1,14 @@
 package BLL;
 
+import javafx.event.ActionEvent;
+import javafx.event.Event;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.stage.Stage;
+import javafx.stage.Window;
+import org.checkerframework.checker.units.qual.A;
+
+import java.awt.*;
 
 public class AlertManager {
     Alert alert;
@@ -10,10 +18,15 @@ public class AlertManager {
         alert = new Alert(Alert.AlertType.ERROR);
     }
 
-    public Alert getAlert(String type, String text){
+    public Alert getAlert(String type, String text, Event actionEvent){
         alert.setAlertType(Alert.AlertType.valueOf(type));
         alert.setTitle(type);
         alert.setContentText(text);
+
+        Node node = (Node) actionEvent.getSource();
+        Window window = node.getScene().getWindow();
+        if (alert.getOwner() == null)
+            alert.initOwner(window);
         return alert;
     }
 
