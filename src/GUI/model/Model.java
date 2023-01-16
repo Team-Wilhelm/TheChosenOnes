@@ -17,7 +17,7 @@ public class Model {
     private static ObservableList<Movie> allMovies;
     private static ObservableList<Genre> allGenres;
 
-    private ObservableList<Movie> oldMovieCheck;
+    private ObservableList<Movie> oldMovieList;
 
     public static Model getInstance(){
         if(instance == null){
@@ -28,7 +28,7 @@ public class Model {
     public Model(){
         allMovies = FXCollections.observableArrayList();
         allGenres = FXCollections.observableArrayList();
-        oldMovieCheck = FXCollections.observableArrayList();
+        oldMovieList = FXCollections.observableArrayList();
         getMovieList();
         getGenreList();
         oldMovieCheck();
@@ -76,9 +76,7 @@ public class Model {
     public void deleteMovie(Movie movie){
         logicManager.deleteMovie(movie);
         allMovies.remove(movie);
-        if(oldMovieCheck.contains(movie)){
-            oldMovieCheck.remove(movie);
-        }
+        oldMovieList.remove(movie);
     }
 
     public void getMovieList(){
@@ -98,16 +96,15 @@ public class Model {
     }
 
     public void oldMovieCheck(){
-        oldMovieCheck.clear();
         for(Movie m: allMovies){
             if(m.getUserRating()<6 && m.getLastView().isBefore(LocalDate.now().minusYears(2))) {
-                oldMovieCheck.add(m);
+                oldMovieList.add(m);
             }
         }
     }
 
     public ObservableList<Movie> getOldMovies(){
-        return oldMovieCheck;
+        return oldMovieList;
     }
 
     public ObservableList<Genre> getAllGenres(){
