@@ -1,9 +1,10 @@
-package BLL;
+package Budgetflix.BLL;
 
-import BE.Genre;
-import BE.Movie;
-import DAL.GenreDAO;
-import DAL.MovieDAO;
+import Budgetflix.BE.Genre;
+import Budgetflix.BE.Movie;
+import Budgetflix.DAL.GenreDAO;
+import Budgetflix.DAL.MovieDAO;
+
 import java.util.List;
 
 public class LogicManager {

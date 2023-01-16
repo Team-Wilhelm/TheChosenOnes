@@ -1,44 +1,32 @@
-import BE.Genre;
-import BE.Movie;
-import BLL.LogicManager;
-import DAL.GenreDAO;
-import DAL.MovieDAO;
-import GUI.controller.MainController;
-import GUI.model.Model;
+package Budgetflix;
+
 import javafx.application.Application;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  *
  * @author The Chosen Ones
  */
 public class BudgetFlix extends Application {
-
     @Override
-    public void start(Stage stage) throws IOException
-    {
+    public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(BudgetFlix.class.getResource("GUI/view/MainView.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
-        stage.setScene(scene);
+        stage.getIcons().add(new Image(Objects.requireNonNull(BudgetFlix.class.getResourceAsStream("/images/budgetflixIcon.png"))));
         stage.setResizable(false);
-        stage.setTitle("BudgetFlix");
+        stage.setTitle("Budgetflix");
+        stage.setScene(scene);
         stage.centerOnScreen();
         stage.show();
     }
 
     public static void main (String[] args) {
         launch();
-        //test();
-    }
-
-    private static void test(){
-        MovieDAO movieDAO = new MovieDAO();
-        GenreDAO genreDAO = new GenreDAO();
-        Model model = Model.getInstance();
     }
 }

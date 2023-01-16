@@ -1,8 +1,8 @@
-package GUI.model;
+package Budgetflix.GUI.model;
 
-import BE.Genre;
-import BE.Movie;
-import BLL.LogicManager;
+import Budgetflix.BE.Genre;
+import Budgetflix.BE.Movie;
+import Budgetflix.BLL.LogicManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -10,13 +10,13 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Model {
     private static Model instance=null;
     LogicManager logicManager = new LogicManager();
     Movie movieToEdit;
     private static ObservableList<Movie> allMovies;
     private static ObservableList<Genre> allGenres;
-
     private ObservableList<Movie> oldMovieList;
 
     public static Model getInstance(){

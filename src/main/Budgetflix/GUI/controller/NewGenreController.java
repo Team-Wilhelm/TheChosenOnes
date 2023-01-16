@@ -1,7 +1,7 @@
-package GUI.controller;
+package Budgetflix.GUI.controller;
 
-import BLL.AlertManager;
-import GUI.model.Model;
+import Budgetflix.GUI.model.Model;
+import Budgetflix.BLL.AlertManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;

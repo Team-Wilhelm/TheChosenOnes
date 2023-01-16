@@ -1,21 +1,17 @@
-package GUI.controller;
+package Budgetflix.GUI.controller;
 
-import BE.Movie;
-import BLL.AlertManager;
-import DAL.MovieDAO;
-import GUI.controller.cellFactory.MovieListCell;
-import GUI.model.Model;
+import Budgetflix.BE.Movie;
+import Budgetflix.BLL.AlertManager;
+import Budgetflix.GUI.controller.cellFactory.MovieListCell;
+import Budgetflix.GUI.model.Model;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
 
-import java.awt.*;
 import java.net.URL;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;

@@ -1,14 +1,14 @@
-package DAL;
+package Budgetflix.DAL;
 
-import BE.Genre;
-import BE.Movie;
+import Budgetflix.BE.Genre;
+import Budgetflix.BE.Movie;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static DAL.Tools.*;
+import static Budgetflix.DAL.Tools.*;
 
 public class GenreDAO {
     //TODO interfaces

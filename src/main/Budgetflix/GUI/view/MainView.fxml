@@ -4,7 +4,7 @@
 <?import javafx.scene.layout.*?>
 <?import org.controlsfx.control.*?>
 
-<AnchorPane prefHeight="600.0" prefWidth="850.0" stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.controller.MainController">
+<AnchorPane prefHeight="600.0" prefWidth="850.0" stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Budgetflix.GUI.controller.MainController">
    <children>
       <Button fx:id="btnAddMovie" layoutX="25.0" layoutY="479.0" mnemonicParsing="false" onAction="#btnAddMovieAction" text="Add Movie" AnchorPane.leftAnchor="25.0" />
       <Button fx:id="btnEditMovie" layoutX="26.0" layoutY="505.0" mnemonicParsing="false" onAction="#btnEditMovieAction" text="Edit Movie" />

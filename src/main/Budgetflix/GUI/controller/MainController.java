@@ -1,10 +1,11 @@
-package GUI.controller;
+package Budgetflix.GUI.controller;
 
-import BE.Genre;
-import BE.Movie;
-import BLL.AlertManager;
-import GUI.controller.cellFactory.MovieListCell;
-import GUI.model.Model;
+import Budgetflix.BE.Genre;
+import Budgetflix.BE.Movie;
+import Budgetflix.BLL.AlertManager;
+import Budgetflix.BudgetFlix;
+import Budgetflix.GUI.controller.cellFactory.MovieListCell;
+import Budgetflix.GUI.model.Model;
 import com.google.common.collect.Comparators;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -16,19 +17,17 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.controlsfx.control.CheckComboBox;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
 import java.util.*;
-import java.util.List;
 
 public class MainController implements Initializable {
     private final Model model = Model.getInstance();
@@ -66,7 +65,6 @@ public class MainController implements Initializable {
 
         refreshMovieItems();
         refreshGenresItems();
-
         isOldMovieCheckTrue();
     }
 
@@ -79,12 +77,10 @@ public class MainController implements Initializable {
         genresDropDown.getItems().setAll(FXCollections.observableList(model.getAllGenres()));
     }
 
-
-
     private void isOldMovieCheckTrue(){
         if(!model.getOldMovies().isEmpty()){
             try {
-                openNewWindow("../view/OldMovieView.fxml");
+                openNewWindow("/Budgetflix/GUI/view/OldMovieView.fxml");
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -93,7 +89,7 @@ public class MainController implements Initializable {
 
     @FXML
     private void btnAddMovieAction(ActionEvent actionEvent) throws IOException {
-        openNewWindow("../view/NewMovieView.fxml");
+        openNewWindow("/Budgetflix/GUI/view/NewMovieView.fxml");
     }
 
     @FXML
@@ -103,7 +99,7 @@ public class MainController implements Initializable {
             new Alert(Alert.AlertType.ERROR, "Please, select a movie to edit").showAndWait();
         else{
             model.setMovieToEdit(movie);
-            FXMLLoader fxmlLoader = openNewWindow("../view/NewMovieView.fxml");
+            FXMLLoader fxmlLoader = openNewWindow("/Budgetflix/GUI/view/NewMovieView.fxml");
             NewMovieController newMovieController = fxmlLoader.getController();
             newMovieController.setIsEditing();
         }
@@ -126,12 +122,13 @@ public class MainController implements Initializable {
     }
 
     private FXMLLoader openNewWindow(String resource) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(resource));
+        FXMLLoader fxmlLoader = new FXMLLoader(BudgetFlix.class.getResource(resource));
         Stage stage = new Stage();
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
         stage.setResizable(false);
-        stage.setTitle("BudgetFlix");
+        stage.setTitle("Budgetflix");
+        stage.getIcons().add(new Image(Objects.requireNonNull(BudgetFlix.class.getResourceAsStream("/images/budgetflixIcon.png"))));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.setAlwaysOnTop(true);
         stage.centerOnScreen();
@@ -150,7 +147,7 @@ public class MainController implements Initializable {
             Movie movie = moviesList.getSelectionModel().getSelectedItem();
             File mediaFile = new File(movie.getFileLink());
             try {
-                Desktop.getDesktop().open(mediaFile);
+                //Desktop.getDesktop().open(mediaFile);
             } catch (Exception ex){
                 alertManager.getAlert("ERROR", "File not found!\nCannot play the selected movie.", mouseEvent).showAndWait();
             }
@@ -159,7 +156,7 @@ public class MainController implements Initializable {
 
     @FXML
     private void btnAddGenreAction(ActionEvent actionEvent) throws IOException {
-        openNewWindow("../view/NewGenreView.fxml");
+        openNewWindow("/Budgetflix/GUI/view/NewGenreView.fxml");
     }
 
     @FXML

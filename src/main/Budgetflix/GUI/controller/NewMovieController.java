@@ -1,16 +1,14 @@
-package GUI.controller;
+package Budgetflix.GUI.controller;
 
-import BE.Genre;
-import BE.Movie;
-import BLL.AlertManager;
-import DAL.GenreDAO;
-import GUI.model.Model;
+import Budgetflix.BE.Genre;
+import Budgetflix.BE.Movie;
+import Budgetflix.BLL.AlertManager;
+import Budgetflix.DAL.GenreDAO;
+import Budgetflix.GUI.model.Model;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
@@ -20,7 +18,6 @@ import org.controlsfx.control.CheckComboBox;
 import java.io.File;
 import java.nio.file.Paths;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public class NewMovieController {
@@ -38,7 +35,6 @@ public class NewMovieController {
     @FXML
     public void initialize(){
         isEditing = false;
-        //genresDropDown.getItems().addAll(FXCollections.observableList((new GenreDAO().getAllGenres()).stream().map(e -> e.getName()).collect(Collectors.toList())));
         genresDropDown.getItems().addAll(FXCollections.observableList(new GenreDAO().getAllGenres()));
         dateLastView.setValue(LocalDate.now());
     }

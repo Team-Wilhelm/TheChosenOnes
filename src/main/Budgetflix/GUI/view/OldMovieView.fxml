@@ -5,7 +5,7 @@
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="600.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="GUI.controller.OldMovieViewController">
+<AnchorPane prefHeight="600.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Budgetflix.GUI.controller.OldMovieViewController">
     <children>
         <Button fx:id="btnDeleteMovie" layoutX="372.0" layoutY="519.0" mnemonicParsing="false" onAction="#btnDeleteMovieAction" text="Delete Movie" />
         <ListView fx:id="moviesList" layoutX="15.0" layoutY="14.0" prefHeight="485.0" prefWidth="820.0">
