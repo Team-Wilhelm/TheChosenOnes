@@ -6,9 +6,6 @@ import BLL.AlertManager;
 import GUI.controller.cellFactory.MovieListCell;
 import GUI.model.Model;
 import com.google.common.collect.Comparators;
-import com.google.common.collect.Ordering;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
@@ -31,7 +28,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
-public class MainController extends BudgetMotherController implements Initializable {
+public class MainController implements Initializable {
     private final Model model = Model.getInstance();
     private final AlertManager alertManager = AlertManager.getInstance();
     @FXML
@@ -97,7 +94,16 @@ public class MainController extends BudgetMotherController implements Initializa
     @FXML
     private void btnDeleteMovieAction(ActionEvent actionEvent) {
         Movie movie = moviesList.getSelectionModel().getSelectedItem();
-        super.btnDeleteMovieAction(actionEvent, movie);
+        if (movie == null){
+            alertManager.getAlert("ERROR", "Please, select a movie to delete!").showAndWait();
+        }
+        else{
+            Alert alert = alertManager.getAlert("CONFIRMATION", "Do you really wish to delete this movie?");
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.isPresent() && result.get() == ButtonType.OK) {
+                model.deleteMovie(movie);
+            }
+        }
         refreshMovieItems();
     }
 
@@ -116,15 +122,19 @@ public class MainController extends BudgetMotherController implements Initializa
             refreshGenresItems();
             refreshMovieItems();
         });
-        return fxmlLoader; //TODO resource heavy, make return void and add class to handle fxml loader once
+        return fxmlLoader;
     }
 
     @FXML
     private void playMovie(MouseEvent mouseEvent) throws IOException {
-        if (mouseEvent.getClickCount() == 2){
+        if (mouseEvent.getClickCount() == 2) {
             Movie movie = moviesList.getSelectionModel().getSelectedItem();
             File mediaFile = new File(movie.getFileLink());
-            Desktop.getDesktop().open(mediaFile);
+            try {
+                Desktop.getDesktop().open(mediaFile);
+            } catch (Exception ex){
+                alertManager.getAlert("ERROR", "File not found!\nCannot play the selected movie.").showAndWait();
+            }
         }
     }
 
