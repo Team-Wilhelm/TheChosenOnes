@@ -26,7 +26,9 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.*;
+import java.util.List;
 
 public class MainController implements Initializable {
     private final Model model = Model.getInstance();
@@ -42,17 +44,10 @@ public class MainController implements Initializable {
     @FXML
     private CheckComboBox<Genre> genresDropDown = new CheckComboBox<Genre>(){};
 
-    private void refreshMovieItems(){
-        model.getMovieList();
-        moviesList.setItems(model.getAllMovies());
-    }
-    private void refreshGenresItems(){
-        model.getGenreList();
-        genresDropDown.getItems().setAll(FXCollections.observableList(model.getAllGenres()));
-    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         moviesList.setCellFactory(param -> new MovieListCell());
 
         searchBar.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -71,6 +66,29 @@ public class MainController implements Initializable {
 
         refreshMovieItems();
         refreshGenresItems();
+
+        isOldMovieCheckTrue();
+    }
+
+    private void refreshMovieItems(){
+        model.getMovieList();
+        moviesList.setItems(model.getAllMovies());
+    }
+    private void refreshGenresItems(){
+        model.getGenreList();
+        genresDropDown.getItems().setAll(FXCollections.observableList(model.getAllGenres()));
+    }
+
+
+
+    private void isOldMovieCheckTrue(){
+        if(!model.getOldMovies().isEmpty()){
+            try {
+                openNewWindow("../view/OldMovieView.fxml");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     @FXML
@@ -115,6 +133,7 @@ public class MainController implements Initializable {
         stage.setResizable(false);
         stage.setTitle("BudgetFlix");
         stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setAlwaysOnTop(true);
         stage.centerOnScreen();
         stage.show();
         Window window = scene.getWindow();

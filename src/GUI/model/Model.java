@@ -5,6 +5,8 @@ import BE.Movie;
 import BLL.LogicManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +17,8 @@ public class Model {
     private static ObservableList<Movie> allMovies;
     private static ObservableList<Genre> allGenres;
 
+    private ObservableList<Movie> oldMovieCheck;
+
     public static Model getInstance(){
         if(instance == null){
             instance = new Model();
@@ -24,8 +28,10 @@ public class Model {
     public Model(){
         allMovies = FXCollections.observableArrayList();
         allGenres = FXCollections.observableArrayList();
+        oldMovieCheck = FXCollections.observableArrayList();
         getMovieList();
         getGenreList();
+        oldMovieCheck();
     }
 
     public ObservableList<Movie> filterMovies(String query, ObservableList<Genre> genres, double IMDBrating, double userRating)
@@ -70,6 +76,9 @@ public class Model {
     public void deleteMovie(Movie movie){
         logicManager.deleteMovie(movie);
         allMovies.remove(movie);
+        if(oldMovieCheck.contains(movie)){
+            oldMovieCheck.remove(movie);
+        }
     }
 
     public void getMovieList(){
@@ -86,6 +95,19 @@ public class Model {
 
     public Movie getMovieToEdit() {
         return movieToEdit;
+    }
+
+    public void oldMovieCheck(){
+        oldMovieCheck.clear();
+        for(Movie m: allMovies){
+            if(m.getUserRating()<6 && m.getLastView().isBefore(LocalDate.now().minusYears(2))) {
+                oldMovieCheck.add(m);
+            }
+        }
+    }
+
+    public ObservableList<Movie> getOldMovies(){
+        return oldMovieCheck;
     }
 
     public ObservableList<Genre> getAllGenres(){
