@@ -133,7 +133,7 @@ public class NewMovieController {
                 result = Double.parseDouble(rating);
             }
             catch (NumberFormatException ex){
-                alertManager.getAlert("ERROR", "Invalid rating! \nPlease, put in a number between 0.0 and 10.0").showAndWait();
+                alertManager.getAlert("ERROR", "Invalid rating! \nPlease, put in a number between 0.0 and 10.0!").showAndWait();
             }
             return result;
         }

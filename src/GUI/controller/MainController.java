@@ -18,6 +18,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.controlsfx.control.CheckComboBox;
@@ -26,7 +27,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
-public class MainController implements Initializable {
+public class MainController extends BudgetMotherController implements Initializable {
     private final Model model = Model.getInstance();
     private final AlertManager alertManager = AlertManager.getInstance();
     @FXML
@@ -89,17 +90,8 @@ public class MainController implements Initializable {
     @FXML
     private void btnDeleteMovieAction(ActionEvent actionEvent) {
         Movie movie = moviesList.getSelectionModel().getSelectedItem();
-        if (movie == null){
-            alertManager.getAlert("ERROR", "Please, select a movie to delete!").showAndWait();
-        }
-        else{
-            Alert alert = alertManager.getAlert("CONFIRMATION", "Do you really wish to delete this movie ?");
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.isPresent() && result.get() == ButtonType.OK) {
-                model.deleteMovie(movie);
-                refreshItems();
-            }
-        }
+        super.btnDeleteMovieAction(actionEvent, movie);
+        refreshItems();
     }
 
     private FXMLLoader openNewWindow(String resource) throws IOException {
@@ -109,11 +101,12 @@ public class MainController implements Initializable {
         stage.setScene(scene);
         stage.setResizable(false);
         stage.setTitle("BudgetFlix");
+        stage.initModality(Modality.APPLICATION_MODAL);
         stage.centerOnScreen();
         stage.show();
         Window window = scene.getWindow();
         window.setOnHiding(event -> refreshItems());
-        return fxmlLoader; //TODO resource heavy, make return void and add class to handle fxml loader once
+        return fxmlLoader;
     }
 
     @FXML

@@ -8,7 +8,6 @@ import javafx.collections.ObservableList;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class Model {
     private static Model instance=null;
     LogicManager logicManager = new LogicManager();

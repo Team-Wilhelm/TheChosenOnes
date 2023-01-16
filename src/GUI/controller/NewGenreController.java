@@ -11,7 +11,8 @@ public class NewGenreController {
     private Model model = Model.getInstance();
     @FXML private TextField txtGenreName;
 
-    public void btnSaveAction(ActionEvent actionEvent) {
+    @FXML
+    private void btnSaveAction(ActionEvent actionEvent) {
         String genreName = txtGenreName.getText().trim();
         if (genreName.isEmpty()){
             txtGenreName.setPromptText("Field must not be empty!");
@@ -26,7 +27,8 @@ public class NewGenreController {
         }
     }
 
-    public void btnCancelAction(ActionEvent actionEvent) {
+    @FXML
+    private void btnCancelAction(ActionEvent actionEvent) {
         Node node = (Node) actionEvent.getSource();
         node.getScene().getWindow().hide();
     }
