@@ -41,9 +41,11 @@ public class MainController extends BudgetMotherController implements Initializa
     @FXML
     private CheckComboBox<Genre> genresDropDown = new CheckComboBox<Genre>(){};
 
-    private void refreshItems(){
+    private void refreshMovieItems(){
         model.getMovieList();
         moviesList.setItems(model.getAllMovies());
+    }
+    private void refreshGenresItems(){
         model.getGenreList();
         genresDropDown.getItems().setAll(FXCollections.observableList(model.getAllGenres()));
     }
@@ -66,7 +68,8 @@ public class MainController extends BudgetMotherController implements Initializa
         sliderIMDBRating.valueProperty().addListener((observable, oldValue, newValue) ->
                 moviesList.setItems(model.filterMovies(searchBar.getText(), genresDropDown.getCheckModel().getCheckedItems(), sliderIMDBRating.getValue(), sliderUserRating.getValue())));
 
-        refreshItems();
+        refreshMovieItems();
+        refreshGenresItems();
     }
 
     @FXML
@@ -91,7 +94,7 @@ public class MainController extends BudgetMotherController implements Initializa
     private void btnDeleteMovieAction(ActionEvent actionEvent) {
         Movie movie = moviesList.getSelectionModel().getSelectedItem();
         super.btnDeleteMovieAction(actionEvent, movie);
-        refreshItems();
+        refreshMovieItems();
     }
 
     private FXMLLoader openNewWindow(String resource) throws IOException {
@@ -105,8 +108,11 @@ public class MainController extends BudgetMotherController implements Initializa
         stage.centerOnScreen();
         stage.show();
         Window window = scene.getWindow();
-        window.setOnHiding(event -> refreshItems());
-        return fxmlLoader;
+        window.setOnHiding(event -> {
+            refreshGenresItems();
+            refreshMovieItems();
+        });
+        return fxmlLoader; //TODO resource heavy, make return void and add class to handle fxml loader once
     }
 
     @FXML
@@ -138,7 +144,7 @@ public class MainController extends BudgetMotherController implements Initializa
                     model.deleteGenre(genre);
                     genresDropDown.getItems().clear();
                 }
-                refreshItems();
+                refreshGenresItems();
             }
         }
     }
