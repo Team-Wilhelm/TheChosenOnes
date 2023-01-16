@@ -40,9 +40,11 @@ public class MainController implements Initializable {
     @FXML
     private CheckComboBox<Genre> genresDropDown = new CheckComboBox<Genre>(){};
 
-    private void refreshItems(){
+    private void refreshMovieItems(){
         model.getMovieList();
         moviesList.setItems(model.getAllMovies());
+    }
+    private void refreshGenresItems(){
         model.getGenreList();
         genresDropDown.getItems().setAll(FXCollections.observableList(model.getAllGenres()));
     }
@@ -65,7 +67,8 @@ public class MainController implements Initializable {
         sliderIMDBRating.valueProperty().addListener((observable, oldValue, newValue) ->
                 moviesList.setItems(model.filterMovies(searchBar.getText(), genresDropDown.getCheckModel().getCheckedItems(), sliderIMDBRating.getValue(), sliderUserRating.getValue())));
 
-        refreshItems();
+        refreshMovieItems();
+        refreshGenresItems();
     }
 
     @FXML
@@ -97,7 +100,7 @@ public class MainController implements Initializable {
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 model.deleteMovie(movie);
-                refreshItems();
+                refreshMovieItems();
             }
         }
     }
@@ -112,7 +115,10 @@ public class MainController implements Initializable {
         stage.centerOnScreen();
         stage.show();
         Window window = scene.getWindow();
-        window.setOnHiding(event -> refreshItems());
+        window.setOnHiding(event -> {
+            refreshGenresItems();
+            refreshMovieItems();
+        });
         return fxmlLoader; //TODO resource heavy, make return void and add class to handle fxml loader once
     }
 
@@ -145,7 +151,7 @@ public class MainController implements Initializable {
                     model.deleteGenre(genre);
                     genresDropDown.getItems().clear();
                 }
-                refreshItems();
+                refreshGenresItems();
             }
         }
     }
