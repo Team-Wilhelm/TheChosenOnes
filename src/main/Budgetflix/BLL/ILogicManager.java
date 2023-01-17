@@ -1,7 +1,7 @@
-package BLL;
+package Budgetflix.BLL;
 
-import BE.Genre;
-import BE.Movie;
+import Budgetflix.BE.Genre;
+import Budgetflix.BE.Movie;
 
 import java.util.List;
 

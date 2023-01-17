@@ -1,12 +1,9 @@
-package GUI.model;
+package Budgetflix.GUI.model;
 
-import BE.Genre;
-import BE.Movie;
-import javafx.collections.FXCollections;
+import Budgetflix.BE.Genre;
+import Budgetflix.BE.Movie;
 import javafx.collections.ObservableList;
 
-import java.util.ArrayList;
-import java.util.List;
 
 public interface IModel {
     public ObservableList<Movie> filterMovies(String query, ObservableList<Genre> genres, double IMDBrating, double userRating);
