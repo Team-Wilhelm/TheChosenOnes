@@ -48,12 +48,14 @@ public class MovieDAO {
         else {
             lastView = java.sql.Date.valueOf(LocalDate.of(0,1,1)); //TODO fix this shit
         }
-        String sql = "INSERT INTO Movies (movieName, fileLink, lastView, IMDBrating, userRating) " +
+        String sql = "INSERT INTO Movies (movieName, fileLink, moviePoster, lastView, IMDBrating, userRating) " +
                 "VALUES ('" + validateStringForSQL(movie.getName()) + "' , '"
                 + validateStringForSQL(movie.getFileLink()) + "' , + '"
+                + validateStringForSQL(movie.getMoviePoster()) + "' , + '"
                 + lastView + "' , + '"
                 + movie.getImdbRating() + "', '"
                 + movie.getUserRating() + "' )" + ";";
+
         try {
             executeSQLQuery(sql);
             addGenresToMovie(movie);
@@ -70,6 +72,7 @@ public class MovieDAO {
     public String editMovie(Movie movie){
         String sql = "UPDATE Movies SET movieName = '" + validateStringForSQL(movie.getName()) + "', "
                 + "fileLink = '" + validateStringForSQL(movie.getFileLink()) + "', "
+                + "moviePoster = '" + validateStringForSQL(movie.getMoviePoster()) + "', "
                 + "lastView = '" + java.sql.Date.valueOf(movie.getLastView()) + "', "
                 + "IMDBrating = '" + movie.getImdbRating() + "', "
                 + "userRating = '" + movie.getUserRating() + "' "
@@ -155,10 +158,11 @@ public class MovieDAO {
     private Movie createMovieFromDatabase(ResultSet rs, int id) throws SQLException {
         String movieName = rs.getString("movieName");
         String fileLink = rs.getString("fileLink");
+        String moviePoster = rs.getString("moviePoster");
         LocalDate lastView = rs.getDate("lastView").toLocalDate();
         double imdbRating = rs.getDouble("IMDBrating");
         double userRating = rs.getDouble("userRating");
         List<Genre> genres = getAllGenresFromMovie(id);
-        return new Movie(id, movieName, fileLink, lastView, imdbRating, userRating, genres);
+        return new Movie(id, movieName, fileLink, moviePoster, lastView, imdbRating, userRating, genres);
     }
 }

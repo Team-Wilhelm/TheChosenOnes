@@ -27,7 +27,7 @@ public class NewMovieController {
     private DatePicker dateLastView;
     private boolean isEditing = false;
     @FXML
-    private CheckComboBox<Genre> genresDropDown = new CheckComboBox<Genre>(){};
+    private CheckComboBox<Genre> genresDropDown = new CheckComboBox<>(){};
 
     private final Model model = Model.getInstance();
     private final AlertManager alertManager = AlertManager.getInstance();

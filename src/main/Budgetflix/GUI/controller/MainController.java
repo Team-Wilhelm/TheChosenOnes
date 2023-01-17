@@ -115,6 +115,7 @@ public class MainController implements Initializable {
     @FXML
     private void btnAddMovieAction(ActionEvent actionEvent) throws IOException {
         openNewWindow("/Budgetflix/GUI/view/NewMovieView.fxml");
+
     }
 
     @FXML
