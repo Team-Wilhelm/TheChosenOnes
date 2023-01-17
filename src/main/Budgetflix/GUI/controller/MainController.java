@@ -93,15 +93,25 @@ public class MainController implements Initializable {
         isOldMovieCheckTrue();
     }
 
+    /**
+     * Updates ListView with any changes made to the movies in the database.
+     */
     private void refreshMovieItems(){
         model.getMovieList();
         moviesList.setItems(model.getAllMovies());
     }
+
+    /**
+     * Updates ComboCheckBox with changes made to the genres in the database.
+     */
     private void refreshGenresItems(){
         model.getGenreList();
         genresDropDown.getItems().setAll(FXCollections.observableList(model.getAllGenres()));
     }
 
+    /**
+     * Returns true if there are any movies in the oldMovieList.
+     */
     private void isOldMovieCheckTrue(){
         if(!model.getOldMovies().isEmpty()){
             try {
@@ -112,12 +122,18 @@ public class MainController implements Initializable {
         }
     }
 
+    /**
+     * Opens NewMovieView as a new window.
+     */
     @FXML
     private void btnAddMovieAction(ActionEvent actionEvent) throws IOException {
         openNewWindow("/Budgetflix/GUI/view/NewMovieView.fxml");
 
     }
 
+    /**
+     * Opens NewMovieView as a new window and fills the fields with movie data from the selected Movie.
+     */
     @FXML
     private void btnEditMovieAction(ActionEvent actionEvent) throws IOException {
         Movie movie = moviesList.getSelectionModel().getSelectedItem();
@@ -131,6 +147,9 @@ public class MainController implements Initializable {
         }
     }
 
+    /**
+     * Deletes selected movie from the database and updates the ListView to reflect the change.
+     */
     @FXML
     private void btnDeleteMovieAction(ActionEvent actionEvent) {
         Movie movie = moviesList.getSelectionModel().getSelectedItem();
@@ -170,6 +189,9 @@ public class MainController implements Initializable {
         return fxmlLoader;
     }
 
+    /**
+     * Prompts the user to select an application to play the chosen file,
+     */
     @FXML
     private void playMovie(MouseEvent mouseEvent) {
         if (mouseEvent.getClickCount() == 2) {
@@ -183,11 +205,17 @@ public class MainController implements Initializable {
         }
     }
 
+    /**
+     * Opens NewGenreView as a new window.
+     */
     @FXML
     private void btnAddGenreAction(ActionEvent actionEvent) throws IOException {
         openNewWindow("/Budgetflix/GUI/view/NewGenreView.fxml");
     }
 
+    /**
+     * Deletes selected genres from database and refreshes the ComboChoiceBox with the changes.
+     */
     @FXML
     private void btnDeleteGenreAction(ActionEvent actionEvent) {
         ArrayList<Genre> genres = new ArrayList<>(genresDropDown.getCheckModel().getCheckedItems());

@@ -24,10 +24,15 @@ public class OldMovieViewController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        //Populates ListView
         moviesList.setCellFactory(param -> new MovieListCell());
         moviesList.setItems(model.getOldMovies());
     }
 
+    /**
+     * Deletes a movie from the list and the database.
+     */
+    //TODO BudgetMother?
     public void btnDeleteMovieAction(ActionEvent actionEvent) {
         Movie movie = moviesList.getSelectionModel().getSelectedItem();
         if (movie == null){
@@ -44,6 +49,9 @@ public class OldMovieViewController implements Initializable {
     }
 
 
+    /**
+     * Deletes all movies from a list and from the database.
+     */
     public void btnDeleteAllMovies(ActionEvent actionEvent) {
         List<Movie> moviesToDelete = moviesList.getItems();
         Alert alert = alertManager.getAlert("CONFIRMATION", "Do you really wish to delete all movies?", actionEvent);
@@ -55,6 +63,9 @@ public class OldMovieViewController implements Initializable {
         refreshMovieItems();
     }
 
+    /**
+     * Updates the ListView to reflect any changes made.
+     */
     private void refreshMovieItems() {
         moviesList.setItems(model.getOldMovies());
     }

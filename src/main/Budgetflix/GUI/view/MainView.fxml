@@ -1,18 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.Group?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ButtonBar?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.Slider?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import org.controlsfx.control.CheckComboBox?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import org.controlsfx.control.*?>
 
-<AnchorPane fx:id="backgroundPane" prefHeight="600.0" prefWidth="1000.0" stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Budgetflix.GUI.controller.MainController">
+<AnchorPane fx:id="backgroundPane" prefHeight="600.0" prefWidth="1000.0" stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Budgetflix.GUI.controller.MainController">
    <children>
       <VBox layoutX="870.0" layoutY="179.0" spacing="15.0" AnchorPane.rightAnchor="30.0">
          <children>
@@ -25,7 +19,7 @@
          <children>
             <Button fx:id="btnAddGenre" layoutY="39.0" mnemonicParsing="false" onAction="#btnAddGenreAction" text="Add Genre" />
             <Button fx:id="btnDeleteGenre" layoutX="84.0" layoutY="39.0" mnemonicParsing="false" onAction="#btnDeleteGenreAction" text="Delete Genre" />
-            <CheckComboBox fx:id="genresDropDown" prefHeight="25.0" prefWidth="170.0" />
+            <CheckComboBox fx:id="genresDropDown" prefHeight="25.0" prefWidth="170.0" title="Select Genre" />
          </children>
       </Group>
       <TextField fx:id="searchBar" alignment="CENTER_RIGHT" layoutX="701.0" layoutY="22.0" prefHeight="25.0" prefWidth="250.0" promptText="Search" AnchorPane.rightAnchor="150.0" />

@@ -11,6 +11,9 @@ public class NewGenreController {
     private Model model = Model.getInstance();
     @FXML private TextField txtGenreName;
 
+    /**
+     * Adds a new Genre to the list and the database.
+     */
     @FXML
     private void btnSaveAction(ActionEvent actionEvent) {
         String genreName = txtGenreName.getText().trim();
@@ -27,6 +30,9 @@ public class NewGenreController {
         }
     }
 
+    /**
+     * Enables an action to be cancelled.
+     */
     @FXML
     private void btnCancelAction(ActionEvent actionEvent) {
         Node node = (Node) actionEvent.getSource();

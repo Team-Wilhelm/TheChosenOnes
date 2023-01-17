@@ -35,10 +35,14 @@ public class NewMovieController {
     @FXML
     public void initialize(){
         isEditing = false;
+        //Populates CheckComboBox
         genresDropDown.getItems().addAll(FXCollections.observableList(new GenreDAO().getAllGenres()));
         dateLastView.setValue(LocalDate.now());
     }
 
+    /**
+     * Adds Movie to database based on user input, or if Movie already exists updates any changes made to the database.
+     */
     @FXML
     private void btnSaveAction(ActionEvent actionEvent) {
         String title = txtTitle.getText().trim();
@@ -91,12 +95,20 @@ public class NewMovieController {
         }
     }
 
+    /**
+     * Enables an action to be cancelled.
+     */
+
     @FXML
     private void btnCancelAction(ActionEvent actionEvent) {
         Node node = (Node) actionEvent.getSource();
         node.getScene().getWindow().hide();
     }
 
+    /**
+     * Enables the user to go to the directory where a selected file is saved, or goes to their Videos directory.
+     * Files can be mp4 or mpeg4.
+     */
     @FXML
     private void btnChooseAction(ActionEvent actionEvent) {
         //puts the NewMovieView momentarily behind the file chooser
