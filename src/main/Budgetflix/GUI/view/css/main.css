@@ -5,7 +5,7 @@
     -fx-dark-green-color: #213121;
 }
 
-
+/* Labels css */
 .label{
     -fx-alignment: center;
     -fx-text-fill: -fx-dark-green-color;
@@ -19,8 +19,7 @@
     -fx-font-weight: bold;
 }
 
-
-
+/* Buttons css */
 .button{
     -fx-background-color: -fx-green-color;
     -fx-text-fill: -fx-white-color;
@@ -31,12 +30,12 @@
     -fx-opacity: 0.8;
 }
 
-
+/* Background colour */
 #backgroundPane{
     -fx-background-color: #A3B18A;
 }
 
-
+/* Rating sliders css */
 .slider {
     -slider-filled-track-color: -fx-green-color;
     -slider-track-color: -slider-filled-track-color ;
@@ -49,7 +48,7 @@
     -fx-background-color: -slider-track-color;
 }
 
-
+/* Genres dropdown css*/
 .combo-box-base{
     -fx-border-color: -fx-light-green-color;
     -fx-border-style: solid;
@@ -82,13 +81,13 @@
     -fx-background-color: -fx-light-green-color;
 }
 
-
+/* Text field css */
 .text-field{
     -fx-background-color: -fx-light-green-color;
     -fx-prompt-text-fill: -fx-dark-green-color;
 }
 
-
+/* Movie list css*/
 #moviesList{
     -fx-background-color: #DAD7CD;
 }
@@ -107,7 +106,7 @@
     -fx-background-color: #CCC6B8;
 }
 
-
+/* Date picker css*/
 .date-picker .arrow {
     -fx-background-color: -fx-dark-green-color;
 }
