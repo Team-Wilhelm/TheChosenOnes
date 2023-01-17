@@ -7,6 +7,7 @@ module PrivateMovieCollection {
     requires com.microsoft.sqlserver.jdbc;
     requires com.google.common;
     requires org.controlsfx.controls;
+    requires java.desktop;
 
     opens Budgetflix to javafx.fxml;
     exports Budgetflix;

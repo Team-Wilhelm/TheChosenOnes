@@ -17,20 +17,20 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.controlsfx.control.CheckComboBox;
 
-import javax.naming.Binding;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
+import java.awt.Desktop;
 
 public class MainController implements Initializable {
     private final Model model = Model.getInstance();
@@ -172,7 +172,7 @@ public class MainController implements Initializable {
             Movie movie = moviesList.getSelectionModel().getSelectedItem();
             File mediaFile = new File(movie.getFileLink());
             try {
-                //Desktop.getDesktop().open(mediaFile);
+                Desktop.getDesktop().open(mediaFile);
             } catch (Exception ex){
                 alertManager.getAlert("ERROR", "File not found!\nCannot play the selected movie.", mouseEvent).showAndWait();
             }
