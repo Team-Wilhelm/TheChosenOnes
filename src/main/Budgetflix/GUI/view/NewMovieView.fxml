@@ -10,9 +10,9 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
-
 <?import org.controlsfx.control.CheckComboBox?>
-<AnchorPane prefHeight="360.0" prefWidth="500.0" fx:id="backgroundPane" stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Budgetflix.GUI.controller.NewMovieController">
+
+<AnchorPane fx:id="backgroundPane" prefHeight="360.0" prefWidth="500.0" stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Budgetflix.GUI.controller.NewMovieController">
    <children>
       <GridPane alignment="CENTER" layoutX="24.0" layoutY="14.0" prefHeight="232.0" prefWidth="452.0" AnchorPane.bottomAnchor="54.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0" AnchorPane.topAnchor="14.0">
         <columnConstraints>
@@ -33,7 +33,7 @@
             <Label text="File path:" GridPane.rowIndex="1" />
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
-                  <TextField fx:id="txtFilePath" prefHeight="26.0" prefWidth="271.0" />
+                  <TextField fx:id="txtFilePath" prefHeight="26.0" prefWidth="261.0" />
                   <Button mnemonicParsing="false" onAction="#btnChooseAction" text="Choose..." />
                </children>
                <opaqueInsets>

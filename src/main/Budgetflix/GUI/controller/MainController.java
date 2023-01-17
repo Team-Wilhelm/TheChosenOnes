@@ -158,6 +158,7 @@ public class MainController implements Initializable {
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.centerOnScreen();
         stage.setAlwaysOnTop(true);
+        stage.requestFocus();
         stage.show();
 
         Window window = scene.getWindow();
@@ -170,7 +171,7 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    private void playMovie(MouseEvent mouseEvent) throws IOException {
+    private void playMovie(MouseEvent mouseEvent) {
         if (mouseEvent.getClickCount() == 2) {
             Movie movie = moviesList.getSelectionModel().getSelectedItem();
             File mediaFile = new File(movie.getFileLink());
