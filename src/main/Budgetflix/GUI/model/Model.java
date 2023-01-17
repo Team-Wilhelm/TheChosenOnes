@@ -19,6 +19,10 @@ public class Model implements IModel {
     private static ObservableList<Genre> allGenres;
     private ObservableList<Movie> oldMovieList;
 
+    /**
+     * Makes Model a singleton class.
+     * @return an instance of the Model.
+     */
     public static Model getInstance(){
         if(instance == null){
             instance = new Model();
@@ -34,6 +38,14 @@ public class Model implements IModel {
         oldMovieCheck();
     }
 
+    /**
+     * Enables the list of movies to be filtered based on different parameters and combine the results of these checks.
+     * @param query
+     * @param genres
+     * @param IMDBrating
+     * @param userRating
+     * @return list of Movie after filtering.
+     */
     public ObservableList<Movie> filterMovies(String query, ObservableList<Genre> genres, double IMDBrating, double userRating)
     {
         List<Movie> filtered = new ArrayList<>();
@@ -95,6 +107,9 @@ public class Model implements IModel {
         return movieToEdit;
     }
 
+    /**
+     * Checks for movies that haven't been opened in over 2 years and also have a personal rating below 6, and adds them to a list.
+     */
     public void oldMovieCheck(){
         for(Movie m: allMovies){
             if(m.getUserRating()<6 && m.getLastView().isBefore(LocalDate.now().minusYears(2))) {

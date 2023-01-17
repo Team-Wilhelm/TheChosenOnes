@@ -14,6 +14,10 @@ import static Budgetflix.DAL.Tools.*;
 
 public class MovieDAO {
 
+    /**
+     * Creates a Movie based on the contents of the columns in the database and adds all these Movies to a list.
+     * @return List of all movies.
+     */
     public List<Movie> getAllMovies(){
         ArrayList<Movie> allMovies = new ArrayList<>();
         String sql = "SELECT * FROM Movies";
@@ -29,6 +33,10 @@ public class MovieDAO {
         }
     }
 
+    /**
+     * Gets a single movie from the database based on the movie id.
+     * @return Movie
+     */
     public Movie getMovie(int id){
         String sql = "SELECT * FROM Movies WHERE id = " + id;
         try {
@@ -41,6 +49,10 @@ public class MovieDAO {
         }
     }
 
+    /**
+     * Adds a movie to the database and calls the addGenresToMovie method
+     * @return
+     */
     public String addMovie(Movie movie){
         Date lastView;
         if (movie.getLastView() != null)
@@ -69,6 +81,11 @@ public class MovieDAO {
         return "";
     }
 
+    /**
+     * Updates the contents of a Movies column in the database as well as updating the genres attributed to the movie
+     * @param movie
+     * @return
+     */
     public String editMovie(Movie movie){
         String sql = "UPDATE Movies SET movieName = '" + validateStringForSQL(movie.getName()) + "', "
                 + "fileLink = '" + validateStringForSQL(movie.getFileLink()) + "', "
@@ -91,6 +108,10 @@ public class MovieDAO {
         return "";
     }
 
+    /**
+     * Deletes a Movie from both the MoviesGenreLink and the Movies tables.
+     * @param movie
+     */
     public void deleteMovie(Movie movie){
         int id = movie.getId();
         String sql = "DELETE FROM MovieGenreLink WHERE movieId = " + id + ";"
@@ -102,6 +123,10 @@ public class MovieDAO {
         }
     }
 
+    /**
+     * Deletes multiple Movies from both the MoviesGenreLink and the Movies tables.
+     * @param movies
+     */
     public void deleteMovies(List<Movie> movies){
         for (Movie movie: movies){
             int id = movie.getId();
@@ -115,6 +140,11 @@ public class MovieDAO {
         }
     }
 
+    /**
+     * Gets a list of all genres linked to a specific Movie.
+     * @param movieId
+     * @return
+     */
     public List<Genre> getAllGenresFromMovie(int movieId){
         String sql = "SELECT * FROM MovieGenreLink WHERE movieId = " + movieId;
         List<Genre> genres = new ArrayList<>();
@@ -131,6 +161,10 @@ public class MovieDAO {
         }
     }
 
+    /**
+     * Adds a link between a genre and a specific movie in the MoviesGenreLink table.
+     * @param movie
+     */
     //TODO make it much better (preferably)
     public void addGenresToMovie(Movie movie){
         List<Genre> genres = movie.getGenres();
@@ -155,6 +189,11 @@ public class MovieDAO {
         }
     }
 
+    /**
+     * Creates a Movie from the contents of the columns in the Movie table
+     * @return Movie
+     * @throws SQLException
+     */
     private Movie createMovieFromDatabase(ResultSet rs, int id) throws SQLException {
         String movieName = rs.getString("movieName");
         String fileLink = rs.getString("fileLink");

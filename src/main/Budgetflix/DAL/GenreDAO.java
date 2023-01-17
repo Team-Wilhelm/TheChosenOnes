@@ -14,6 +14,10 @@ public class GenreDAO {
     List<Genre> genreList;
     List<Movie> moviesInGenre;
 
+    /**
+     * Creates a Genre based on the contents of the columns in the database and adds all these Genres to a list.
+     * @return List of all genres.
+     */
     public List<Genre> getAllGenres() {
         genreList = new ArrayList<>();
         try (ResultSet rs = executeSQLQueryWithResult("SELECT id, genreName FROM Genre ODER ORDER BY genreName")) {
@@ -30,6 +34,10 @@ public class GenreDAO {
         return genreList;
     }
 
+    /**
+     * Adds a Genre to the Genre table in the database.
+     * @return
+     */
     public String addGenreToDatabase(String name) {
         String sql = "INSERT INTO Genre (genreName) VALUES ('" + validateStringForSQL(name) + "')";
         try  {
@@ -44,6 +52,10 @@ public class GenreDAO {
         return "";
     }
 
+    /**
+     * Deletes a Genre from all tables in the database.
+     * @param genre
+     */
     public void deleteGenre(Genre genre){
         int id = genre.getId();
         String sql = "DELETE FROM MovieGenreLink WHERE genreId = " + id + ";"
@@ -55,6 +67,11 @@ public class GenreDAO {
         }
     }
 
+    /**
+     * Gets a list of all movies linked to a specific Genre.
+     * @param genre
+     * @return List of genres
+     */
     public List<Movie> getMoviesInGenre(Genre genre) {
         int genreId = genre.getId();
         moviesInGenre = new ArrayList<>();
@@ -71,6 +88,10 @@ public class GenreDAO {
         return moviesInGenre;
     }
 
+    /**
+     * @param genreId
+     * @return Genre based on contents of a specific column in the Genre table
+     */
     public Genre getGenre(int genreId) {
         String sql = "SELECT * FROM Genre WHERE id = " + genreId;
         try {
