@@ -20,6 +20,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -47,6 +48,8 @@ public class MainController implements Initializable {
     private CheckComboBox<Genre> genresDropDown = new CheckComboBox<Genre>(){};
     @FXML
     private Label lblUserValue, lblIMDBValue;
+    @FXML
+    private ImageView moviePoster;
 
     private static final String SLIDER_STYLE_FORMAT =
             "-slider-track-color: linear-gradient(to right, -slider-filled-track-color 0%%, "
@@ -54,6 +57,7 @@ public class MainController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        moviePoster.setImage(new Image(Objects.requireNonNull(BudgetFlix.class.getResourceAsStream("/images/bimbo.jpg"))));
 
         moviesList.setCellFactory(param -> new MovieListCell());
 
