@@ -1,21 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.Group?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ButtonBar?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.Slider?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
-<?import org.controlsfx.control.CheckComboBox?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import org.controlsfx.control.*?>
 
-<AnchorPane fx:id="backgroundPane" prefHeight="600.0" prefWidth="1117.0" stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Budgetflix.GUI.controller.MainController">
+<AnchorPane fx:id="backgroundPane" prefHeight="600.0" prefWidth="1117.0" stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Budgetflix.GUI.controller.MainController">
    <children>
       <VBox alignment="CENTER" layoutX="877.0" layoutY="440.0" prefWidth="210.0" spacing="15.0" AnchorPane.rightAnchor="30.0">
          <children>
@@ -36,7 +28,7 @@
                   <Button fx:id="btnDeleteGenre" mnemonicParsing="false" onAction="#btnDeleteGenreAction" prefWidth="100.0" text="Delete Genre" />
                </children>
             </HBox>
-            <CheckComboBox fx:id="genresDropDown" prefHeight="25.0" prefWidth="210.0" />
+            <CheckComboBox fx:id="genresDropDown" prefHeight="25.0" prefWidth="210.0" title="Select Genre" />
          </children>
       </Group>
       <TextField fx:id="searchBar" alignment="CENTER_RIGHT" layoutX="600.0" layoutY="22.0" prefHeight="25.0" prefWidth="250.0" promptText="Search" />
