@@ -6,7 +6,7 @@ import DAL.GenreDAO;
 import DAL.MovieDAO;
 import java.util.List;
 
-public class LogicManager {
+public class LogicManager implements ILogicManager {
 
     private MovieDAO movieDAO = new MovieDAO();
     private GenreDAO genreDAO = new GenreDAO();

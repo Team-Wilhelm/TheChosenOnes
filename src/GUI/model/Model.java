@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class Model {
+public class Model implements IModel {
     private static Model instance=null;
     LogicManager logicManager = new LogicManager();
     Movie movieToEdit;
@@ -22,7 +22,7 @@ public class Model {
         } return instance;
     }
 
-    public Model(){
+    private Model(){
         allMovies = FXCollections.observableArrayList();
         allGenres = FXCollections.observableArrayList();
         getMovieList();
