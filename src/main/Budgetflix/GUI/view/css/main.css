@@ -1,28 +1,44 @@
-.label{
-    -fx-alignment: center;
-    -fx-text-fill: #213121;
+* {
+    -fx-white-color: #e5e3e3;
+    -fx-light-green-color: #C5CEB6;
+    -fx-green-color: #4B6D4A;
+    -fx-dark-green-color: #213121;
 }
 
-.button{
-    -fx-background-color: #4B6D4A;
-    -fx-text-fill: #e5e3e3;
+
+.label{
+    -fx-alignment: center;
+    -fx-text-fill: -fx-dark-green-color;
+}
+
+#lblNotice{
+    -fx-alignment: center-left;
+}
+
+#lblNotice, #lblUserValue, #lblIMDBValue, #lblUserRating, #lblIMDBRating{
     -fx-font-weight: bold;
 }
 
-.button:hover{
+
+
+.button{
+    -fx-background-color: -fx-green-color;
+    -fx-text-fill: -fx-white-color;
+    -fx-font-weight: bold;
+}
+
+.button:hover, .button:pressed{
     -fx-opacity: 0.8;
 }
 
-.button:pressed{
-    -fx-opacity: 0.8;
-}
 
 #backgroundPane{
     -fx-background-color: #A3B18A;
 }
 
+
 .slider {
-    -slider-filled-track-color: #4B6D4A ;
+    -slider-filled-track-color: -fx-green-color;
     -slider-track-color: -slider-filled-track-color ;
 }
 .slider .thumb{
@@ -33,22 +49,19 @@
     -fx-background-color: -slider-track-color;
 }
 
-#lblNotice{
-    -fx-alignment: center-left;
-}
 
 .combo-box-base{
-    -fx-border-color: #C5CEB6;
+    -fx-border-color: -fx-light-green-color;
     -fx-border-style: solid;
     -fx-border-width: 1;
 }
 
 .combo-box .list-cell{
-    -fx-background-color: #C5CEB6;
-    -fx-border-color: #C5CEB6;
+    -fx-background-color: -fx-light-green-color;
+    -fx-border-color: -fx-light-green-color;
     -fx-border-style:solid;
     -fx-border-width:1;
-    -fx-text-fill: #213121;
+    -fx-text-fill: -fx-dark-green-color;
 }
 
 .list-cell .check-box .box {
@@ -58,21 +71,23 @@
 }
 
 .list-cell .check-box:selected .mark{
-    -fx-background-color: #213121;
+    -fx-background-color: -fx-dark-green-color;
 }
 
 #genresDropDown .arrow{
-    -fx-background-color: #4B6D4A;
+    -fx-background-color: -fx-green-color;
 }
 
 #genresDropDown .arrow-button{
-    -fx-background-color: #C5CEB6;
+    -fx-background-color: -fx-light-green-color;
 }
 
+
 .text-field{
-    -fx-background-color: #C5CEB6;
-    -fx-prompt-text-fill: #213121;
+    -fx-background-color: -fx-light-green-color;
+    -fx-prompt-text-fill: -fx-dark-green-color;
 }
+
 
 #moviesList{
     -fx-background-color: #DAD7CD;
@@ -83,7 +98,8 @@
     -fx-border-color: #CCC6B8;
 }
 
-#moviesList .list-cell:filled:focused:selected{
+#moviesList .list-cell:filled:focused:selected,
+#moviesList .scroll-bar .thumb{
     -fx-background-color: #C2BDAD;
 }
 
@@ -91,28 +107,19 @@
     -fx-background-color: #CCC6B8;
 }
 
-#moviesList .scroll-bar .thumb{
-    -fx-background-color: #C2BDAD;
-}
-
-#lblNotice, #lblUserValue, #lblIMDBValue, #lblUserRating, #lblIMDBRating{
-    -fx-font-weight: bold;
-}
 
 .date-picker .arrow {
-    -fx-background-color: #213121;
+    -fx-background-color: -fx-dark-green-color;
 }
 
-.date-picker .cell{
-    -fx-background-color: #C5CEB6;
+.date-picker .cell,
+.date-picker,
+.date-picker .arrow-button {
+    -fx-background-color: -fx-light-green-color;
 }
 
-.date-picker .selected{
-    -fx-background-color: #4B6D4A;
-}
-
-.date-picker, .date-picker .arrow-button {
-    -fx-background-color: #C5CEB6;
+.date-picker .selected, .date-picker-popup .month-year-pane{
+    -fx-background-color: -fx-green-color;
 }
 
 .date-picker .button{
@@ -121,15 +128,11 @@
 
 .date-picker-popup .spinner .button .left-arrow,
 .date-picker-popup .spinner .button .right-arrow {
-    -fx-background-color: #e5e3e3;
-}
-
-.date-picker-popup .month-year-pane {
-    -fx-background-color: #4B6D4A;
+    -fx-background-color: -fx-white-color;
 }
 
 .date-picker-popup .month-year-pane .label{
-    -fx-text-fill: #e5e3e3;
+    -fx-text-fill: -fx-white-color;
 }
 
 
