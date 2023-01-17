@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 
 <?import org.controlsfx.control.CheckComboBox?>
-<AnchorPane prefHeight="360.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Budgetflix.GUI.controller.NewMovieController">
+<AnchorPane prefHeight="360.0" prefWidth="500.0" fx:id="backgroundPane" stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Budgetflix.GUI.controller.NewMovieController">
    <children>
       <GridPane alignment="CENTER" layoutX="24.0" layoutY="14.0" prefHeight="232.0" prefWidth="452.0" AnchorPane.bottomAnchor="54.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0" AnchorPane.topAnchor="14.0">
         <columnConstraints>

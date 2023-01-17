@@ -1,18 +1,20 @@
 .label{
     -fx-alignment: center;
+    -fx-text-fill: #213121;
 }
 
 .button{
-    -fx-background-color: #E50914;
-    -fx-text-fill: white;
+    -fx-background-color: #4B6D4A;
+    -fx-text-fill: #e5e3e3;
+    -fx-font-weight: bold;
 }
 
 #backgroundPane{
-    -fx-background-color: rgb(35, 32, 32);
+    -fx-background-color: #A3B18A;
 }
 
 .slider {
-    -slider-filled-track-color: #E50914 ;
+    -slider-filled-track-color: #4B6D4A ;
     -slider-track-color: -slider-filled-track-color ;
 }
 .slider .thumb{
@@ -22,4 +24,52 @@
 .slider .track{
     -fx-background-color: -slider-track-color;
 }
+
+#lblNotice{
+    -fx-alignment: center-left;
+}
+
+.combo-box-base{
+    -fx-border-color: #C5CEB6;
+    -fx-border-style: solid;
+    -fx-border-width: 1;
+}
+
+.combo-box .list-cell{
+    -fx-background-color: #C5CEB6;
+    -fx-border-color:#C5CEB6;
+    -fx-border-style:solid;
+    -fx-border-width:1;
+}
+
+.list-cell .check-box{
+    -fx-background-color: #C5CEB6;
+}
+
+#genresDropDown .arrow{
+    -fx-background-color: #4B6D4A;
+}
+
+#genresDropDown .arrow-button{
+    -fx-background-color: #C5CEB6;
+}
+
+.text-field{
+    -fx-background-color: #C5CEB6;
+    -fx-prompt-text-fill: #213121;
+}
+
+#moviesList .list-cell{
+    -fx-background-color: #DAD7CD;
+    -fx-border-color: #CCC6B8;
+}
+
+#moviesList .scroll-bar{
+    -fx-background-color: #CCC6B8;
+}
+
+
+
+
+
 

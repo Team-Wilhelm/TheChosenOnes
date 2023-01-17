@@ -27,11 +27,11 @@
             <CheckComboBox fx:id="genresDropDown" prefHeight="25.0" prefWidth="170.0" />
          </children>
       </Group>
-      <TextField fx:id="searchBar" layoutX="701.0" layoutY="22.0" AnchorPane.rightAnchor="150.0" />
+      <TextField fx:id="searchBar" alignment="CENTER_RIGHT" layoutX="701.0" layoutY="22.0" prefHeight="25.0" prefWidth="250.0" promptText="Search" AnchorPane.rightAnchor="150.0" />
       <ListView fx:id="moviesList" layoutX="26.0" layoutY="68.0" onMouseClicked="#playMovie" prefHeight="400.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="150.0" />
       <ButtonBar layoutX="-14.0" layoutY="14.0" prefHeight="40.0" prefWidth="548.0" AnchorPane.leftAnchor="-14.0">
           <buttons>
-              <Label text="Sort by:" textFill="WHITE" />
+              <Label text="Sort by:" textFill="#344e41" />
               <Button fx:id="nameSortButton" mnemonicParsing="false" onAction="#btnNameSortAction" text="Name A-Z" />
               <Button fx:id="categorySortButton" layoutX="359.0" layoutY="18.0" mnemonicParsing="false" onAction="#btnCategorySortAction" text="Category A-Z" />
               <Button fx:id="userRatingSortButton" layoutX="359.0" layoutY="18.0" mnemonicParsing="false" onAction="#btnUserRatingSortAction" text="User Rating" />

@@ -11,7 +11,6 @@ import java.util.List;
 import static Budgetflix.DAL.Tools.*;
 
 public class GenreDAO {
-    //TODO interfaces
     List<Genre> genreList;
     List<Movie> moviesInGenre;
 
