@@ -1,4 +1,4 @@
-package BE;
+package Budgetflix.BE;
 
 import java.util.ArrayList;
 import java.util.List;

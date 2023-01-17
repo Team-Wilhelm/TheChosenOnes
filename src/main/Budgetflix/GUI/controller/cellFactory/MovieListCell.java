@@ -1,6 +1,6 @@
-package GUI.controller.cellFactory;
+package Budgetflix.GUI.controller.cellFactory;
 
-import BE.Movie;
+import Budgetflix.BE.Movie;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.layout.HBox;

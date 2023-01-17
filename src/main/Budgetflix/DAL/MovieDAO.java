@@ -1,8 +1,7 @@
-package DAL;
+package Budgetflix.DAL;
 
-import BE.Genre;
-import BE.Movie;
-import BLL.AlertManager;
+import Budgetflix.BE.Genre;
+import Budgetflix.BE.Movie;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import static DAL.Tools.*;
+import static Budgetflix.DAL.Tools.*;
 
 public class MovieDAO {
 
@@ -97,6 +96,19 @@ public class MovieDAO {
             executeSQLQuery(sql);
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void deleteMovies(List<Movie> movies){
+        for (Movie movie: movies){
+            int id = movie.getId();
+            String sql = "DELETE FROM MovieGenreLink WHERE movieId = " + id + ";"
+                    + "DELETE FROM Movies WHERE id = " + id;
+            try {
+                executeSQLQuery(sql);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 

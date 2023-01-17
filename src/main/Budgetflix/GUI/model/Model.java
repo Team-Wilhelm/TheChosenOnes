@@ -1,10 +1,12 @@
-package GUI.model;
+package Budgetflix.GUI.model;
 
-import BE.Genre;
-import BE.Movie;
-import BLL.LogicManager;
+import Budgetflix.BE.Genre;
+import Budgetflix.BE.Movie;
+import Budgetflix.BLL.LogicManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +17,7 @@ public class Model implements IModel {
     Movie movieToEdit;
     private static ObservableList<Movie> allMovies;
     private static ObservableList<Genre> allGenres;
+    private ObservableList<Movie> oldMovieList;
 
     public static Model getInstance(){
         if(instance == null){
@@ -25,8 +28,10 @@ public class Model implements IModel {
     private Model(){
         allMovies = FXCollections.observableArrayList();
         allGenres = FXCollections.observableArrayList();
+        oldMovieList = FXCollections.observableArrayList();
         getMovieList();
         getGenreList();
+        oldMovieCheck();
     }
 
     public ObservableList<Movie> filterMovies(String query, ObservableList<Genre> genres, double IMDBrating, double userRating)
@@ -71,6 +76,7 @@ public class Model implements IModel {
     public void deleteMovie(Movie movie){
         logicManager.deleteMovie(movie);
         allMovies.remove(movie);
+        oldMovieList.remove(movie);
     }
 
     public void getMovieList(){
@@ -89,6 +95,18 @@ public class Model implements IModel {
         return movieToEdit;
     }
 
+    public void oldMovieCheck(){
+        for(Movie m: allMovies){
+            if(m.getUserRating()<6 && m.getLastView().isBefore(LocalDate.now().minusYears(2))) {
+                oldMovieList.add(m);
+            }
+        }
+    }
+
+    public ObservableList<Movie> getOldMovies(){
+        return oldMovieList;
+    }
+
     public ObservableList<Genre> getAllGenres(){
         return allGenres;
     }
@@ -105,5 +123,9 @@ public class Model implements IModel {
 
     public void getGenreList(){
         allGenres.setAll(logicManager.getAllGenres());
+    }
+
+    public void deleteMovies(List<Movie> moviesToDelete) {
+        logicManager.deleteMovies(moviesToDelete);
     }
 }

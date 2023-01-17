@@ -1,14 +1,13 @@
-package GUI.controller;
+package Budgetflix.GUI.controller;
 
-import BE.Genre;
-import BE.Movie;
-import BLL.AlertManager;
-import GUI.controller.cellFactory.MovieListCell;
-import GUI.model.Model;
+import Budgetflix.BE.Genre;
+import Budgetflix.BE.Movie;
+import Budgetflix.BLL.AlertManager;
+import Budgetflix.BudgetFlix;
+import Budgetflix.GUI.controller.cellFactory.MovieListCell;
+import Budgetflix.GUI.model.Model;
 import com.google.common.collect.Comparators;
-import com.google.common.collect.Ordering;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
@@ -18,17 +17,20 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import org.controlsfx.control.CheckComboBox;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
+import java.awt.Desktop;
 
 public class MainController implements Initializable {
     private final Model model = Model.getInstance();
@@ -43,18 +45,16 @@ public class MainController implements Initializable {
     private Slider sliderUserRating, sliderIMDBRating;
     @FXML
     private CheckComboBox<Genre> genresDropDown = new CheckComboBox<Genre>(){};
+    @FXML
+    private Label lblUserValue, lblIMDBValue;
 
-    private void refreshMovieItems(){
-        model.getMovieList();
-        moviesList.setItems(model.getAllMovies());
-    }
-    private void refreshGenresItems(){
-        model.getGenreList();
-        genresDropDown.getItems().setAll(FXCollections.observableList(model.getAllGenres()));
-    }
+    private static final String SLIDER_STYLE_FORMAT =
+            "-slider-track-color: linear-gradient(to right, -slider-filled-track-color 0%%, "
+                    + "-slider-filled-track-color %1$f%%, -fx-base %1$f%%, -fx-base 100%%);";
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
         moviesList.setCellFactory(param -> new MovieListCell());
 
         searchBar.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -65,19 +65,56 @@ public class MainController implements Initializable {
             moviesList.setItems(model.filterMovies(searchBar.getText(),genresDropDown.getCheckModel().getCheckedItems(),sliderIMDBRating.getValue(),sliderUserRating.getValue()));
         });
 
-        sliderUserRating.valueProperty().addListener((observable, oldValue, newValue) ->
-                moviesList.setItems(model.filterMovies(searchBar.getText(),genresDropDown.getCheckModel().getCheckedItems(),sliderIMDBRating.getValue(), sliderUserRating.getValue())));
+        sliderUserRating.valueProperty().addListener((observable, oldValue, newValue) -> {
+            moviesList.setItems(model.filterMovies(searchBar.getText(), genresDropDown.getCheckModel().getCheckedItems(),
+                    sliderIMDBRating.getValue(), sliderUserRating.getValue()));
+            lblUserValue.setText(String.format(Locale.US,"%.1f",sliderUserRating.getValue()));
+        });
 
-        sliderIMDBRating.valueProperty().addListener((observable, oldValue, newValue) ->
-                moviesList.setItems(model.filterMovies(searchBar.getText(), genresDropDown.getCheckModel().getCheckedItems(), sliderIMDBRating.getValue(), sliderUserRating.getValue())));
+        sliderIMDBRating.valueProperty().addListener((observable, oldValue, newValue) -> {
+                moviesList.setItems(model.filterMovies(searchBar.getText(), genresDropDown.getCheckModel().getCheckedItems(),
+                        sliderIMDBRating.getValue(), sliderUserRating.getValue()));
+                lblIMDBValue.setText(String.format(Locale.US,"%.1f",sliderIMDBRating.getValue()));
+        });
+
+        //Slider changes colour when moved
+        sliderUserRating.styleProperty().bind(Bindings.createStringBinding(() -> {
+            double percentage = (sliderUserRating.getValue() - sliderUserRating.getMin()) / (sliderUserRating.getMax() - sliderUserRating.getMin()) * 100.0 ;
+            return String.format(Locale.US, SLIDER_STYLE_FORMAT, percentage);
+        }, sliderUserRating.valueProperty(), sliderUserRating.minProperty(), sliderUserRating.maxProperty()));
+
+        sliderIMDBRating.styleProperty().bind(Bindings.createStringBinding(() -> {
+            double percentage = ( sliderIMDBRating.getValue() -  sliderIMDBRating.getMin()) / ( sliderIMDBRating.getMax() -  sliderIMDBRating.getMin()) * 100.0 ;
+            return String.format(Locale.US, SLIDER_STYLE_FORMAT, percentage);
+        },  sliderIMDBRating.valueProperty(),  sliderIMDBRating.minProperty(),  sliderIMDBRating.maxProperty()));
 
         refreshMovieItems();
         refreshGenresItems();
+        isOldMovieCheckTrue();
+    }
+
+    private void refreshMovieItems(){
+        model.getMovieList();
+        moviesList.setItems(model.getAllMovies());
+    }
+    private void refreshGenresItems(){
+        model.getGenreList();
+        genresDropDown.getItems().setAll(FXCollections.observableList(model.getAllGenres()));
+    }
+
+    private void isOldMovieCheckTrue(){
+        if(!model.getOldMovies().isEmpty()){
+            try {
+                openNewWindow("/Budgetflix/GUI/view/OldMovieView.fxml");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
     @FXML
     private void btnAddMovieAction(ActionEvent actionEvent) throws IOException {
-        openNewWindow("../view/NewMovieView.fxml");
+        openNewWindow("/Budgetflix/GUI/view/NewMovieView.fxml");
     }
 
     @FXML
@@ -87,7 +124,7 @@ public class MainController implements Initializable {
             new Alert(Alert.AlertType.ERROR, "Please, select a movie to edit").showAndWait();
         else{
             model.setMovieToEdit(movie);
-            FXMLLoader fxmlLoader = openNewWindow("../view/NewMovieView.fxml");
+            FXMLLoader fxmlLoader = openNewWindow("/Budgetflix/GUI/view/NewMovieView.fxml");
             NewMovieController newMovieController = fxmlLoader.getController();
             newMovieController.setIsEditing();
         }
@@ -97,25 +134,28 @@ public class MainController implements Initializable {
     private void btnDeleteMovieAction(ActionEvent actionEvent) {
         Movie movie = moviesList.getSelectionModel().getSelectedItem();
         if (movie == null){
-            alertManager.getAlert("ERROR", "Please, select a movie to delete!").showAndWait();
+            alertManager.getAlert("ERROR", "Please, select a movie to delete!", actionEvent).showAndWait();
         }
         else{
-            Alert alert = alertManager.getAlert("CONFIRMATION", "Do you really wish to delete this movie ?");
+            Alert alert = alertManager.getAlert("CONFIRMATION", "Do you really wish to delete this movie?", actionEvent);
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 model.deleteMovie(movie);
-                refreshMovieItems();
             }
         }
+        refreshMovieItems();
     }
 
     private FXMLLoader openNewWindow(String resource) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(resource));
+        FXMLLoader fxmlLoader = new FXMLLoader(BudgetFlix.class.getResource(resource));
         Stage stage = new Stage();
         Scene scene = new Scene(fxmlLoader.load());
         stage.setScene(scene);
         stage.setResizable(false);
-        stage.setTitle("BudgetFlix");
+        stage.setTitle("Budgetflix");
+        stage.getIcons().add(new Image(Objects.requireNonNull(BudgetFlix.class.getResourceAsStream("/images/budgetflixIcon.png"))));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setAlwaysOnTop(true);
         stage.centerOnScreen();
         stage.show();
         Window window = scene.getWindow();
@@ -123,30 +163,34 @@ public class MainController implements Initializable {
             refreshGenresItems();
             refreshMovieItems();
         });
-        return fxmlLoader; //TODO resource heavy, make return void and add class to handle fxml loader once
+        return fxmlLoader;
     }
 
     @FXML
     private void playMovie(MouseEvent mouseEvent) throws IOException {
-        if (mouseEvent.getClickCount() == 2){
+        if (mouseEvent.getClickCount() == 2) {
             Movie movie = moviesList.getSelectionModel().getSelectedItem();
             File mediaFile = new File(movie.getFileLink());
-            Desktop.getDesktop().open(mediaFile);
+            try {
+                Desktop.getDesktop().open(mediaFile);
+            } catch (Exception ex){
+                alertManager.getAlert("ERROR", "File not found!\nCannot play the selected movie.", mouseEvent).showAndWait();
+            }
         }
     }
 
     @FXML
     private void btnAddGenreAction(ActionEvent actionEvent) throws IOException {
-        openNewWindow("../view/NewGenreView.fxml");
+        openNewWindow("/Budgetflix/GUI/view/NewGenreView.fxml");
     }
 
     @FXML
     private void btnDeleteGenreAction(ActionEvent actionEvent) {
         ArrayList<Genre> genres = new ArrayList<>(genresDropDown.getCheckModel().getCheckedItems());
         if (genres.size() == 0)
-            alertManager.getAlert("ERROR", "Please, select a genre to delete!").showAndWait();
+            alertManager.getAlert("ERROR", "Please, select a genre to delete!", actionEvent).showAndWait();
         else{
-            Alert alert = alertManager.getAlert("CONFIRMATION", "Do you really wish to delete this genre?");
+            Alert alert = alertManager.getAlert("CONFIRMATION", "Do you really wish to delete this genre?", actionEvent);
             Optional<ButtonType> result = alert.showAndWait();
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 for (Genre genre : genres){
