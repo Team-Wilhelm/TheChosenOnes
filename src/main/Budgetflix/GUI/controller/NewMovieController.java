@@ -99,25 +99,34 @@ public class NewMovieController {
 
     @FXML
     private void btnChooseAction(ActionEvent actionEvent) {
-        Stage stage = new Stage();
+        //puts the NewMovieView momentarily behind the file chooser
+        Node node = (Node) actionEvent.getSource();
+        Stage parentStage = (Stage) node.getScene().getWindow();
+        parentStage.setAlwaysOnTop(false);
+
+        Stage fileStage = new Stage();
         FileChooser fileChooser = new FileChooser();
         File file;
+
         fileChooser.setInitialDirectory(new File(System.getProperty("user.home") + System.getProperty("file.separator") + "Videos"));
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("mp4", "*.mp4"));
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("mpeg4", "*.mpeg4"));
         fileChooser.setTitle("Choose a movie file");
-        try { //if the window is already holding a path, open the directory
+
+        try { //if the window is already holding a path, try to open the directory
             if (txtFilePath.getText() != null && !txtFilePath.getText().isEmpty()) {
-                File previousFile = new File(Paths.get(txtFilePath.getText()).toUri());
+                File previousFile = new File(Paths.get(txtFilePath.getText().trim()).toUri());
                 fileChooser.setInitialDirectory(new File(previousFile.getParentFile().getAbsolutePath()));
                 fileChooser.setInitialFileName(previousFile.getName());
             }
-            file = fileChooser.showOpenDialog(stage);
+            file = fileChooser.showOpenDialog(fileStage);
         } catch (Exception e) { //otherwise, Videos directory is opened
-            file = fileChooser.showOpenDialog(stage);
+            fileChooser.setInitialDirectory(new File(System.getProperty("user.home") + System.getProperty("file.separator") + "Videos"));
+            file = fileChooser.showOpenDialog(fileStage);
         }
         if (file != null) {
             txtFilePath.setText(file.getAbsolutePath());
+            parentStage.setAlwaysOnTop(true);
         }
     }
 

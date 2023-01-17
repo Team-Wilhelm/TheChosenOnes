@@ -14,6 +14,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
@@ -155,14 +156,16 @@ public class MainController implements Initializable {
         stage.setTitle("Budgetflix");
         stage.getIcons().add(new Image(Objects.requireNonNull(BudgetFlix.class.getResourceAsStream("/images/budgetflixIcon.png"))));
         stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setAlwaysOnTop(true);
         stage.centerOnScreen();
+        stage.setAlwaysOnTop(true);
         stage.show();
+
         Window window = scene.getWindow();
         window.setOnHiding(event -> {
             refreshGenresItems();
             refreshMovieItems();
         });
+
         return fxmlLoader;
     }
 
