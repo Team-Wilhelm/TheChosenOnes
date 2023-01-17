@@ -1,54 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
-<?import org.controlsfx.control.*?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import org.controlsfx.control.CheckComboBox?>
 
-<AnchorPane fx:id="backgroundPane" prefHeight="600.0" prefWidth="1000.0" stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Budgetflix.GUI.controller.MainController">
+<AnchorPane fx:id="backgroundPane" prefHeight="600.0" prefWidth="1117.0" stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Budgetflix.GUI.controller.MainController">
    <children>
-      <VBox layoutX="870.0" layoutY="179.0" spacing="15.0" AnchorPane.rightAnchor="30.0">
+      <VBox alignment="CENTER" layoutX="877.0" layoutY="440.0" prefWidth="210.0" spacing="15.0" AnchorPane.rightAnchor="30.0">
          <children>
-            <Button fx:id="btnAddMovie" mnemonicParsing="false" onAction="#btnAddMovieAction" prefHeight="50.0" prefWidth="100.0" text="Add Movie" />
-            <Button fx:id="btnEditMovie" mnemonicParsing="false" onAction="#btnEditMovieAction" prefHeight="50.0" prefWidth="100.0" text="Edit Movie" />
+            <HBox spacing="10.0">
+               <children>
+                  <Button fx:id="btnAddMovie" mnemonicParsing="false" onAction="#btnAddMovieAction" prefHeight="50.0" prefWidth="100.0" text="Add Movie" />
+                  <Button fx:id="btnEditMovie" mnemonicParsing="false" onAction="#btnEditMovieAction" prefHeight="50.0" prefWidth="100.0" text="Edit Movie" />
+               </children>
+            </HBox>
             <Button fx:id="btnDeleteMovie" mnemonicParsing="false" onAction="#btnDeleteMovieAction" prefHeight="50.0" prefWidth="100.0" text="Delete Movie" />
          </children>
       </VBox>
-      <Group layoutX="800.0" layoutY="492.0">
+      <Group layoutX="913.0" layoutY="22.0" AnchorPane.rightAnchor="30.0">
          <children>
-            <Button fx:id="btnAddGenre" layoutY="39.0" mnemonicParsing="false" onAction="#btnAddGenreAction" text="Add Genre" />
-            <Button fx:id="btnDeleteGenre" layoutX="84.0" layoutY="39.0" mnemonicParsing="false" onAction="#btnDeleteGenreAction" text="Delete Genre" />
-            <CheckComboBox fx:id="genresDropDown" prefHeight="25.0" prefWidth="170.0" title="Select Genre" />
+            <HBox layoutY="39.0" spacing="10.0">
+               <children>
+                  <Button fx:id="btnAddGenre" mnemonicParsing="false" onAction="#btnAddGenreAction" prefWidth="100.0" text="Add Genre" />
+                  <Button fx:id="btnDeleteGenre" mnemonicParsing="false" onAction="#btnDeleteGenreAction" prefWidth="100.0" text="Delete Genre" />
+               </children>
+            </HBox>
+            <CheckComboBox fx:id="genresDropDown" prefHeight="25.0" prefWidth="210.0" />
          </children>
       </Group>
-      <TextField fx:id="searchBar" alignment="CENTER_RIGHT" layoutX="701.0" layoutY="22.0" prefHeight="25.0" prefWidth="250.0" promptText="Search" AnchorPane.rightAnchor="150.0" />
-      <ListView fx:id="moviesList" layoutX="26.0" layoutY="68.0" onMouseClicked="#playMovie" prefHeight="400.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="150.0" />
-      <ButtonBar layoutX="-14.0" layoutY="14.0" prefHeight="40.0" prefWidth="548.0" AnchorPane.leftAnchor="-14.0">
+      <TextField fx:id="searchBar" alignment="CENTER_RIGHT" layoutX="600.0" layoutY="22.0" prefHeight="25.0" prefWidth="250.0" promptText="Search" />
+      <ListView fx:id="moviesList" layoutX="30.0" layoutY="68.0" onMouseClicked="#playMovie" prefHeight="400.0" prefWidth="820.0" />
+      <ButtonBar layoutX="-14.0" layoutY="14.0" prefHeight="40.0" prefWidth="548.0">
           <buttons>
               <Label text="Sort by:" textFill="#344e41">
                <font>
                   <Font name="System Bold" size="12.0" />
-               </font></Label>
+               </font>
+            </Label>
               <Button fx:id="nameSortButton" mnemonicParsing="false" onAction="#btnNameSortAction" text="Name A-Z" />
               <Button fx:id="categorySortButton" layoutX="359.0" layoutY="18.0" mnemonicParsing="false" onAction="#btnCategorySortAction" text="Category A-Z" />
               <Button fx:id="userRatingSortButton" layoutX="359.0" layoutY="18.0" mnemonicParsing="false" onAction="#btnUserRatingSortAction" text="User Rating" />
               <Button fx:id="imdbRatingSortButton" layoutX="359.0" layoutY="18.0" mnemonicParsing="false" onAction="#btnImdbRatingSortAction" prefHeight="25.0" prefWidth="121.0" text="IMDB Rating" />
           </buttons>
       </ButtonBar>
-      <Group layoutX="30.0" layoutY="498.0">
+      <HBox layoutX="30.0" layoutY="498.0" spacing="15.0">
          <children>
-             <Slider fx:id="sliderUserRating" blockIncrement="1.0" layoutX="3.0" layoutY="16.0" majorTickUnit="1.0" max="10.0" minorTickCount="10" prefHeight="14.0" prefWidth="360.0" showTickLabels="true" showTickMarks="true" />
-             <Label fx:id="lblUserRating" layoutX="3.0" text="Your Rating:" textFill="WHITE" />
-            <Label fx:id="lblUserValue" layoutX="323.0" layoutY="-1.0" prefHeight="20.0" prefWidth="40.0" text="0.0" textAlignment="RIGHT" textFill="WHITE" />
+            <Group>
+               <children>
+                   <Slider fx:id="sliderUserRating" blockIncrement="1.0" layoutX="3.0" layoutY="16.0" majorTickUnit="1.0" max="10.0" minorTickCount="10" prefHeight="14.0" prefWidth="400.0" showTickLabels="true" showTickMarks="true" />
+                   <Label fx:id="lblUserRating" layoutX="3.0" text="Your Rating:" textFill="WHITE" />
+                  <Label fx:id="lblUserValue" layoutX="363.0" layoutY="-1.0" prefHeight="20.0" prefWidth="40.0" text="0.0" textAlignment="RIGHT" textFill="WHITE" />
+               </children>
+            </Group>
+            <Group>
+               <children>
+                   <Label fx:id="lblIMDBRating" layoutX="3.0" text="IMDB Rating:" textFill="WHITE" />
+                   <Slider id="sliderUserRating" fx:id="sliderIMDBRating" blockIncrement="1.0" layoutX="3.0" layoutY="16.0" majorTickUnit="1.0" max="10.0" minorTickCount="10" prefHeight="14.0" prefWidth="400.0" showTickLabels="true" showTickMarks="true" />
+                  <Label fx:id="lblIMDBValue" layoutX="363.0" layoutY="-1.0" prefHeight="20.0" prefWidth="40.0" text="0.0" textAlignment="RIGHT" textFill="WHITE" />
+               </children>
+            </Group>
          </children>
-      </Group>
-      <Group layoutX="413.0" layoutY="498.0">
-         <children>
-             <Label fx:id="lblIMDBRating" layoutX="3.0" text="IMDB Rating:" textFill="WHITE" />
-             <Slider id="sliderUserRating" fx:id="sliderIMDBRating" blockIncrement="1.0" layoutX="3.0" layoutY="16.0" majorTickUnit="1.0" max="10.0" minorTickCount="10" prefHeight="14.0" prefWidth="360.0" showTickLabels="true" showTickMarks="true" />
-            <Label fx:id="lblIMDBValue" layoutX="323.0" layoutY="-1.0" prefHeight="20.0" prefWidth="40.0" text="0.0" textAlignment="RIGHT" textFill="WHITE" />
-         </children>
-      </Group>
+      </HBox>
+      <ImageView fx:id="moviePoster" fitHeight="271.0" fitWidth="210.0" layoutX="880.0" layoutY="133.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../resources/images/bimbo.jpg" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>
