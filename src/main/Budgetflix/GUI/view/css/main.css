@@ -37,13 +37,20 @@
 
 .combo-box .list-cell{
     -fx-background-color: #C5CEB6;
-    -fx-border-color:#C5CEB6;
+    -fx-border-color: #C5CEB6;
     -fx-border-style:solid;
     -fx-border-width:1;
+    -fx-text-fill: #213121;
 }
 
-.list-cell .check-box{
-    -fx-background-color: #C5CEB6;
+.list-cell .check-box .box {
+    -fx-background-color: #DAD7CD;
+    -fx-border-radius: 3;
+    -fx-border-color: #C2BDAD;
+}
+
+.list-cell .check-box:selected .mark{
+    -fx-background-color: #213121;
 }
 
 #genresDropDown .arrow{
@@ -59,13 +66,25 @@
     -fx-prompt-text-fill: #213121;
 }
 
+#moviesList{
+    -fx-background-color: #DAD7CD;
+}
+
 #moviesList .list-cell{
     -fx-background-color: #DAD7CD;
     -fx-border-color: #CCC6B8;
 }
 
+#moviesList .list-cell:filled:focused:selected{
+    -fx-background-color: #C2BDAD;
+}
+
 #moviesList .scroll-bar{
     -fx-background-color: #CCC6B8;
+}
+
+#moviesList .scroll-bar .thumb{
+    -fx-background-color: #C2BDAD;
 }
 
 

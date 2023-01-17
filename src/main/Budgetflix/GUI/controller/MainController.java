@@ -170,7 +170,7 @@ public class MainController implements Initializable {
     }
 
     @FXML
-    private void playMovie(MouseEvent mouseEvent) throws IOException {
+    private void playMovie(MouseEvent mouseEvent) {
         if (mouseEvent.getClickCount() == 2) {
             Movie movie = moviesList.getSelectionModel().getSelectedItem();
             File mediaFile = new File(movie.getFileLink());
