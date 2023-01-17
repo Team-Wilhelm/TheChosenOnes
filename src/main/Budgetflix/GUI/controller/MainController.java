@@ -158,6 +158,7 @@ public class MainController implements Initializable {
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.centerOnScreen();
         stage.setAlwaysOnTop(true);
+        stage.requestFocus();
         stage.show();
 
         Window window = scene.getWindow();

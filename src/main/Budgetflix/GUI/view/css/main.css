@@ -9,6 +9,14 @@
     -fx-font-weight: bold;
 }
 
+.button:hover{
+    -fx-opacity: 0.8;
+}
+
+.button:pressed{
+    -fx-opacity: 0.8;
+}
+
 #backgroundPane{
     -fx-background-color: #A3B18A;
 }
@@ -87,6 +95,42 @@
     -fx-background-color: #C2BDAD;
 }
 
+#lblNotice, #lblUserValue, #lblIMDBValue, #lblUserRating, #lblIMDBRating{
+    -fx-font-weight: bold;
+}
+
+.date-picker .arrow {
+    -fx-background-color: #213121;
+}
+
+.date-picker .cell{
+    -fx-background-color: #C5CEB6;
+}
+
+.date-picker .selected{
+    -fx-background-color: #4B6D4A;
+}
+
+.date-picker, .date-picker .arrow-button {
+    -fx-background-color: #C5CEB6;
+}
+
+.date-picker .button{
+    -fx-background-color: transparent;
+}
+
+.date-picker-popup .spinner .button .left-arrow,
+.date-picker-popup .spinner .button .right-arrow {
+    -fx-background-color: #e5e3e3;
+}
+
+.date-picker-popup .month-year-pane {
+    -fx-background-color: #4B6D4A;
+}
+
+.date-picker-popup .month-year-pane .label{
+    -fx-text-fill: #e5e3e3;
+}
 
 
 
