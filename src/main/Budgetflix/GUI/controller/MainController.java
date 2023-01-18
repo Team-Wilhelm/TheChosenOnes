@@ -206,7 +206,12 @@ public class MainController implements Initializable {
         stage.getIcons().add(new Image(Objects.requireNonNull(BudgetFlix.class.getResourceAsStream("/images/budgetflixIcon.png"))));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.centerOnScreen();
-        stage.showAndWait();
+
+        //TODO look into this, preferably
+        if (resource.equals("/Budgetflix/GUI/view/OldMovieView.fxml"))
+            stage.showAndWait();
+        else
+            stage.show();
 
         Window window = scene.getWindow();
         window.setOnHiding(event -> {
