@@ -87,7 +87,7 @@
     -fx-prompt-text-fill: -fx-dark-green-color;
 }
 
-/* Movie list css*/
+/* Movie list css */
 #moviesList{
     -fx-background-color: #DAD7CD;
 }
@@ -102,11 +102,16 @@
     -fx-background-color: #C2BDAD;
 }
 
+#moviesList .scroll-bar .increment-button:hover,
+#moviesList .scroll-bar .decrement-button:hover {
+    -fx-background-color: #C2BDAD;
+}
+
 #moviesList .scroll-bar{
     -fx-background-color: #CCC6B8;
 }
 
-/* Date picker css*/
+/* Date picker css */
 .date-picker .arrow {
     -fx-background-color: -fx-dark-green-color;
 }
@@ -133,7 +138,6 @@
 .date-picker-popup .month-year-pane .label{
     -fx-text-fill: -fx-white-color;
 }
-
 
 
 

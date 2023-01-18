@@ -7,6 +7,7 @@ import Budgetflix.BudgetFlix;
 import Budgetflix.GUI.model.Model;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -57,12 +58,12 @@ public class NewMovieController {
         dateLastView.setValue(LocalDate.now());
 
         lookUp.setOnAction(event -> {
-            searchImdb();
+            searchImdb(event);
         });
         txtTitle.setOnKeyPressed(event -> {
             if(event.getCode() == KeyCode.ENTER)
             {
-                searchImdb();
+                searchImdb(event);
             }
         });
     }
@@ -219,9 +220,9 @@ public class NewMovieController {
         {
             return null;
         }
-
     }
-    private void searchImdb(){
+
+    private void searchImdb(Event event){
         JSONObject movieObject = getDataFromImdb(txtTitle.getText());
         if(movieObject != null)
         {
@@ -238,7 +239,7 @@ public class NewMovieController {
                 }catch (Exception e){}
             }
         }else {
-            //todo put here warining when there is no result.
+            alertManager.getAlert("WARNING", "No movie found.", event).showAndWait();
         }
     }
 }

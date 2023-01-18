@@ -54,12 +54,7 @@ public class MovieDAO {
      * @return
      */
     public String addMovie(Movie movie){
-        Date lastView;
-        if (movie.getLastView() != null)
-             lastView = java.sql.Date.valueOf(movie.getLastView());
-        else {
-            lastView = java.sql.Date.valueOf(LocalDate.of(0,1,1)); //TODO fix this shit
-        }
+        Date lastView = java.sql.Date.valueOf(movie.getLastView());
         String sql = "INSERT INTO Movies (movieName, fileLink, moviePoster, lastView, IMDBrating, userRating) " +
                 "VALUES ('" + validateStringForSQL(movie.getName()) + "' , '"
                 + validateStringForSQL(movie.getFileLink()) + "' , + '"
@@ -165,7 +160,6 @@ public class MovieDAO {
      * Adds a link between a genre and a specific movie in the MoviesGenreLink table.
      * @param movie
      */
-    //TODO make it much better (preferably)
     public void addGenresToMovie(Movie movie){
         List<Genre> genres = movie.getGenres();
         String sql = "SELECT * FROM Movies WHERE fileLink = '" + movie.getFileLink() + "'";

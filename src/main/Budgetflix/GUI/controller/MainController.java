@@ -199,7 +199,7 @@ public class MainController implements Initializable {
         stage.setResizable(false);
         stage.setTitle("Budgetflix");
         stage.getIcons().add(new Image(Objects.requireNonNull(BudgetFlix.class.getResourceAsStream("/images/budgetflixIcon.png"))));
-        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.initModality(Modality.WINDOW_MODAL);
         stage.centerOnScreen();
         stage.setAlwaysOnTop(true);
         stage.requestFocus();
