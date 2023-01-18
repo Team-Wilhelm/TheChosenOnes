@@ -236,7 +236,14 @@ public class NewMovieController {
                 try {
                     var selectItem = allGenres.stream().filter(e -> e.getName().toLowerCase().equals(genre.trim().toLowerCase())).findFirst();
                     genresDropDown.getCheckModel().check(selectItem.get());
-                }catch (Exception e){}
+                }catch (Exception e){
+                    model.addGenre(genre.trim());
+                    model.getGenreList();
+                    Genre newGenre = model.getAllGenres().stream().filter(p->p.getName().equals(genre.trim())).findFirst().get();
+                    genresDropDown.getItems().add(newGenre);
+                    genresDropDown.getCheckModel().check(newGenre);
+
+                }
             }
         }else {
             alertManager.getAlert("WARNING", "No movie found.", event).showAndWait();
