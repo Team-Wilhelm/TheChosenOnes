@@ -21,6 +21,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -60,6 +61,26 @@ public class MainController implements Initializable {
         moviePoster.setImage(new Image(Objects.requireNonNull(BudgetFlix.class.getResourceAsStream("/images/bimbo.jpg"))));
 
         moviesList.setCellFactory(param -> new MovieListCell());
+        moviesList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            try{
+                moviePoster.setImage(new Image(observable.getValue().getMoviePoster()));
+            }
+            catch (Exception e){
+                moviePoster.setImage(new Image(Objects.requireNonNull(BudgetFlix.class.getResourceAsStream("/images/bimbo.jpg"))));
+            }
+        });
+        moviesList.setOnKeyPressed(event -> {
+            if(!moviesList.getSelectionModel().isEmpty())
+            {
+                Movie movie = moviesList.getSelectionModel().getSelectedItem();
+                File mediaFile = new File(movie.getFileLink());
+                try {
+                    Desktop.getDesktop().open(mediaFile);
+                } catch (Exception ex){
+                    alertManager.getAlert("ERROR", "File not found!\nCannot play the selected movie.", event).showAndWait();
+                }
+            }
+        });
 
         searchBar.textProperty().addListener((observable, oldValue, newValue) -> {
             moviesList.setItems(model.filterMovies(searchBar.getText(),genresDropDown.getCheckModel().getCheckedItems(), sliderIMDBRating.getValue(),sliderUserRating.getValue()));
@@ -198,8 +219,8 @@ public class MainController implements Initializable {
      */
     @FXML
     private void playMovie(MouseEvent mouseEvent) {
+        Movie movie = moviesList.getSelectionModel().getSelectedItem();
         if (mouseEvent.getClickCount() == 2) {
-            Movie movie = moviesList.getSelectionModel().getSelectedItem();
             File mediaFile = new File(movie.getFileLink());
             try {
                 Desktop.getDesktop().open(mediaFile);

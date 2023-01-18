@@ -1,10 +1,16 @@
 package Budgetflix.GUI.controller.cellFactory;
 
 import Budgetflix.BE.Movie;
+import Budgetflix.BudgetFlix;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+
+import java.util.Objects;
 
 public class MovieListCell extends ListCell<Movie> {
     private final Label title = new Label();
@@ -20,7 +26,10 @@ public class MovieListCell extends ListCell<Movie> {
     private final Label imdbRatingRating = new Label();
 
     private final HBox otherData = new HBox(detail, new Label("|"), userRatingTitle, userRatingRating, new Label("|"), imdbRatingTitle, imdbRatingRating);
-    private final VBox layout = new VBox(title, genreRow, otherData);
+    private final VBox textData = new VBox(title, genreRow, otherData);
+    private final ImageView img = new ImageView();
+    private final HBox imgData = new HBox(img);
+    private final HBox layout = new HBox(imgData,textData);
 
     public MovieListCell() {
         super();
@@ -30,6 +39,11 @@ public class MovieListCell extends ListCell<Movie> {
         title.setStyle(titleStyle);
         otherData.setSpacing(10);
         genreRow.setSpacing(5);
+        img.setFitHeight(100);
+        img.setFitWidth(75);
+        layout.setSpacing(10);
+
+        textData.setAlignment(Pos.CENTER_LEFT);
     }
 
     @Override
@@ -42,6 +56,13 @@ public class MovieListCell extends ListCell<Movie> {
             detail.setText(null);
             setGraphic(null);
         } else {
+
+            try{
+                img.setImage(new Image(item.getMoviePoster()));
+            }
+            catch (Exception e){
+                img.setImage(new Image(Objects.requireNonNull(BudgetFlix.class.getResourceAsStream("/images/bimbo.jpg"))));
+            }
             genres.setText(item.getGenresToString());
             title.setText(item.getName());
             detail.setText(
