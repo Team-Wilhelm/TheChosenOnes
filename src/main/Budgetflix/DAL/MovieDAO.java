@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -125,8 +126,8 @@ public class MovieDAO {
     public void deleteMovies(List<Movie> movies){
         for (Movie movie: movies){
             int id = movie.getId();
-            String sql = "DELETE FROM MovieGenreLink WHERE movieId = " + id + ";"
-                    + "DELETE FROM Movies WHERE id = " + id;
+            String sql = String.join(",","DELETE FROM MovieGenreLink WHERE movieId = " + id + ";")
+                    + String.join(",","DELETE FROM Movies WHERE id = " + id);
             try {
                 executeSQLQuery(sql);
             } catch (SQLException e) {
@@ -134,6 +135,7 @@ public class MovieDAO {
             }
         }
     }
+
 
     /**
      * Gets a list of all genres linked to a specific Movie.
