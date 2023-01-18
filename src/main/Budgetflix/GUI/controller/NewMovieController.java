@@ -4,7 +4,6 @@ import Budgetflix.BE.Genre;
 import Budgetflix.BE.Movie;
 import Budgetflix.BLL.AlertManager;
 import Budgetflix.BudgetFlix;
-import Budgetflix.DAL.GenreDAO;
 import Budgetflix.GUI.model.Model;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -54,7 +53,7 @@ public class NewMovieController {
     public void initialize(){
         isEditing = false;
         //Populates CheckComboBox
-        genresDropDown.getItems().addAll(FXCollections.observableList(new GenreDAO().getAllGenres()));
+        genresDropDown.getItems().addAll(FXCollections.observableList(model.getAllGenres()));
         dateLastView.setValue(LocalDate.now());
 
         lookUp.setOnAction(event -> {

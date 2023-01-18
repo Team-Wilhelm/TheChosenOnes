@@ -67,7 +67,12 @@ public class MainController implements Initializable {
 
         genresDropDown.getCheckModel().getCheckedItems().addListener((ListChangeListener<? super Genre>) observable -> {
             moviesList.setItems(model.filterMovies(searchBar.getText(),genresDropDown.getCheckModel().getCheckedItems(),sliderIMDBRating.getValue(),sliderUserRating.getValue()));
+            if(!genresDropDown.getCheckModel().getCheckedItems().isEmpty())
+                genresDropDown.setTitle(genresDropDown.getCheckModel().getCheckedItems().toString().replace('[',' ').replace(']', ' ').trim());
+            else genresDropDown.setTitle("Select Genre");
         });
+
+
 
         sliderUserRating.valueProperty().addListener((observable, oldValue, newValue) -> {
             moviesList.setItems(model.filterMovies(searchBar.getText(), genresDropDown.getCheckModel().getCheckedItems(),
