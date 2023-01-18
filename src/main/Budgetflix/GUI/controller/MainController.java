@@ -73,9 +73,9 @@ public class MainController extends BudgetMother implements Initializable {
         });
 
         setUpSliderColors(sliderUserRating, sliderIMDBRating);
+        isOldMovieCheckTrue();
         refreshMovieItems();
         refreshGenresItems();
-        isOldMovieCheckTrue();
     }
 
     private void setUpListeners(){
@@ -171,16 +171,7 @@ public class MainController extends BudgetMother implements Initializable {
     @FXML
     private void btnDeleteMovieAction(ActionEvent actionEvent) {
         Movie movie = moviesList.getSelectionModel().getSelectedItem();
-        if (movie == null){
-            alertManager.getAlert("ERROR", "Please, select a movie to delete!", actionEvent).showAndWait();
-        }
-        else{
-            Alert alert = alertManager.getAlert("CONFIRMATION", "Do you really wish to delete this movie?", actionEvent);
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.isPresent() && result.get() == ButtonType.OK) {
-                model.deleteMovie(movie);
-            }
-        }
+        deleteMovie(actionEvent, movie);
         refreshMovieItems();
     }
 
