@@ -1,5 +1,9 @@
 package Budgetflix;
 
+import Budgetflix.BE.Genre;
+import Budgetflix.BE.Movie;
+import Budgetflix.DAL.MovieDAO;
+import Budgetflix.DAL.Tools;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -7,6 +11,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -28,5 +33,12 @@ public class BudgetFlix extends Application {
 
     public static void main (String[] args) {
         launch();
+        MovieDAO movieDAO = new MovieDAO();
+        Movie movie = movieDAO.getMovie(187);
+    }
+
+    public void stop(){
+        System.out.println(Tools.counter);
+        Tools.closeAllConnections();
     }
 }

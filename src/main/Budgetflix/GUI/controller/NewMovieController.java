@@ -64,9 +64,7 @@ public class NewMovieController extends BudgetMother {
 
         txtTitle.setOnKeyPressed(event -> {
             if(event.getCode() == KeyCode.ENTER)
-            {
                 searchImdb(event);
-            }
         });
 
         sliderUserRating.valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -88,10 +86,10 @@ public class NewMovieController extends BudgetMother {
     private void btnSaveAction(ActionEvent actionEvent) {
         String title = txtTitle.getText().trim();
         String filepath = txtFilePath.getText().trim();
-        LocalDate lastView = null;
+        LocalDate lastView = dateLastView.getValue();
         List<Genre> genres = genresDropDown.getCheckModel().getCheckedItems();
-        double userRating = sliderUserRating.getValue();
-        double imdbRating = sliderIMDBRating.getValue();
+        double userRating = Double.parseDouble(String.format(Locale.US,"%.1f",sliderUserRating.getValue()));
+        double imdbRating = Double.parseDouble(String.format(Locale.US,"%.1f",sliderIMDBRating.getValue()));
         String moviePosterPath = moviePoster.getImage().getUrl();
 
         if (title.isEmpty() || filepath.isEmpty()) {
@@ -101,9 +99,6 @@ public class NewMovieController extends BudgetMother {
             if (filepath.isEmpty())
                 txtFilePath.setPromptText("Field must not be empty!");
         }
-
-        if (dateLastView.getValue() != null)
-            lastView = dateLastView.getValue();
 
         //Opens an alert if the extension of the file is not .mp4 or .mpeg4
         if (!txtFilePath.getText().trim().endsWith(".mp4") && !txtFilePath.getText().trim().endsWith(".mpeg4"))
@@ -133,7 +128,6 @@ public class NewMovieController extends BudgetMother {
     /**
      * Enables an action to be cancelled.
      */
-
     @FXML
     private void btnCancelAction(ActionEvent actionEvent) {
         Node node = (Node) actionEvent.getSource();

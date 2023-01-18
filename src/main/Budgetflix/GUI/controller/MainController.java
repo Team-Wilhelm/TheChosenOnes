@@ -145,8 +145,11 @@ public class MainController extends BudgetMother implements Initializable {
      */
     @FXML
     private void btnAddMovieAction(ActionEvent actionEvent) throws IOException {
-        openNewWindow("/Budgetflix/GUI/view/NewMovieView.fxml");
-
+        Window window = (Window) openNewWindow("/Budgetflix/GUI/view/NewMovieView.fxml")[1];
+        window.setOnHiding(event -> {
+            refreshMovieItems();
+            refreshGenresItems();
+        });
     }
 
     /**
@@ -159,9 +162,16 @@ public class MainController extends BudgetMother implements Initializable {
             new Alert(Alert.AlertType.ERROR, "Please, select a movie to edit").showAndWait();
         else{
             model.setMovieToEdit(movie);
-            FXMLLoader fxmlLoader = openNewWindow("/Budgetflix/GUI/view/NewMovieView.fxml");
+            Object[] objects = openNewWindow("/Budgetflix/GUI/view/NewMovieView.fxml");
+            FXMLLoader fxmlLoader = (FXMLLoader) objects[0];
             NewMovieController newMovieController = fxmlLoader.getController();
             newMovieController.setIsEditing();
+
+            Window window = (Window) objects[1];
+            window.setOnHiding(event -> {
+                refreshMovieItems();
+                refreshGenresItems();
+            });
         }
     }
 
@@ -172,10 +182,10 @@ public class MainController extends BudgetMother implements Initializable {
     private void btnDeleteMovieAction(ActionEvent actionEvent) {
         Movie movie = moviesList.getSelectionModel().getSelectedItem();
         deleteMovie(actionEvent, movie);
-        refreshMovieItems();
+        moviesList.setItems(model.getAllMovies());
     }
 
-    private FXMLLoader openNewWindow(String resource) throws IOException {
+    private Object[] openNewWindow(String resource) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(BudgetFlix.class.getResource(resource));
         Stage stage = new Stage();
         Scene scene = new Scene(fxmlLoader.load());
@@ -191,14 +201,8 @@ public class MainController extends BudgetMother implements Initializable {
         else
             stage.show();
 
-        //TODO i am speed
         Window window = scene.getWindow();
-        window.setOnHiding(event -> {
-            refreshGenresItems();
-            refreshMovieItems();
-        });
-
-        return fxmlLoader;
+        return new Object[]{fxmlLoader, window};
     }
 
     /**
@@ -223,7 +227,8 @@ public class MainController extends BudgetMother implements Initializable {
      */
     @FXML
     private void btnAddGenreAction(ActionEvent actionEvent) throws IOException {
-        openNewWindow("/Budgetflix/GUI/view/NewGenreView.fxml");
+        Window window = (Window) openNewWindow("/Budgetflix/GUI/view/NewGenreView.fxml")[1];
+        window.setOnHiding(event -> refreshGenresItems());
     }
 
     /**
@@ -241,6 +246,7 @@ public class MainController extends BudgetMother implements Initializable {
                 for (Genre genre : genres){
                     model.deleteGenre(genre);
                     genresDropDown.getItems().clear();
+                    //TODO broken again
                 }
                 refreshGenresItems();
             }

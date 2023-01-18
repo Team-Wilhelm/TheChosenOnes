@@ -39,8 +39,7 @@ public class MovieDAO {
      */
     public Movie getMovie(int id){
         String sql = "SELECT * FROM Movies WHERE id = " + id;
-        try {
-            ResultSet rs = executeSQLQueryWithResult(sql);
+        try (ResultSet rs = executeSQLQueryWithResult(sql)){
             rs.next();
             return createMovieFromDatabase(rs, id);
         } catch (SQLException ex) {
@@ -143,10 +142,10 @@ public class MovieDAO {
     public List<Genre> getAllGenresFromMovie(int movieId){
         String sql = "SELECT * FROM MovieGenreLink WHERE movieId = " + movieId;
         List<Genre> genres = new ArrayList<>();
+        GenreDAO genreDAO = new GenreDAO();
         try (ResultSet rs = executeSQLQueryWithResult(sql)){
             while (rs.next()){
                 int genreId = rs.getInt("genreId");
-                GenreDAO genreDAO = new GenreDAO();
                 genres.add(genreDAO.getGenre(genreId));
             }
             return genres;
@@ -162,24 +161,26 @@ public class MovieDAO {
      */
     public void addGenresToMovie(Movie movie){
         List<Genre> genres = movie.getGenres();
-        String sql = "SELECT * FROM Movies WHERE fileLink = '" + movie.getFileLink() + "'";
-        int movieId;
-        try {
-            ResultSet resultSet = executeSQLQueryWithResult(sql);
-            resultSet.next();
-            movieId = resultSet.getInt("id");
 
+        if (!genres.isEmpty()){
+            StringBuilder genreValues = new StringBuilder("('");
             for (Genre genre: genres){
-                sql = "SELECT * FROM Genre WHERE genreName = '" + genre.getName() + "'";
-                resultSet = executeSQLQueryWithResult(sql);
+                genreValues.append(genre.getName()).append("', '");
+            }
+            genreValues = new StringBuilder(genreValues.substring(0, genreValues.length() - 4));
+            genreValues.append("')");
+
+            int movieId = movie.getId();
+            String sql = "SELECT * FROM Genre WHERE genreName IN " + genreValues;
+            try (ResultSet resultSet = executeSQLQueryWithResult(sql)) {
                 while (resultSet.next()){
                     int genreId = resultSet.getInt("id");
                     sql = "INSERT INTO MovieGenreLink (movieId, genreId) VALUES (" + movieId + ", " + genreId + ")";
                     executeSQLQuery(sql);
                 }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 

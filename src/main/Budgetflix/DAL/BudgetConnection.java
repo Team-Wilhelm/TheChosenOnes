@@ -50,4 +50,15 @@ public class BudgetConnection {
             freeConnections.add(0, connection);
         }
     }
+
+    public void closeAllConnections() {
+        usedConnections.forEach(this::releaseConnection);
+        for (Connection con : freeConnections){
+            try {
+                con.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }
