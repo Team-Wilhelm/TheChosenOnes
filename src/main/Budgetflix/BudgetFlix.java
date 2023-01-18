@@ -1,8 +1,5 @@
 package Budgetflix;
 
-import Budgetflix.BE.Genre;
-import Budgetflix.BE.Movie;
-import Budgetflix.DAL.MovieDAO;
 import Budgetflix.DAL.Tools;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -11,8 +8,6 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 /**

@@ -25,7 +25,6 @@ public class GenreDAO {
                 int id = rs.getInt("id");
                 String name = rs.getString("genreName");
                 Genre genre = new Genre(id, name);
-                genre.getMovies().addAll(getMoviesInGenre(genre));
                 genreList.add(genre);
             }
         } catch (SQLException e) {
@@ -68,34 +67,12 @@ public class GenreDAO {
     }
 
     /**
-     * Gets a list of all movies linked to a specific Genre.
-     * @param genre
-     * @return List of genres
-     */
-    public List<Movie> getMoviesInGenre(Genre genre) {
-        int genreId = genre.getId();
-        moviesInGenre = new ArrayList<>();
-        String sql = "SELECT movieID FROM MovieGenreLink WHERE genreId='" + genreId + "';";
-        try (ResultSet rs = executeSQLQueryWithResult(sql)) {
-            MovieDAO movieDAO = new MovieDAO();
-                while (rs.next()) {
-                    int id = rs.getInt("movieId");
-                    moviesInGenre.add(movieDAO.getMovie(id));
-                }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return moviesInGenre;
-    }
-
-    /**
      * @param genreId
      * @return Genre based on contents of a specific column in the Genre table
      */
     public Genre getGenre(int genreId) {
         String sql = "SELECT * FROM Genre WHERE id = " + genreId;
-        try {
-            ResultSet rs = executeSQLQueryWithResult(sql);
+        try (ResultSet rs = executeSQLQueryWithResult(sql)){
             rs.next();
             int id = rs.getInt("id");
             String name = rs.getString("genreName");

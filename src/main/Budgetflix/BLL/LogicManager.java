@@ -12,9 +12,7 @@ public class LogicManager implements ILogicManager {
     private final GenreDAO genreDAO = new GenreDAO();
 
     public String addMovie(Movie movie){
-        String message = movieDAO.addMovie(movie);
-        movieDAO.addGenresToMovie(movie);
-        return message;
+        return movieDAO.addMovie(movie);
     }
 
     public String editMovie(Movie movie){

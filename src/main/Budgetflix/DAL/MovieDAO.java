@@ -7,14 +7,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import static Budgetflix.DAL.Tools.*;
 
 public class MovieDAO {
-
     /**
      * Creates a Movie based on the contents of the columns in the database and adds all these Movies to a list.
      * @return List of all movies.
@@ -64,6 +62,7 @@ public class MovieDAO {
                 + movie.getUserRating() + "' )" + ";";
         try {
             executeSQLQuery(sql);
+            addGenresToMovie(movie);
         } catch (SQLException e) {
             if (e.getMessage().contains("Violation of UNIQUE KEY constraint")){
                 return e.getMessage();
@@ -166,23 +165,26 @@ public class MovieDAO {
             genreIds.add(genre.getId());
         }
 
-        int movieId = movie.getId();
+        int movieId;
+        String sql = "SELECT * FROM Movies WHERE fileLink = '" + movie.getFileLink() + "'";
+        try (ResultSet resultSet = executeSQLQueryWithResult(sql)){
+            resultSet.next();
+            movieId = resultSet.getInt("id");
 
-        if (!genres.isEmpty()){
-            StringBuilder genreValues = new StringBuilder("(");
-            for (Integer genreId : genreIds){
-                genreValues.append(movieId).append(", ").append(genreId).append(")").append(", (");
-            }
-            genreValues = new StringBuilder(genreValues.substring(0, genreValues.length() - 3));
-            String sql = "INSERT INTO MovieGenreLink (movieId, genreId) VALUES " + genreValues;
-
-            try {
+            if (!genres.isEmpty()) {
+                StringBuilder genreValues = new StringBuilder("(");
+                for (Integer genreId : genreIds) {
+                    genreValues.append(movieId).append(", ").append(genreId).append(")").append(", (");
+                }
+                genreValues = new StringBuilder(genreValues.substring(0, genreValues.length() - 3));
+                sql = "INSERT INTO MovieGenreLink (movieId, genreId) VALUES " + genreValues;
                 executeSQLQuery(sql);
-            } catch (SQLException e) {
-                e.printStackTrace();
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
+
 
     /**
      * Creates a Movie from the contents of the columns in the Movie table
