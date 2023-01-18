@@ -218,6 +218,7 @@ public class NewMovieController {
 
     private void searchImdb(Event event){
         JSONObject movieObject = getDataFromImdb(txtTitle.getText());
+        genresDropDown.getCheckModel().clearChecks();
         if(movieObject != null)
         {
             txtIMDBRating.setText(movieObject.getString("imdbRating"));
