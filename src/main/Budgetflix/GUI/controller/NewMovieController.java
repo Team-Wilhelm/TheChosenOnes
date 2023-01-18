@@ -192,6 +192,12 @@ public class NewMovieController {
         txtIMDBRating.setText(String.valueOf(movieToEdit.getImdbRating()));
         txtUserRating.setText(String.valueOf(movieToEdit.getUserRating()));
         dateLastView.setValue(movieToEdit.getLastView());
+        try{
+            moviePoster.setImage(new Image(movieToEdit.getMoviePoster()));
+        }
+        catch (Exception e){
+            moviePoster.setImage(new Image(Objects.requireNonNull(BudgetFlix.class.getResourceAsStream("/images/bimbo.jpg"))));
+        }
 
         List<Genre> genres = movieToEdit.getGenres();
         for (Genre genre: genres){
