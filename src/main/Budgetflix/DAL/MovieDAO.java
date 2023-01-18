@@ -161,23 +161,23 @@ public class MovieDAO {
      */
     public void addGenresToMovie(Movie movie){
         List<Genre> genres = movie.getGenres();
+        List<Integer> genreIds = new ArrayList<>();
+        int movieId = movie.getId();
+
+        for (Genre genre: genres){
+            genreIds.add(genre.getId());
+        }
 
         if (!genres.isEmpty()){
-            StringBuilder genreValues = new StringBuilder("('");
-            for (Genre genre: genres){
-                genreValues.append(genre.getName()).append("', '");
+            StringBuilder genreValues = new StringBuilder("(");
+            for (Integer genreId : genreIds){
+                genreValues.append(movieId).append(", ").append(genreId).append(")").append(", (");
             }
-            genreValues = new StringBuilder(genreValues.substring(0, genreValues.length() - 4));
-            genreValues.append("')");
+            genreValues = new StringBuilder(genreValues.substring(0, genreValues.length() - 3));
 
-            int movieId = movie.getId();
-            String sql = "SELECT * FROM Genre WHERE genreName IN " + genreValues;
-            try (ResultSet resultSet = executeSQLQueryWithResult(sql)) {
-                while (resultSet.next()){
-                    int genreId = resultSet.getInt("id");
-                    sql = "INSERT INTO MovieGenreLink (movieId, genreId) VALUES (" + movieId + ", " + genreId + ")";
-                    executeSQLQuery(sql);
-                }
+            String sql = "INSERT INTO MovieGenreLink (movieId, genreId) VALUES " + genreValues;
+            try {
+                executeSQLQuery(sql);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
