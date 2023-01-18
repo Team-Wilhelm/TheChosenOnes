@@ -39,8 +39,8 @@ public class MovieListCell extends ListCell<Movie> {
         title.setStyle(titleStyle);
         otherData.setSpacing(10);
         genreRow.setSpacing(5);
-        img.setFitHeight(100);
-        img.setFitWidth(75);
+        img.setFitHeight(99);
+        img.setFitWidth(66);
         layout.setSpacing(10);
 
         textData.setAlignment(Pos.CENTER_LEFT);
