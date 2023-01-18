@@ -12,7 +12,6 @@ import static Budgetflix.DAL.Tools.*;
 
 public class GenreDAO {
     List<Genre> genreList;
-    List<Movie> moviesInGenre;
 
     /**
      * Creates a Genre based on the contents of the columns in the database and adds all these Genres to a list.
