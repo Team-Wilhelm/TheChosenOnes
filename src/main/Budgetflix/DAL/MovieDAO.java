@@ -61,10 +61,8 @@ public class MovieDAO {
                 + lastView + "' , + '"
                 + movie.getImdbRating() + "', '"
                 + movie.getUserRating() + "' )" + ";";
-
         try {
             executeSQLQuery(sql);
-            addGenresToMovie(movie);
         } catch (SQLException e) {
             if (e.getMessage().contains("Violation of UNIQUE KEY constraint")){
                 return e.getMessage();
@@ -87,10 +85,10 @@ public class MovieDAO {
                 + "lastView = '" + java.sql.Date.valueOf(movie.getLastView()) + "', "
                 + "IMDBrating = '" + movie.getImdbRating() + "', "
                 + "userRating = '" + movie.getUserRating() + "' "
-                + "WHERE id = " + movie.getId();
+                + "WHERE id = " + movie.getId() + ";"
+                + "DELETE FROM MovieGenreLink WHERE movieId = " + movie.getId();
         try {
             executeSQLQuery(sql);
-            executeSQLQuery("DELETE FROM MovieGenreLink WHERE movieId = " + movie.getId());
             addGenresToMovie(movie);
         } catch (SQLException e) {
             if (e.getMessage().contains("Violation of UNIQUE KEY constraint")){
@@ -162,11 +160,11 @@ public class MovieDAO {
     public void addGenresToMovie(Movie movie){
         List<Genre> genres = movie.getGenres();
         List<Integer> genreIds = new ArrayList<>();
-        int movieId = movie.getId();
-
         for (Genre genre: genres){
             genreIds.add(genre.getId());
         }
+
+        int movieId = movie.getId();
 
         if (!genres.isEmpty()){
             StringBuilder genreValues = new StringBuilder("(");
@@ -174,8 +172,8 @@ public class MovieDAO {
                 genreValues.append(movieId).append(", ").append(genreId).append(")").append(", (");
             }
             genreValues = new StringBuilder(genreValues.substring(0, genreValues.length() - 3));
-
             String sql = "INSERT INTO MovieGenreLink (movieId, genreId) VALUES " + genreValues;
+
             try {
                 executeSQLQuery(sql);
             } catch (SQLException e) {
