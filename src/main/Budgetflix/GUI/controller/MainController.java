@@ -69,17 +69,18 @@ public class MainController implements Initializable {
                 moviePoster.setImage(new Image(Objects.requireNonNull(BudgetFlix.class.getResourceAsStream("/images/bimbo.jpg"))));
             }
         });
-        moviesList.setOnKeyPressed(event -> {
-            if(!moviesList.getSelectionModel().isEmpty())
-            {
-                Movie movie = moviesList.getSelectionModel().getSelectedItem();
-                File mediaFile = new File(movie.getFileLink());
-                try {
-                    Desktop.getDesktop().open(mediaFile);
-                } catch (Exception ex){
-                    alertManager.getAlert("ERROR", "File not found!\nCannot play the selected movie.", event).showAndWait();
+        moviesList.setOnKeyReleased(event -> {
+            if(event.getCode() == KeyCode.ENTER)
+                if(!moviesList.getSelectionModel().isEmpty())
+                {
+                    Movie movie = moviesList.getSelectionModel().getSelectedItem();
+                    File mediaFile = new File(movie.getFileLink());
+                    try {
+                        Desktop.getDesktop().open(mediaFile);
+                    } catch (Exception ex){
+                        alertManager.getAlert("ERROR", "File not found!\nCannot play the selected movie.", event).showAndWait();
+                    }
                 }
-            }
         });
 
         searchBar.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -233,6 +234,7 @@ public class MainController implements Initializable {
                 alertManager.getAlert("ERROR", "File not found!\nCannot play the selected movie.", mouseEvent).showAndWait();
             }
         }
+        mouseEvent.consume();
     }
 
     /**
