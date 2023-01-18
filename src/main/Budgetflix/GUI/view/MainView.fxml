@@ -9,7 +9,7 @@
 
 <AnchorPane fx:id="backgroundPane" prefHeight="600.0" prefWidth="1117.0" stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Budgetflix.GUI.controller.MainController">
    <children>
-      <VBox alignment="CENTER" layoutX="877.0" layoutY="440.0" prefWidth="210.0" spacing="15.0" AnchorPane.rightAnchor="30.0">
+      <VBox alignment="CENTER" layoutX="876.0" layoutY="469.0" prefWidth="210.0" spacing="10.0" AnchorPane.rightAnchor="30.59999999999991">
          <children>
             <HBox spacing="10.0">
                <children>
@@ -69,5 +69,11 @@
             <Image url="@../../../../resources/images/bimbo.jpg" />
          </image>
       </ImageView>
+      <Label contentDisplay="CENTER" layoutX="868.0" layoutY="404.0" prefHeight="28.0" prefWidth="225.0" text="Double-click/press enter to play">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label contentDisplay="CENTER" layoutX="875.0" layoutY="450.0" prefHeight="18.0" prefWidth="210.0" text="Select movie to edit or delete:" />
    </children>
 </AnchorPane>

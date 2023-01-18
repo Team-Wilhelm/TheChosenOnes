@@ -9,7 +9,7 @@ public class AlertManager {
     Alert alert;
     private static AlertManager instance=null;
 
-    public AlertManager(){
+    private AlertManager(){
         alert = new Alert(Alert.AlertType.ERROR);
     }
 
