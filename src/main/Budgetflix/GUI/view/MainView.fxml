@@ -64,7 +64,7 @@
             </Group>
          </children>
       </HBox>
-      <ImageView fx:id="moviePoster" fitHeight="271.0" fitWidth="210.0" layoutX="880.0" layoutY="133.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="moviePoster" fitHeight="297.0" fitWidth="159.0" layoutX="901.0" layoutY="121.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../../resources/images/bimbo.jpg" />
          </image>
