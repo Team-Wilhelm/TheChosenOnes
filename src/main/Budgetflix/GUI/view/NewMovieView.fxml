@@ -1,20 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.DatePicker?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import org.controlsfx.control.CheckComboBox?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import org.controlsfx.control.*?>
 
-<AnchorPane fx:id="backgroundPane" prefHeight="360.0" prefWidth="500.0" stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Budgetflix.GUI.controller.NewMovieController">
+<AnchorPane fx:id="backgroundPane" prefHeight="360.0" prefWidth="613.0" stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Budgetflix.GUI.controller.NewMovieController">
    <children>
-      <GridPane alignment="CENTER" layoutX="24.0" layoutY="14.0" prefHeight="232.0" prefWidth="452.0" AnchorPane.bottomAnchor="54.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0" AnchorPane.topAnchor="14.0">
+      <GridPane alignment="CENTER" layoutX="24.0" layoutY="14.0" prefHeight="292.0" prefWidth="388.0" AnchorPane.bottomAnchor="54.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="195.0" AnchorPane.topAnchor="14.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="254.79998779296875" minWidth="10.0" prefWidth="130.00000762939453" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="369.99999237060547" minWidth="10.0" prefWidth="369.99999237060547" />
@@ -29,12 +23,20 @@
         </rowConstraints>
          <children>
             <Label contentDisplay="CENTER" text="Title:" />
-            <TextField fx:id="txtTitle" prefHeight="26.0" prefWidth="199.0" GridPane.columnIndex="1" />
+             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                 <children>
+                     <TextField fx:id="txtTitle" prefHeight="26.0" prefWidth="235.0" />
+                     <Button fx:id="lookUp" mnemonicParsing="false" prefHeight="25.0" prefWidth="79.0" text="Look up" />
+                 </children>
+                 <opaqueInsets>
+                     <Insets />
+                 </opaqueInsets>
+             </HBox>
             <Label text="File path:" GridPane.rowIndex="1" />
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <children>
-                  <TextField fx:id="txtFilePath" prefHeight="26.0" prefWidth="261.0" />
-                  <Button mnemonicParsing="false" onAction="#btnChooseAction" text="Choose..." />
+                  <TextField fx:id="txtFilePath" prefHeight="26.0" prefWidth="235.0" />
+                  <Button mnemonicParsing="false" onAction="#btnChooseAction" prefHeight="25.0" prefWidth="79.0" text="Choose..." />
                </children>
                <opaqueInsets>
                   <Insets />
@@ -43,14 +45,15 @@
             <Label prefHeight="18.0" prefWidth="64.0" text="Last viewed:" GridPane.rowIndex="2" />
             <DatePicker fx:id="dateLastView" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Label text="User rating:" GridPane.rowIndex="3" />
-            <TextField fx:id="txtUserRating" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <TextField fx:id="txtUserRating" prefHeight="25.0" prefWidth="164.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
             <Label text="IMDB rating:" GridPane.rowIndex="4" />
-            <TextField fx:id="txtIMDBRating" prefHeight="26.0" prefWidth="199.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <TextField fx:id="txtIMDBRating" prefHeight="26.0" prefWidth="180.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
             <Label layoutX="10.0" layoutY="222.0" text="Genres" GridPane.rowIndex="5" />
-            <CheckComboBox fx:id="genresDropDown" prefHeight="25.0" prefWidth="188.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <CheckComboBox fx:id="genresDropDown" prefHeight="29.0" prefWidth="177.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
          </children>
       </GridPane>
-      <Button fx:id="btnSave" layoutX="417.0" layoutY="308.0" mnemonicParsing="false" onAction="#btnSaveAction" prefHeight="26.0" prefWidth="60.0" text="Save" />
-      <Button fx:id="btnCancel" layoutX="339.0" layoutY="309.0" mnemonicParsing="false" onAction="#btnCancelAction" prefWidth="60.0" text="Cancel" />
+      <Button fx:id="btnSave" layoutX="308.0" layoutY="309.0" mnemonicParsing="false" onAction="#btnSaveAction" prefHeight="26.0" prefWidth="60.0" text="Save" />
+      <Button fx:id="btnCancel" layoutX="238.0" layoutY="309.0" mnemonicParsing="false" onAction="#btnCancelAction" prefWidth="60.0" text="Cancel" />
+      <ImageView fx:id="moviePoster" fitHeight="246.0" fitWidth="155.0" layoutX="436.0" layoutY="57.0" pickOnBounds="true" preserveRatio="true" />
    </children>
 </AnchorPane>

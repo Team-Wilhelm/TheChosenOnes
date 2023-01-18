@@ -8,6 +8,7 @@ module PrivateMovieCollection {
     requires com.google.common;
     requires org.controlsfx.controls;
     requires java.desktop;
+    requires unirest.java;
 
     opens Budgetflix to javafx.fxml;
     exports Budgetflix;

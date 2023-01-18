@@ -12,5 +12,6 @@
     <orderEntry type="library" name="microsoft.sqlserver.mssql.jdbc1" level="project" />
     <orderEntry type="library" name="controlsfx" level="project" />
     <orderEntry type="library" name="google.guava" level="project" />
+    <orderEntry type="library" name="konghq.unirest.java" level="project" />
   </component>
 </module>

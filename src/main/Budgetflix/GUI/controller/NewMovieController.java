@@ -3,29 +3,47 @@ package Budgetflix.GUI.controller;
 import Budgetflix.BE.Genre;
 import Budgetflix.BE.Movie;
 import Budgetflix.BLL.AlertManager;
+import Budgetflix.BudgetFlix;
 import Budgetflix.DAL.GenreDAO;
 import Budgetflix.GUI.model.Model;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import kong.unirest.HttpResponse;
+import kong.unirest.Unirest;
+import kong.unirest.json.JSONArray;
+import kong.unirest.json.JSONObject;
 import org.controlsfx.control.CheckComboBox;
 
 import java.io.File;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 public class NewMovieController {
+    @FXML
+    public Label imdbLabel;
+    @FXML
+    public Button lookUp;
     @FXML
     private TextField txtTitle, txtUserRating, txtIMDBRating, txtFilePath;
     @FXML
     private DatePicker dateLastView;
     private boolean isEditing = false;
+    @FXML
+    private ImageView moviePoster;
+    private String moviePosterPath;
     @FXML
     private CheckComboBox<Genre> genresDropDown = new CheckComboBox<>(){};
 
@@ -38,6 +56,16 @@ public class NewMovieController {
         //Populates CheckComboBox
         genresDropDown.getItems().addAll(FXCollections.observableList(new GenreDAO().getAllGenres()));
         dateLastView.setValue(LocalDate.now());
+
+        lookUp.setOnAction(event -> {
+            searchImdb();
+        });
+        txtTitle.setOnKeyPressed(event -> {
+            if(event.getCode() == KeyCode.ENTER)
+            {
+                searchImdb();
+            }
+        });
     }
 
     /**
@@ -76,7 +104,7 @@ public class NewMovieController {
 
         else {
             if (isEditing){
-                if (model.editMovie(new Movie(title, filepath, lastView, imdbRating, userRating, genres)).isEmpty()){
+                if (model.editMovie(new Movie(title, filepath, moviePosterPath, lastView, imdbRating, userRating, genres)).isEmpty()){
                     Node node = (Node) actionEvent.getSource();
                     node.getScene().getWindow().hide();
                 }
@@ -85,7 +113,7 @@ public class NewMovieController {
             }
 
             else{
-                if (model.createMovie(new Movie(title, filepath, lastView, imdbRating, userRating, genres)).isEmpty()){
+                if (model.createMovie(new Movie(title, filepath, moviePosterPath, lastView, imdbRating, userRating, genres)).isEmpty()){
                     Node node = (Node) actionEvent.getSource();
                     node.getScene().getWindow().hide();
                 }
@@ -169,6 +197,43 @@ public class NewMovieController {
         List<Genre> genres = movieToEdit.getGenres();
         for (Genre genre: genres){
             genresDropDown.getCheckModel().check(genre);
+        }
+    }
+
+    private JSONObject getDataFromImdb(String searchData){
+        HttpResponse<String> searchResponse = Unirest.get("http://www.omdbapi.com/?s="+searchData.trim()+"&apikey=b712184d")
+                .asString();
+        var searchDataResponse = new JSONObject(searchResponse.getBody());
+        try {
+            JSONObject searchResults = searchDataResponse.getJSONArray("Search").getJSONObject(0);
+            String imdbID = new JSONObject(searchResponse.getBody()).getJSONArray("Search").getJSONObject(0).getString("imdbID");
+            HttpResponse<String> movieResponse = Unirest.get("http://www.omdbapi.com/?i="+imdbID+"&apikey=b712184d")
+                    .asString();
+            return new JSONObject(movieResponse.getBody());
+        }catch (Exception e)
+        {
+            return null;
+        }
+
+    }
+    private void searchImdb(){
+        JSONObject movieObject = getDataFromImdb(txtTitle.getText());
+        if(movieObject != null)
+        {
+            txtIMDBRating.setText(movieObject.getString("imdbRating"));
+            moviePosterPath = movieObject.getString("Poster");
+            moviePoster.setImage(new Image(moviePosterPath));
+            txtTitle.setText(movieObject.getString("Title"));
+            var genres = movieObject.getString("Genre").split(",");
+            var allGenres = genresDropDown.getItems();
+            for (var genre : genres) {
+                try {
+                    var selectItem = allGenres.stream().filter(e -> e.getName().toLowerCase().equals(genre.trim().toLowerCase())).findFirst();
+                    genresDropDown.getCheckModel().check(selectItem.get());
+                }catch (Exception e){}
+            }
+        }else {
+            //todo put here warining when there is no result.
         }
     }
 }
