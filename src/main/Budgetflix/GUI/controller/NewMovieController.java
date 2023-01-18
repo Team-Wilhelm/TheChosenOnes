@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
-public class NewMovieController {
+public class NewMovieController extends BudgetMother {
     @FXML
     public Label lblUserValue, lblIMDBValue;
     @FXML
@@ -51,10 +51,6 @@ public class NewMovieController {
     private final Model model = Model.getInstance();
     private final AlertManager alertManager = AlertManager.getInstance();
 
-    private static final String SLIDER_STYLE_FORMAT =
-            "-slider-track-color: linear-gradient(to right, -slider-filled-track-color 0%%, "
-                    + "-slider-filled-track-color %1$f%%, -fx-base %1$f%%, -fx-base 100%%);";
-
     @FXML
     public void initialize(){
         isEditing = false;
@@ -65,6 +61,7 @@ public class NewMovieController {
         lookUp.setOnAction(event -> {
             searchImdb(event);
         });
+
         txtTitle.setOnKeyPressed(event -> {
             if(event.getCode() == KeyCode.ENTER)
             {
@@ -80,17 +77,9 @@ public class NewMovieController {
             lblIMDBValue.setText(String.format(Locale.US,"%.1f",sliderIMDBRating.getValue()));
         });
 
-        //Slider changes colour when moved
-        sliderUserRating.styleProperty().bind(Bindings.createStringBinding(() -> {
-            double percentage = (sliderUserRating.getValue() - sliderUserRating.getMin()) / (sliderUserRating.getMax() - sliderUserRating.getMin()) * 100.0 ;
-            return String.format(Locale.US, SLIDER_STYLE_FORMAT, percentage);
-        }, sliderUserRating.valueProperty(), sliderUserRating.minProperty(), sliderUserRating.maxProperty()));
-
-        sliderIMDBRating.styleProperty().bind(Bindings.createStringBinding(() -> {
-            double percentage = ( sliderIMDBRating.getValue() -  sliderIMDBRating.getMin()) / ( sliderIMDBRating.getMax() -  sliderIMDBRating.getMin()) * 100.0 ;
-            return String.format(Locale.US, SLIDER_STYLE_FORMAT, percentage);
-        },  sliderIMDBRating.valueProperty(),  sliderIMDBRating.minProperty(),  sliderIMDBRating.maxProperty()));
+        setUpSliderColors(sliderUserRating, sliderIMDBRating);
     }
+
 
     /**
      * Adds Movie to database based on user input, or if Movie already exists updates any changes made to the database.
@@ -104,7 +93,6 @@ public class NewMovieController {
         double userRating = sliderUserRating.getValue();
         double imdbRating = sliderIMDBRating.getValue();
         String moviePosterPath = moviePoster.getImage().getUrl();
-        //TODO movie poster
 
         if (title.isEmpty() || filepath.isEmpty()) {
             //Checks if the title or filepath (obligatory fields) are filled out
@@ -193,8 +181,7 @@ public class NewMovieController {
         dateLastView.setValue(movieToEdit.getLastView());
         try{
             moviePoster.setImage(new Image(movieToEdit.getMoviePoster()));
-        }
-        catch (Exception e){
+        } catch (Exception e){
             moviePoster.setImage(new Image(Objects.requireNonNull(BudgetFlix.class.getResourceAsStream("/images/bimbo.jpg"))));
         }
 

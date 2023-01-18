@@ -34,7 +34,7 @@ import java.net.URL;
 import java.util.*;
 import java.awt.Desktop;
 
-public class MainController implements Initializable {
+public class MainController extends BudgetMother implements Initializable {
     private final Model model = Model.getInstance();
     private final AlertManager alertManager = AlertManager.getInstance();
     @FXML
@@ -46,29 +46,18 @@ public class MainController implements Initializable {
     @FXML
     private Slider sliderUserRating, sliderIMDBRating;
     @FXML
-    private CheckComboBox<Genre> genresDropDown = new CheckComboBox<Genre>(){};
+    private CheckComboBox<Genre> genresDropDown = new CheckComboBox<>(){};
     @FXML
     private Label lblUserValue, lblIMDBValue;
     @FXML
     private ImageView moviePoster;
 
-    private static final String SLIDER_STYLE_FORMAT =
-            "-slider-track-color: linear-gradient(to right, -slider-filled-track-color 0%%, "
-                    + "-slider-filled-track-color %1$f%%, -fx-base %1$f%%, -fx-base 100%%);";
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         moviePoster.setImage(new Image(Objects.requireNonNull(BudgetFlix.class.getResourceAsStream("/images/bimbo.jpg"))));
-
         moviesList.setCellFactory(param -> new MovieListCell());
-        moviesList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            try{
-                moviePoster.setImage(new Image(observable.getValue().getMoviePoster()));
-            }
-            catch (Exception e){
-                moviePoster.setImage(new Image(Objects.requireNonNull(BudgetFlix.class.getResourceAsStream("/images/bimbo.jpg"))));
-            }
-        });
+        setUpListeners();
+
         moviesList.setOnKeyReleased(event -> {
             if(event.getCode() == KeyCode.ENTER)
                 if(!moviesList.getSelectionModel().isEmpty())
@@ -83,6 +72,21 @@ public class MainController implements Initializable {
                 }
         });
 
+        setUpSliderColors(sliderUserRating, sliderIMDBRating);
+        refreshMovieItems();
+        refreshGenresItems();
+        isOldMovieCheckTrue();
+    }
+
+    private void setUpListeners(){
+        moviesList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            try{
+                moviePoster.setImage(new Image(observable.getValue().getMoviePoster()));
+            } catch (Exception e){
+                moviePoster.setImage(new Image(Objects.requireNonNull(BudgetFlix.class.getResourceAsStream("/images/bimbo.jpg"))));
+            }
+        });
+
         searchBar.textProperty().addListener((observable, oldValue, newValue) -> {
             moviesList.setItems(model.filterMovies(searchBar.getText(),genresDropDown.getCheckModel().getCheckedItems(), sliderIMDBRating.getValue(),sliderUserRating.getValue()));
         });
@@ -94,7 +98,6 @@ public class MainController implements Initializable {
             else genresDropDown.setTitle("Select Genre");
         });
 
-
         sliderUserRating.valueProperty().addListener((observable, oldValue, newValue) -> {
             moviesList.setItems(model.filterMovies(searchBar.getText(), genresDropDown.getCheckModel().getCheckedItems(),
                     sliderIMDBRating.getValue(), sliderUserRating.getValue()));
@@ -102,25 +105,10 @@ public class MainController implements Initializable {
         });
 
         sliderIMDBRating.valueProperty().addListener((observable, oldValue, newValue) -> {
-                moviesList.setItems(model.filterMovies(searchBar.getText(), genresDropDown.getCheckModel().getCheckedItems(),
-                        sliderIMDBRating.getValue(), sliderUserRating.getValue()));
-                lblIMDBValue.setText(String.format(Locale.US,"%.1f",sliderIMDBRating.getValue()));
+            moviesList.setItems(model.filterMovies(searchBar.getText(), genresDropDown.getCheckModel().getCheckedItems(),
+                    sliderIMDBRating.getValue(), sliderUserRating.getValue()));
+            lblIMDBValue.setText(String.format(Locale.US,"%.1f",sliderIMDBRating.getValue()));
         });
-
-        //Slider changes colour when moved
-        sliderUserRating.styleProperty().bind(Bindings.createStringBinding(() -> {
-            double percentage = (sliderUserRating.getValue() - sliderUserRating.getMin()) / (sliderUserRating.getMax() - sliderUserRating.getMin()) * 100.0 ;
-            return String.format(Locale.US, SLIDER_STYLE_FORMAT, percentage);
-        }, sliderUserRating.valueProperty(), sliderUserRating.minProperty(), sliderUserRating.maxProperty()));
-
-        sliderIMDBRating.styleProperty().bind(Bindings.createStringBinding(() -> {
-            double percentage = ( sliderIMDBRating.getValue() -  sliderIMDBRating.getMin()) / ( sliderIMDBRating.getMax() -  sliderIMDBRating.getMin()) * 100.0 ;
-            return String.format(Locale.US, SLIDER_STYLE_FORMAT, percentage);
-        },  sliderIMDBRating.valueProperty(),  sliderIMDBRating.minProperty(),  sliderIMDBRating.maxProperty()));
-
-        refreshMovieItems();
-        refreshGenresItems();
-        isOldMovieCheckTrue();
     }
 
     /**

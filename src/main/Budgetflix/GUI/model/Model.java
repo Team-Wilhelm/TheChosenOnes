@@ -10,7 +10,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class Model implements IModel {
     private static Model instance=null;
     LogicManager logicManager = new LogicManager();
@@ -125,7 +124,6 @@ public class Model implements IModel {
     public ObservableList<Genre> getAllGenres(){
         return allGenres;
     }
-
 
     public String addGenre(String genre){
         return logicManager.addGenre(genre);
