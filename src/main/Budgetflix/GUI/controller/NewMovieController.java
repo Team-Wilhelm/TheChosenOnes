@@ -7,6 +7,7 @@ import Budgetflix.BudgetFlix;
 import Budgetflix.GUI.model.Model;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -57,12 +58,12 @@ public class NewMovieController {
         dateLastView.setValue(LocalDate.now());
 
         lookUp.setOnAction(event -> {
-            searchImdb();
+            searchImdb(event);
         });
         txtTitle.setOnKeyPressed(event -> {
             if(event.getCode() == KeyCode.ENTER)
             {
-                searchImdb();
+                searchImdb(event);
             }
         });
     }
@@ -219,10 +220,11 @@ public class NewMovieController {
         {
             return null;
         }
-
     }
-    private void searchImdb(){
+
+    private void searchImdb(Event event){
         JSONObject movieObject = getDataFromImdb(txtTitle.getText());
+        genresDropDown.getCheckModel().clearChecks();
         if(movieObject != null)
         {
             txtIMDBRating.setText(movieObject.getString("imdbRating"));
@@ -235,10 +237,17 @@ public class NewMovieController {
                 try {
                     var selectItem = allGenres.stream().filter(e -> e.getName().toLowerCase().equals(genre.trim().toLowerCase())).findFirst();
                     genresDropDown.getCheckModel().check(selectItem.get());
-                }catch (Exception e){}
+                }catch (Exception e){
+                    model.addGenre(genre.trim());
+                    model.getGenreList();
+                    Genre newGenre = model.getAllGenres().stream().filter(p->p.getName().equals(genre.trim())).findFirst().get();
+                    genresDropDown.getItems().add(newGenre);
+                    genresDropDown.getCheckModel().check(newGenre);
+
+                }
             }
         }else {
-            //todo put here warining when there is no result.
+            alertManager.getAlert("WARNING", "No movie found.", event).showAndWait();
         }
     }
 }
