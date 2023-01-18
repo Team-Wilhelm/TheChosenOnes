@@ -4,6 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -12,6 +13,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import org.controlsfx.control.CheckComboBox?>
 
 <AnchorPane fx:id="backgroundPane" prefHeight="360.0" prefWidth="620.0" stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Budgetflix.GUI.controller.NewMovieController">
@@ -53,9 +55,26 @@
             <Label prefHeight="18.0" prefWidth="64.0" text="Last viewed:" GridPane.rowIndex="2" />
             <DatePicker fx:id="dateLastView" prefHeight="25.0" prefWidth="230.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Label text="User rating:" GridPane.rowIndex="3" />
-            <TextField fx:id="txtUserRating" prefHeight="25.0" prefWidth="307.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <VBox alignment="CENTER_RIGHT" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <children>
+                  <Label text="0.0" fx:id="lblUserValue" />
+                  <Slider fx:id="sliderUserRating" majorTickUnit="1.0" max="10.0" minorTickCount="10" showTickLabels="true" showTickMarks="true" stylesheets="@css/main.css">
+                     <padding>
+                        <Insets bottom="10.0" />
+                     </padding>
+                  </Slider>
+               </children>
+            </VBox>
             <Label text="IMDB rating:" GridPane.rowIndex="4" />
-            <TextField fx:id="txtIMDBRating" prefHeight="25.0" prefWidth="235.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <VBox alignment="CENTER_RIGHT" maxHeight="45.0" prefWidth="321.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <children>
+                  <Label text="0.0" fx:id="lblIMDBValue"/>
+                  <Slider fx:id="sliderIMDBRating" majorTickUnit="1.0" max="10.0" minorTickCount="10" prefWidth="321.0" showTickLabels="true" showTickMarks="true" stylesheets="@css/main.css" />
+               </children>
+               <GridPane.margin>
+                  <Insets top="10.0" />
+               </GridPane.margin>
+            </VBox>
             <Label layoutX="10.0" layoutY="222.0" text="Genres" GridPane.rowIndex="5" />
             <CheckComboBox fx:id="genresDropDown" prefHeight="29.0" prefWidth="320.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
          </children>

@@ -5,15 +5,13 @@ import Budgetflix.BE.Movie;
 import Budgetflix.BLL.AlertManager;
 import Budgetflix.BudgetFlix;
 import Budgetflix.GUI.model.Model;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -29,15 +27,16 @@ import java.io.File;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 public class NewMovieController {
     @FXML
-    public Label imdbLabel;
+    public Label lblUserValue, lblIMDBValue;
     @FXML
     public Button lookUp;
     @FXML
-    private TextField txtTitle, txtUserRating, txtIMDBRating, txtFilePath;
+    private TextField txtTitle, txtFilePath;
     @FXML
     private DatePicker dateLastView;
     private boolean isEditing = false;
@@ -46,9 +45,15 @@ public class NewMovieController {
     private String moviePosterPath;
     @FXML
     private CheckComboBox<Genre> genresDropDown = new CheckComboBox<>(){};
+    @FXML
+    private Slider sliderUserRating, sliderIMDBRating;
 
     private final Model model = Model.getInstance();
     private final AlertManager alertManager = AlertManager.getInstance();
+
+    private static final String SLIDER_STYLE_FORMAT =
+            "-slider-track-color: linear-gradient(to right, -slider-filled-track-color 0%%, "
+                    + "-slider-filled-track-color %1$f%%, -fx-base %1$f%%, -fx-base 100%%);";
 
     @FXML
     public void initialize(){
@@ -66,6 +71,25 @@ public class NewMovieController {
                 searchImdb(event);
             }
         });
+
+        sliderUserRating.valueProperty().addListener((observable, oldValue, newValue) -> {
+            lblUserValue.setText(String.format(Locale.US,"%.1f",sliderUserRating.getValue()));
+        });
+
+        sliderIMDBRating.valueProperty().addListener((observable, oldValue, newValue) -> {
+            lblIMDBValue.setText(String.format(Locale.US,"%.1f",sliderIMDBRating.getValue()));
+        });
+
+        //Slider changes colour when moved
+        sliderUserRating.styleProperty().bind(Bindings.createStringBinding(() -> {
+            double percentage = (sliderUserRating.getValue() - sliderUserRating.getMin()) / (sliderUserRating.getMax() - sliderUserRating.getMin()) * 100.0 ;
+            return String.format(Locale.US, SLIDER_STYLE_FORMAT, percentage);
+        }, sliderUserRating.valueProperty(), sliderUserRating.minProperty(), sliderUserRating.maxProperty()));
+
+        sliderIMDBRating.styleProperty().bind(Bindings.createStringBinding(() -> {
+            double percentage = ( sliderIMDBRating.getValue() -  sliderIMDBRating.getMin()) / ( sliderIMDBRating.getMax() -  sliderIMDBRating.getMin()) * 100.0 ;
+            return String.format(Locale.US, SLIDER_STYLE_FORMAT, percentage);
+        },  sliderIMDBRating.valueProperty(),  sliderIMDBRating.minProperty(),  sliderIMDBRating.maxProperty()));
     }
 
     /**
@@ -75,10 +99,11 @@ public class NewMovieController {
     private void btnSaveAction(ActionEvent actionEvent) {
         String title = txtTitle.getText().trim();
         String filepath = txtFilePath.getText().trim();
-        String userRatingString = txtUserRating.getText().trim();
-        String imdbRatingString = txtIMDBRating.getText().trim();
         LocalDate lastView = null;
         List<Genre> genres = genresDropDown.getCheckModel().getCheckedItems();
+        double userRating = sliderUserRating.getValue();
+        double imdbRating = sliderIMDBRating.getValue();
+        //TODO movie poster
 
         if (title.isEmpty() || filepath.isEmpty()) {
             //Checks if the title or filepath (obligatory fields) are filled out
@@ -91,15 +116,8 @@ public class NewMovieController {
         if (dateLastView.getValue() != null)
             lastView = dateLastView.getValue();
 
-        double userRating = stringToDoubleConverter(userRatingString);
-        double imdbRating = stringToDoubleConverter(imdbRatingString);
-
-        //Opens an alert if the rating is outside the range 0 and 10
-        if (userRating < 0 || userRating > 10 || imdbRating < 0 || imdbRating > 10)
-            alertManager.getAlert("ERROR", "Invalid rating! \nPlease, put in a number between 0.0 and 10.0", actionEvent).showAndWait();
-
         //Opens an alert if the extension of the file is not .mp4 or .mpeg4
-        else if (!txtFilePath.getText().trim().endsWith(".mp4") && !txtFilePath.getText().trim().endsWith(".mpeg4"))
+        if (!txtFilePath.getText().trim().endsWith(".mp4") && !txtFilePath.getText().trim().endsWith(".mpeg4"))
             alertManager.getAlert("ERROR", "Selected file format is not supported!", actionEvent).showAndWait();
 
         else {
@@ -164,28 +182,13 @@ public class NewMovieController {
         }
     }
 
-    private double stringToDoubleConverter(String rating){
-        double result = 0;
-        if (rating.isEmpty())
-            return 0;
-        else{
-            try {
-                result = Double.parseDouble(rating);
-            }
-            catch (NumberFormatException ex){
-                result = -1;
-            }
-            return result;
-        }
-    }
-
     public void setIsEditing(){
         isEditing = true;
         Movie movieToEdit = model.getMovieToEdit();
         txtTitle.setText(movieToEdit.getName());
         txtFilePath.setText(movieToEdit.getFileLink());
-        txtIMDBRating.setText(String.valueOf(movieToEdit.getImdbRating()));
-        txtUserRating.setText(String.valueOf(movieToEdit.getUserRating()));
+        sliderUserRating.setValue(movieToEdit.getUserRating());
+        sliderIMDBRating.setValue(movieToEdit.getImdbRating());
         dateLastView.setValue(movieToEdit.getLastView());
         try{
             moviePoster.setImage(new Image(movieToEdit.getMoviePoster()));
@@ -221,7 +224,7 @@ public class NewMovieController {
         genresDropDown.getCheckModel().clearChecks();
         if(movieObject != null)
         {
-            txtIMDBRating.setText(movieObject.getString("imdbRating"));
+            sliderIMDBRating.setValue(Double.parseDouble(movieObject.getString("imdbRating")));
             moviePosterPath = movieObject.getString("Poster");
             moviePoster.setImage(new Image(moviePosterPath));
             txtTitle.setText(movieObject.getString("Title"));

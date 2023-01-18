@@ -207,12 +207,12 @@ public class MainController implements Initializable {
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.centerOnScreen();
 
-        //TODO look into this, preferably
         if (resource.equals("/Budgetflix/GUI/view/OldMovieView.fxml"))
             stage.showAndWait();
         else
             stage.show();
 
+        //TODO i am speed
         Window window = scene.getWindow();
         window.setOnHiding(event -> {
             refreshGenresItems();
