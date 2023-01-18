@@ -103,6 +103,7 @@ public class NewMovieController {
         List<Genre> genres = genresDropDown.getCheckModel().getCheckedItems();
         double userRating = sliderUserRating.getValue();
         double imdbRating = sliderIMDBRating.getValue();
+        String moviePosterPath = moviePoster.getImage().getUrl();
         //TODO movie poster
 
         if (title.isEmpty() || filepath.isEmpty()) {
