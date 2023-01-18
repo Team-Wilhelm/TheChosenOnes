@@ -139,11 +139,6 @@ public class NewMovieController {
      */
     @FXML
     private void btnChooseAction(ActionEvent actionEvent) {
-        //puts the NewMovieView momentarily behind the file chooser
-        Node node = (Node) actionEvent.getSource();
-        Stage parentStage = (Stage) node.getScene().getWindow();
-        parentStage.setAlwaysOnTop(false);
-
         Stage fileStage = new Stage();
         FileChooser fileChooser = new FileChooser();
         File file;
@@ -166,7 +161,6 @@ public class NewMovieController {
         }
         if (file != null) {
             txtFilePath.setText(file.getAbsolutePath());
-            parentStage.setAlwaysOnTop(true);
         }
     }
 

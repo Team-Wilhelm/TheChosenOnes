@@ -21,7 +21,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -93,7 +92,6 @@ public class MainController implements Initializable {
                 genresDropDown.setTitle(genresDropDown.getCheckModel().getCheckedItems().toString().replace('[',' ').replace(']', ' ').trim());
             else genresDropDown.setTitle("Select Genre");
         });
-
 
 
         sliderUserRating.valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -205,11 +203,9 @@ public class MainController implements Initializable {
         stage.setResizable(false);
         stage.setTitle("Budgetflix");
         stage.getIcons().add(new Image(Objects.requireNonNull(BudgetFlix.class.getResourceAsStream("/images/budgetflixIcon.png"))));
-        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initModality(Modality.APPLICATION_MODAL);
         stage.centerOnScreen();
-        stage.setAlwaysOnTop(true);
-        stage.requestFocus();
-        stage.show();
+        stage.showAndWait();
 
         Window window = scene.getWindow();
         window.setOnHiding(event -> {
