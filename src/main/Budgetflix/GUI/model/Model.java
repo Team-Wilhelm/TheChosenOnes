@@ -1,7 +1,6 @@
 package Budgetflix.GUI.model;
 
-import Budgetflix.BE.Genre;
-import Budgetflix.BE.Movie;
+import Budgetflix.BE.*;
 import Budgetflix.BLL.LogicManager;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

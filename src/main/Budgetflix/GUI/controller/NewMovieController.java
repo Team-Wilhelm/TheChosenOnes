@@ -1,11 +1,9 @@
 package Budgetflix.GUI.controller;
 
-import Budgetflix.BE.Genre;
-import Budgetflix.BE.Movie;
+import Budgetflix.BE.*;
 import Budgetflix.BLL.AlertManager;
 import Budgetflix.BudgetFlix;
 import Budgetflix.GUI.model.Model;
-import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -19,7 +17,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
-import kong.unirest.json.JSONArray;
 import kong.unirest.json.JSONObject;
 import org.controlsfx.control.CheckComboBox;
 

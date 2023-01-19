@@ -1,7 +1,6 @@
 package Budgetflix.BLL;
 
-import Budgetflix.BE.Genre;
-import Budgetflix.BE.Movie;
+import Budgetflix.BE.*;
 import Budgetflix.DAL.GenreDAO;
 import Budgetflix.DAL.MovieDAO;
 

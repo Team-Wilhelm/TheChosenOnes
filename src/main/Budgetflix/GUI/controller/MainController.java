@@ -1,7 +1,6 @@
 package Budgetflix.GUI.controller;
 
-import Budgetflix.BE.Genre;
-import Budgetflix.BE.Movie;
+import Budgetflix.BE.*;
 import Budgetflix.BLL.AlertManager;
 import Budgetflix.BudgetFlix;
 import Budgetflix.GUI.controller.cellFactory.MovieListCell;
@@ -14,13 +13,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.image.*;
+import javafx.scene.input.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;

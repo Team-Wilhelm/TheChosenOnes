@@ -1,7 +1,6 @@
 package Budgetflix.DAL;
 
-import Budgetflix.BE.Genre;
-import Budgetflix.BE.Movie;
+import Budgetflix.BE.*;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
