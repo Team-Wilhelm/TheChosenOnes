@@ -8,14 +8,12 @@ import java.sql.SQLException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import static Budgetflix.DAL.Tools.*;
 
 public class MovieDAO {
-
     /**
      * Creates a Movie based on the contents of the columns in the database and adds all these Movies to a list.
      * @return List of all movies.
@@ -41,8 +39,7 @@ public class MovieDAO {
      */
     public Movie getMovie(int id){
         String sql = "SELECT * FROM Movies WHERE id = " + id;
-        try {
-            ResultSet rs = executeSQLQueryWithResult(sql);
+        try (ResultSet rs = executeSQLQueryWithResult(sql)){
             rs.next();
             return createMovieFromDatabase(rs, id);
         } catch (SQLException ex) {
@@ -64,7 +61,6 @@ public class MovieDAO {
                 + lastView + "' , + '"
                 + movie.getImdbRating() + "', '"
                 + movie.getUserRating() + "' )" + ";";
-
         try {
             executeSQLQuery(sql);
             addGenresToMovie(movie);
@@ -90,10 +86,10 @@ public class MovieDAO {
                 + "lastView = '" + java.sql.Date.valueOf(movie.getLastView()) + "', "
                 + "IMDBrating = '" + movie.getImdbRating() + "', "
                 + "userRating = '" + movie.getUserRating() + "' "
-                + "WHERE id = " + movie.getId();
+                + "WHERE id = " + movie.getId() + ";"
+                + "DELETE FROM MovieGenreLink WHERE movieId = " + movie.getId();
         try {
             executeSQLQuery(sql);
-            executeSQLQuery("DELETE FROM MovieGenreLink WHERE movieId = " + movie.getId());
             addGenresToMovie(movie);
         } catch (SQLException e) {
             if (e.getMessage().contains("Violation of UNIQUE KEY constraint")){
@@ -163,10 +159,10 @@ public class MovieDAO {
     public List<Genre> getAllGenresFromMovie(int movieId){
         String sql = "SELECT * FROM MovieGenreLink WHERE movieId = " + movieId;
         List<Genre> genres = new ArrayList<>();
+        GenreDAO genreDAO = new GenreDAO();
         try (ResultSet rs = executeSQLQueryWithResult(sql)){
             while (rs.next()){
                 int genreId = rs.getInt("genreId");
-                GenreDAO genreDAO = new GenreDAO();
                 genres.add(genreDAO.getGenre(genreId));
             }
             return genres;
@@ -182,26 +178,31 @@ public class MovieDAO {
      */
     public void addGenresToMovie(Movie movie){
         List<Genre> genres = movie.getGenres();
-        String sql = "SELECT * FROM Movies WHERE fileLink = '" + movie.getFileLink() + "'";
+        List<Integer> genreIds = new ArrayList<>();
+        for (Genre genre: genres){
+            genreIds.add(genre.getId());
+        }
+
         int movieId;
-        try {
-            ResultSet resultSet = executeSQLQueryWithResult(sql);
+        String sql = "SELECT * FROM Movies WHERE fileLink = '" + movie.getFileLink() + "'";
+        try (ResultSet resultSet = executeSQLQueryWithResult(sql)){
             resultSet.next();
             movieId = resultSet.getInt("id");
 
-            for (Genre genre: genres){
-                sql = "SELECT * FROM Genre WHERE genreName = '" + genre.getName() + "'";
-                resultSet = executeSQLQueryWithResult(sql);
-                while (resultSet.next()){
-                    int genreId = resultSet.getInt("id");
-                    sql = "INSERT INTO MovieGenreLink (movieId, genreId) VALUES (" + movieId + ", " + genreId + ")";
-                    executeSQLQuery(sql);
+            if (!genres.isEmpty()) {
+                StringBuilder genreValues = new StringBuilder("(");
+                for (Integer genreId : genreIds) {
+                    genreValues.append(movieId).append(", ").append(genreId).append(")").append(", (");
                 }
+                genreValues = new StringBuilder(genreValues.substring(0, genreValues.length() - 3));
+                sql = "INSERT INTO MovieGenreLink (movieId, genreId) VALUES " + genreValues;
+                executeSQLQuery(sql);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
 
     /**
      * Creates a Movie from the contents of the columns in the Movie table

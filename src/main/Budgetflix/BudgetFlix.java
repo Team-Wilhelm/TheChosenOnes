@@ -1,5 +1,6 @@
 package Budgetflix;
 
+import Budgetflix.DAL.Tools;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -28,5 +29,10 @@ public class BudgetFlix extends Application {
 
     public static void main (String[] args) {
         launch();
+    }
+
+    public void stop(){
+        System.out.println(Tools.counter);
+        Tools.closeAllConnections();
     }
 }

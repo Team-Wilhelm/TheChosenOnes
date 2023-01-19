@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class OldMovieViewController implements Initializable {
+public class OldMovieViewController extends BudgetMother implements Initializable {
     private final Model model = Model.getInstance();
     private final AlertManager alertManager = AlertManager.getInstance();
     @FXML
@@ -35,16 +35,7 @@ public class OldMovieViewController implements Initializable {
     //TODO BudgetMother?
     public void btnDeleteMovieAction(ActionEvent actionEvent) {
         Movie movie = moviesList.getSelectionModel().getSelectedItem();
-        if (movie == null){
-            alertManager.getAlert("ERROR", "Please, select a movie to delete!", actionEvent).showAndWait();
-        }
-        else{
-            Alert alert = alertManager.getAlert("CONFIRMATION", "Do you really wish to delete this movie?", actionEvent);
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.isPresent() && result.get() == ButtonType.OK) {
-                model.deleteMovie(movie);
-            }
-        }
+        deleteMovie(actionEvent, movie);
         refreshMovieItems();
     }
 

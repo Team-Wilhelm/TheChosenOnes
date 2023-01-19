@@ -34,7 +34,7 @@ import java.net.URL;
 import java.util.*;
 import java.awt.Desktop;
 
-public class MainController implements Initializable {
+public class MainController extends BudgetMother implements Initializable {
     private final Model model = Model.getInstance();
     private final AlertManager alertManager = AlertManager.getInstance();
     @FXML
@@ -46,29 +46,18 @@ public class MainController implements Initializable {
     @FXML
     private Slider sliderUserRating, sliderIMDBRating;
     @FXML
-    private CheckComboBox<Genre> genresDropDown = new CheckComboBox<Genre>(){};
+    private CheckComboBox<Genre> genresDropDown = new CheckComboBox<>(){};
     @FXML
     private Label lblUserValue, lblIMDBValue;
     @FXML
     private ImageView moviePoster;
 
-    private static final String SLIDER_STYLE_FORMAT =
-            "-slider-track-color: linear-gradient(to right, -slider-filled-track-color 0%%, "
-                    + "-slider-filled-track-color %1$f%%, -fx-base %1$f%%, -fx-base 100%%);";
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         moviePoster.setImage(new Image(Objects.requireNonNull(BudgetFlix.class.getResourceAsStream("/images/bimbo.jpg"))));
-
         moviesList.setCellFactory(param -> new MovieListCell());
-        moviesList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
-            try{
-                moviePoster.setImage(new Image(observable.getValue().getMoviePoster()));
-            }
-            catch (Exception e){
-                moviePoster.setImage(new Image(Objects.requireNonNull(BudgetFlix.class.getResourceAsStream("/images/bimbo.jpg"))));
-            }
-        });
+        setUpListeners();
+
         moviesList.setOnKeyReleased(event -> {
             if(event.getCode() == KeyCode.ENTER)
                 if(!moviesList.getSelectionModel().isEmpty())
@@ -83,6 +72,21 @@ public class MainController implements Initializable {
                 }
         });
 
+        setUpSliderColors(sliderUserRating, sliderIMDBRating);
+        isOldMovieCheckTrue();
+        refreshMovieItems();
+        refreshGenresItems();
+    }
+
+    private void setUpListeners(){
+        moviesList.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            try{
+                moviePoster.setImage(new Image(observable.getValue().getMoviePoster()));
+            } catch (Exception e){
+                moviePoster.setImage(new Image(Objects.requireNonNull(BudgetFlix.class.getResourceAsStream("/images/bimbo.jpg"))));
+            }
+        });
+
         searchBar.textProperty().addListener((observable, oldValue, newValue) -> {
             moviesList.setItems(model.filterMovies(searchBar.getText(),genresDropDown.getCheckModel().getCheckedItems(), sliderIMDBRating.getValue(),sliderUserRating.getValue()));
         });
@@ -94,7 +98,6 @@ public class MainController implements Initializable {
             else genresDropDown.setTitle("Select Genre");
         });
 
-
         sliderUserRating.valueProperty().addListener((observable, oldValue, newValue) -> {
             moviesList.setItems(model.filterMovies(searchBar.getText(), genresDropDown.getCheckModel().getCheckedItems(),
                     sliderIMDBRating.getValue(), sliderUserRating.getValue()));
@@ -102,25 +105,10 @@ public class MainController implements Initializable {
         });
 
         sliderIMDBRating.valueProperty().addListener((observable, oldValue, newValue) -> {
-                moviesList.setItems(model.filterMovies(searchBar.getText(), genresDropDown.getCheckModel().getCheckedItems(),
-                        sliderIMDBRating.getValue(), sliderUserRating.getValue()));
-                lblIMDBValue.setText(String.format(Locale.US,"%.1f",sliderIMDBRating.getValue()));
+            moviesList.setItems(model.filterMovies(searchBar.getText(), genresDropDown.getCheckModel().getCheckedItems(),
+                    sliderIMDBRating.getValue(), sliderUserRating.getValue()));
+            lblIMDBValue.setText(String.format(Locale.US,"%.1f",sliderIMDBRating.getValue()));
         });
-
-        //Slider changes colour when moved
-        sliderUserRating.styleProperty().bind(Bindings.createStringBinding(() -> {
-            double percentage = (sliderUserRating.getValue() - sliderUserRating.getMin()) / (sliderUserRating.getMax() - sliderUserRating.getMin()) * 100.0 ;
-            return String.format(Locale.US, SLIDER_STYLE_FORMAT, percentage);
-        }, sliderUserRating.valueProperty(), sliderUserRating.minProperty(), sliderUserRating.maxProperty()));
-
-        sliderIMDBRating.styleProperty().bind(Bindings.createStringBinding(() -> {
-            double percentage = ( sliderIMDBRating.getValue() -  sliderIMDBRating.getMin()) / ( sliderIMDBRating.getMax() -  sliderIMDBRating.getMin()) * 100.0 ;
-            return String.format(Locale.US, SLIDER_STYLE_FORMAT, percentage);
-        },  sliderIMDBRating.valueProperty(),  sliderIMDBRating.minProperty(),  sliderIMDBRating.maxProperty()));
-
-        refreshMovieItems();
-        refreshGenresItems();
-        isOldMovieCheckTrue();
     }
 
     /**
@@ -157,8 +145,11 @@ public class MainController implements Initializable {
      */
     @FXML
     private void btnAddMovieAction(ActionEvent actionEvent) throws IOException {
-        openNewWindow("/Budgetflix/GUI/view/NewMovieView.fxml");
-
+        Window window = (Window) openNewWindow("/Budgetflix/GUI/view/NewMovieView.fxml")[1];
+        window.setOnHiding(event -> {
+            refreshMovieItems();
+            refreshGenresItems();
+        });
     }
 
     /**
@@ -171,9 +162,16 @@ public class MainController implements Initializable {
             new Alert(Alert.AlertType.ERROR, "Please, select a movie to edit").showAndWait();
         else{
             model.setMovieToEdit(movie);
-            FXMLLoader fxmlLoader = openNewWindow("/Budgetflix/GUI/view/NewMovieView.fxml");
+            Object[] objects = openNewWindow("/Budgetflix/GUI/view/NewMovieView.fxml");
+            FXMLLoader fxmlLoader = (FXMLLoader) objects[0];
             NewMovieController newMovieController = fxmlLoader.getController();
             newMovieController.setIsEditing();
+
+            Window window = (Window) objects[1];
+            window.setOnHiding(event -> {
+                refreshMovieItems();
+                refreshGenresItems();
+            });
         }
     }
 
@@ -183,20 +181,11 @@ public class MainController implements Initializable {
     @FXML
     private void btnDeleteMovieAction(ActionEvent actionEvent) {
         Movie movie = moviesList.getSelectionModel().getSelectedItem();
-        if (movie == null){
-            alertManager.getAlert("ERROR", "Please, select a movie to delete!", actionEvent).showAndWait();
-        }
-        else{
-            Alert alert = alertManager.getAlert("CONFIRMATION", "Do you really wish to delete this movie?", actionEvent);
-            Optional<ButtonType> result = alert.showAndWait();
-            if (result.isPresent() && result.get() == ButtonType.OK) {
-                model.deleteMovie(movie);
-            }
-        }
-        refreshMovieItems();
+        deleteMovie(actionEvent, movie);
+        moviesList.setItems(model.getAllMovies());
     }
 
-    private FXMLLoader openNewWindow(String resource) throws IOException {
+    private Object[] openNewWindow(String resource) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(BudgetFlix.class.getResource(resource));
         Stage stage = new Stage();
         Scene scene = new Scene(fxmlLoader.load());
@@ -212,14 +201,8 @@ public class MainController implements Initializable {
         else
             stage.show();
 
-        //TODO i am speed
         Window window = scene.getWindow();
-        window.setOnHiding(event -> {
-            refreshGenresItems();
-            refreshMovieItems();
-        });
-
-        return fxmlLoader;
+        return new Object[]{fxmlLoader, window};
     }
 
     /**
@@ -244,7 +227,8 @@ public class MainController implements Initializable {
      */
     @FXML
     private void btnAddGenreAction(ActionEvent actionEvent) throws IOException {
-        openNewWindow("/Budgetflix/GUI/view/NewGenreView.fxml");
+        Window window = (Window) openNewWindow("/Budgetflix/GUI/view/NewGenreView.fxml")[1];
+        window.setOnHiding(event -> refreshGenresItems());
     }
 
     /**
@@ -262,6 +246,7 @@ public class MainController implements Initializable {
                 for (Genre genre : genres){
                     model.deleteGenre(genre);
                     genresDropDown.getItems().clear();
+                    //TODO broken again
                 }
                 refreshGenresItems();
             }
