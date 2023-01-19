@@ -20,7 +20,6 @@ public class Tools {
             preparedStatement.addBatch();
             preparedStatement.executeBatch();
             counter++;
-            System.out.println(query);
             connection.commit();
 
         }finally {
@@ -34,7 +33,6 @@ public class Tools {
             connection = bc.getConnection();
             preparedStatement = connection.prepareStatement(query);
             counter++;
-            System.out.println(query);
             return preparedStatement.executeQuery();
         }
         finally {

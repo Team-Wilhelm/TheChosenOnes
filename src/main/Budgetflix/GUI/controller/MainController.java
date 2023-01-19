@@ -93,9 +93,11 @@ public class MainController extends BudgetMother implements Initializable {
 
         genresDropDown.getCheckModel().getCheckedItems().addListener((ListChangeListener<? super Genre>) observable -> {
             moviesList.setItems(model.filterMovies(searchBar.getText(),genresDropDown.getCheckModel().getCheckedItems(),sliderIMDBRating.getValue(),sliderUserRating.getValue()));
-            if(!genresDropDown.getCheckModel().getCheckedItems().isEmpty())
+            if(!genresDropDown.getCheckModel().getCheckedItems().isEmpty()) {
                 genresDropDown.setTitle(genresDropDown.getCheckModel().getCheckedItems().toString().replace('[',' ').replace(']', ' ').trim());
-            else genresDropDown.setTitle("Select Genre");
+            }
+            else
+                genresDropDown.setTitle("Select Genre");
         });
 
         sliderUserRating.setOnMouseReleased(event -> {
@@ -124,7 +126,9 @@ public class MainController extends BudgetMother implements Initializable {
      */
     public void refreshGenresItems(){
         model.getGenreList();
+        genresDropDown.setTitle("Select Genre");
         genresDropDown.getItems().setAll(FXCollections.observableList(model.getAllGenres()));
+        genresDropDown.getCheckModel().clearChecks();
     }
 
     /**
@@ -241,9 +245,8 @@ public class MainController extends BudgetMother implements Initializable {
                     genresDropDown.getItems().clear();
                     //TODO broken again
                 }
-                genresDropDown.getItems().clear();
                 refreshGenresItems();
-                genresDropDown.setTitle("Select Genre");
+                refreshMovieItems();
             }
         }
     }
