@@ -13,28 +13,32 @@ import javafx.scene.layout.VBox;
 import java.util.Objects;
 
 public class MovieListCell extends ListCell<Movie> {
-    //TODO comments pretty pleaaaaaaaaaaaaaase
+    //Movie Title
     private final Label title = new Label();
 
+    //Genres displayed like: | <genre1>,<genre2> |
     private final Label genres = new Label();
     private final HBox genreRow = new HBox(new Label("|"), genres,  new Label("|"));
 
+    //The last date of watching the movie
     private final Label detail = new Label();
     private final Label userRatingTitle = new Label("User Rating:");
     private final Label userRatingRating = new Label();
-
     private final Label imdbRatingTitle = new Label("IMDB Rating:");
     private final Label imdbRatingRating = new Label();
-
     private final HBox otherData = new HBox(detail, new Label("|"), userRatingTitle, userRatingRating, new Label("|"), imdbRatingTitle, imdbRatingRating);
+
     private final VBox textData = new VBox(title, genreRow, otherData);
+
     private final ImageView img = new ImageView();
     private final HBox imgData = new HBox(img);
+
     private final HBox layout = new HBox(imgData,textData);
 
     public MovieListCell() {
         super();
 
+        //Set the visuals of the row data how it should look like
         var titleStyle = "-fx-font-size: 24px;";
         genreRow.setStyle("-fx-font-size: 18px");
         title.setStyle(titleStyle);
@@ -43,10 +47,16 @@ public class MovieListCell extends ListCell<Movie> {
         img.setFitHeight(99);
         img.setFitWidth(66);
         layout.setSpacing(10);
-
         textData.setAlignment(Pos.CENTER_LEFT);
     }
 
+    /**
+     * Fill the row and all the fields with the data for each Movie
+     * @param item The new item for the cell.
+     * @param empty whether or not this cell represents data from the list. If it
+     *        is empty, then it does not represent any domain data, but is a cell
+     *        being used to render an "empty" row.
+     */
     @Override
     protected void updateItem(Movie item, boolean empty) {
         super.updateItem(item, empty);
@@ -57,7 +67,6 @@ public class MovieListCell extends ListCell<Movie> {
             detail.setText(null);
             setGraphic(null);
         } else {
-
             try{
                 img.setImage(new Image(item.getMoviePoster()));
             }

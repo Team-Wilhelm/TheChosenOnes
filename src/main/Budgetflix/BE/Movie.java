@@ -71,6 +71,11 @@ public class Movie {
     public List<Genre> getGenres(){
         return genres;
     }
+
+    /**
+     * Method that returns list without the square
+     * @return
+     */
     public String getGenresToString(){
         return genres.toString().replace("[","").replace("]","");
     }

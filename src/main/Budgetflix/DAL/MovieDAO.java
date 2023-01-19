@@ -149,20 +149,21 @@ public class MovieDAO {
         GenreDAO genreDAO = new GenreDAO();
         List<Genre> genres = genreDAO.getAllGenres();
 
-        //TODO Matej, please, add nice comments ;)
+        // Looping through all the rows in connection table to add the Genres to each Movie
         try (ResultSet rs = executeSQLQueryWithResult(sql)){
             while (rs.next()){
+                //Get the movie from already loaded movies.
                 Movie selMovie = movies.stream()
-                        .filter(movie -> {
+                        .filter(movie -> { //Selects the movie where the current row movieId equals to Id of a movie
                             try {
                                 return movie.getId() == rs.getInt("movieId"); //compare the current movie's id to the id in the database
                             } catch (SQLException e) {
                                 throw new RuntimeException(e);
                             }
                         })
-                        .findFirst()
+                        .findFirst() //Even though the movieId is unique we need to select the first Movie, because the current output is list and not a single element.
                         .get();
-
+                //Get the genre from already loaded genres.
                 Genre selGenre = genres.stream()
                         .filter(genre -> {
                             try {
@@ -171,9 +172,11 @@ public class MovieDAO {
                                 throw new RuntimeException(e);
                             }
                         })
-                        .findFirst()
+                        .findFirst() //Even though the genreId is unique we need to select the first Genre, because the current output is list and not a single element.
                         .get();
-                selMovie.getGenres().add(selGenre); //add a genre to the list of genres in Movie BE
+
+                //add a genre to the list of genres in Movie BE
+                selMovie.getGenres().add(selGenre);
             }
         } catch (SQLException e) {
             e.printStackTrace();

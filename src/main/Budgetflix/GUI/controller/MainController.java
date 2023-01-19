@@ -246,30 +246,51 @@ public class MainController extends BudgetMother implements Initializable {
         }
     }
 
-    //TODO Mateeeeeeej?
+    /**
+     * Sort data by Name
+     * @param actionEvent
+     */
     public void btnNameSortAction(ActionEvent actionEvent) {
         sortData(Comparator.comparing(Movie::getName));
     }
 
+    /**
+     * Sort data by Genres
+     * @param actionEvent
+     */
     public void btnCategorySortAction(ActionEvent actionEvent) {
         sortData(Comparator.comparing(Movie::getGenresToString));
     }
 
+    /**
+     * Sort data by UserRating
+     * @param actionEvent
+     */
     public void btnUserRatingSortAction(ActionEvent actionEvent) {
         sortData(Comparator.comparing(Movie::getUserRating));
     }
 
+    /**
+     * Sort data by ImdbRating
+     * @param actionEvent
+     */
     public void btnImdbRatingSortAction(ActionEvent actionEvent) {
         sortData(Comparator.comparing(Movie::getImdbRating));
     }
 
+    /**
+     * Sorts the data according to specified button clicked.
+     *
+     * @param movieComparator - A specific method of the Movie, which to use to compare the list and order it by.
+     */
     public void sortData(Comparator<Movie> movieComparator)
     {
         var listOfMovies = moviesList.getItems();
         boolean sorted = Comparators.isInOrder(listOfMovies,movieComparator);
-        if(!sorted)
+
+        if(!sorted) //If !sorted, sort the list
             Collections.sort(listOfMovies,movieComparator);
-        else
+        else //If sorted, reverse the order of the list.
             Collections.sort(listOfMovies,movieComparator.reversed());
         moviesList.setItems(listOfMovies);
     }

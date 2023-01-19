@@ -204,14 +204,20 @@ public class NewMovieController extends BudgetMother {
         }
     }
 
-    //TODO you know what TODO
+    /**
+     * Getting data(Name,Poste,Rating,Genres) from the omdbapi - open IMDB api.
+     * @param searchData - Name of the movie you want to search for.
+     * @return JSONObject - The all the movie data for the searched movie
+     */
     private JSONObject getDataFromImdb(String searchData){
+        // Search the movie
         HttpResponse<String> searchResponse = Unirest.get("http://www.omdbapi.com/?s="+searchData.trim()+"&apikey=b712184d")
                 .asString();
         var searchDataResponse = new JSONObject(searchResponse.getBody());
-        try {
-            JSONObject searchResults = searchDataResponse.getJSONArray("Search").getJSONObject(0);
+        try { // If no movie is found throw an Exception
+            // From the list of movies, get the ID of the first movie.
             String imdbID = new JSONObject(searchResponse.getBody()).getJSONArray("Search").getJSONObject(0).getString("imdbID");
+            // Search the movie again, but with corresponding id, to get all the data for the corresponding movie.
             HttpResponse<String> movieResponse = Unirest.get("http://www.omdbapi.com/?i="+imdbID+"&apikey=b712184d")
                     .asString();
             return new JSONObject(movieResponse.getBody());
@@ -220,11 +226,18 @@ public class NewMovieController extends BudgetMother {
         }
     }
 
+    /**
+     * Search the Imdb database with omdbapi
+     * @param event
+     */
     private void searchImdb(Event event){
+        // Get all the movie data for the searched MovieTitle
         JSONObject movieObject = getDataFromImdb(txtTitle.getText());
-        genresDropDown.getCheckModel().clearChecks();
-        if(movieObject != null)
+        if(movieObject != null) //Check if any movie is found
         {
+            genresDropDown.getCheckModel().clearChecks();
+
+            // Get the values from JSONObject by corresponding Key
             sliderIMDBRating.setValue(Double.parseDouble(movieObject.getString("imdbRating")));
             moviePosterPath = movieObject.getString("Poster");
             moviePoster.setImage(new Image(moviePosterPath));
@@ -232,16 +245,15 @@ public class NewMovieController extends BudgetMother {
             var genres = movieObject.getString("Genre").split(",");
             var allGenres = genresDropDown.getItems();
             for (var genre : genres) {
-                try {
+                try { // Select all the genres that each movie has
                     var selectItem = allGenres.stream().filter(e -> e.getName().toLowerCase().equals(genre.trim().toLowerCase())).findFirst();
                     genresDropDown.getCheckModel().check(selectItem.get());
-                }catch (Exception e){
+                }catch (Exception e){ // If the genre is not in a list, add it to the DB and select it.
                     model.addGenre(genre.trim());
                     model.getGenreList();
                     Genre newGenre = model.getAllGenres().stream().filter(p->p.getName().equals(genre.trim())).findFirst().get();
                     genresDropDown.getItems().add(newGenre);
                     genresDropDown.getCheckModel().check(newGenre);
-
                 }
             }
         }else {
