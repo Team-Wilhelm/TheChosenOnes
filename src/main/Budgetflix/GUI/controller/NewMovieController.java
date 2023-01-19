@@ -50,6 +50,7 @@ public class NewMovieController extends BudgetMother {
 
     private final Model model = Model.getInstance();
     private final AlertManager alertManager = AlertManager.getInstance();
+    private MainController mainController;
 
     @FXML
     public void initialize(){
@@ -110,6 +111,8 @@ public class NewMovieController extends BudgetMother {
                 if (model.editMovie(new Movie(title, filepath, moviePosterPath, lastView, imdbRating, userRating, genres)).isEmpty()){
                     Node node = (Node) actionEvent.getSource();
                     node.getScene().getWindow().hide();
+                    mainController.refreshGenresItems();
+                    mainController.refreshMovieItems();
                 }
                 else
                     alertManager.getAlert("ERROR", "File path is already used by a different movie!", actionEvent).showAndWait();
@@ -119,6 +122,8 @@ public class NewMovieController extends BudgetMother {
                 if (model.createMovie(new Movie(title, filepath, moviePosterPath, lastView, imdbRating, userRating, genres)).isEmpty()){
                     Node node = (Node) actionEvent.getSource();
                     node.getScene().getWindow().hide();
+                    mainController.refreshGenresItems();
+                    mainController.refreshMovieItems();
                 }
                 else
                     alertManager.getAlert("ERROR", "File path is already used by a different movie!", actionEvent).showAndWait();
@@ -228,5 +233,9 @@ public class NewMovieController extends BudgetMother {
         }else {
             alertManager.getAlert("WARNING", "No movie found.", event).showAndWait();
         }
+    }
+
+    public void setMainController(MainController mainController) {
+        this.mainController = mainController;
     }
 }

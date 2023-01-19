@@ -1,7 +1,5 @@
 package Budgetflix;
 
-import Budgetflix.BE.Movie;
-import Budgetflix.DAL.MovieDAO;
 import Budgetflix.DAL.Tools;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -34,6 +32,7 @@ public class BudgetFlix extends Application {
     }
 
     public void stop(){
+        //TODO delete
         System.out.println(Tools.counter);
         Tools.closeAllConnections();
     }

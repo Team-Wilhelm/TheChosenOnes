@@ -189,6 +189,7 @@ public class MovieDAO {
             resultSet.next();
             movieId = resultSet.getInt("id");
 
+            //Creates a string of all values to be inserted
             if (!genreIds.isEmpty()) {
                 StringBuilder genreValues = new StringBuilder("(");
                 for (Integer genreId : genreIds) {
