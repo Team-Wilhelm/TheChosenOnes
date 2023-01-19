@@ -9,7 +9,6 @@ import javafx.scene.control.TextField;
 
 public class NewGenreController {
     private Model model = Model.getInstance();
-    private MainController mainController;
     @FXML private TextField txtGenreName;
 
     /**
@@ -38,9 +37,5 @@ public class NewGenreController {
     private void btnCancelAction(ActionEvent actionEvent) {
         Node node = (Node) actionEvent.getSource();
         node.getScene().getWindow().hide();
-    }
-
-    public void setMainController(MainController mainController) {
-        this.mainController = mainController;
     }
 }
