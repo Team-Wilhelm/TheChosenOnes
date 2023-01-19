@@ -1,41 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="backgroundPane" prefHeight="600.0" prefWidth="1117.0" stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Budgetflix.GUI.controller.MainController">
+<AnchorPane fx:id="backgroundPane" prefHeight="634.0" prefWidth="1117.0" stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Budgetflix.GUI.controller.MainController">
    <children>
-      <VBox alignment="CENTER" layoutX="876.0" layoutY="469.0" prefWidth="210.0" spacing="10.0" AnchorPane.rightAnchor="30.59999999999991">
+      <HBox alignment="CENTER" layoutX="231.0" layoutY="530.0" prefHeight="26.0" spacing="20.0">
          <children>
-            <HBox spacing="10.0">
-               <children>
-                  <Button fx:id="btnAddMovie" mnemonicParsing="false" onAction="#btnAddMovieAction" prefHeight="50.0" prefWidth="100.0" text="Add Movie" />
-                  <Button fx:id="btnEditMovie" mnemonicParsing="false" onAction="#btnEditMovieAction" prefHeight="50.0" prefWidth="100.0" text="Edit Movie" />
-               </children>
-            </HBox>
-            <Button fx:id="btnDeleteMovie" mnemonicParsing="false" onAction="#btnDeleteMovieAction" prefHeight="50.0" prefWidth="100.0" text="Delete Movie" />
+            <Button fx:id="btnAddMovie" mnemonicParsing="false" onAction="#btnAddMovieAction" prefHeight="20.0" prefWidth="140.0" text="Add Movie" />
+            <Button fx:id="btnEditMovie" mnemonicParsing="false" onAction="#btnEditMovieAction" prefHeight="20.0" prefWidth="140.0" text="Edit Movie" />
+            <Button fx:id="btnDeleteMovie" mnemonicParsing="false" onAction="#btnDeleteMovieAction" prefHeight="26.0" prefWidth="140.0" text="Delete Movie" />
+            <Button fx:id="btnClickMe" mnemonicParsing="false" onAction="#btnClickMeAction" prefHeight="26.0" prefWidth="140.0" text="Click Me!" />
          </children>
-      </VBox>
+      </HBox>
+      <Label contentDisplay="CENTER" layoutX="30.0" layoutY="534.0" prefHeight="18.0" prefWidth="189.0" text="Select movie to edit or delete:">
+         <font>
+            <Font size="13.0" />
+         </font>
+      </Label>
       <Group layoutX="913.0" layoutY="22.0" AnchorPane.rightAnchor="30.0" />
       <TextField fx:id="searchBar" alignment="CENTER_RIGHT" layoutX="600.0" layoutY="22.0" prefHeight="25.0" prefWidth="250.0" promptText="Search" />
-      <ListView fx:id="moviesList" layoutX="30.0" layoutY="68.0" onMouseClicked="#playMovie" prefHeight="400.0" prefWidth="820.0" />
+      <ListView fx:id="moviesList" layoutX="30.0" layoutY="86.0" onMouseClicked="#playMovie" prefHeight="425.0" prefWidth="820.0" />
       <ButtonBar layoutX="-14.0" layoutY="14.0" prefHeight="40.0" prefWidth="548.0">
           <buttons>
-              <Label text="Sort by:" textFill="#344e41">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
+              <Label text="Sort by:" textFill="#344e41" />
               <Button fx:id="nameSortButton" mnemonicParsing="false" onAction="#btnNameSortAction" text="Name A-Z" />
               <Button fx:id="categorySortButton" layoutX="359.0" layoutY="18.0" mnemonicParsing="false" onAction="#btnCategorySortAction" text="Category A-Z" />
               <Button fx:id="userRatingSortButton" layoutX="359.0" layoutY="18.0" mnemonicParsing="false" onAction="#btnUserRatingSortAction" text="User Rating" />
               <Button fx:id="imdbRatingSortButton" layoutX="359.0" layoutY="18.0" mnemonicParsing="false" onAction="#btnImdbRatingSortAction" prefHeight="25.0" prefWidth="121.0" text="IMDB Rating" />
           </buttons>
       </ButtonBar>
-      <HBox layoutX="30.0" layoutY="498.0" spacing="15.0">
+      <HBox layoutX="29.0" layoutY="566.0" spacing="15.0">
          <children>
             <Group>
                <children>
@@ -53,23 +58,22 @@
             </Group>
          </children>
       </HBox>
-      <ImageView fx:id="moviePoster" fitHeight="288.0" fitWidth="186.0" layoutX="887.0" layoutY="124.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="moviePoster" fitHeight="288.0" fitWidth="210.0" layoutX="888.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../../../resources/images/bimbo.jpg" />
          </image>
       </ImageView>
-      <Label contentDisplay="CENTER" layoutX="868.0" layoutY="404.0" prefHeight="28.0" prefWidth="225.0" text="Double-click/press enter to play">
+      <Label contentDisplay="CENTER" layoutX="29.0" layoutY="58.0" prefHeight="28.0" prefWidth="225.0" text="Double-click/press enter to play">
          <font>
             <Font name="System Bold" size="14.0" />
          </font>
       </Label>
-      <Label contentDisplay="CENTER" layoutX="875.0" layoutY="450.0" prefHeight="18.0" prefWidth="210.0" text="Select movie to edit or delete:" />
-      <HBox layoutX="877.0" layoutY="88.0" spacing="10.0">
+      <HBox layoutX="878.0" layoutY="586.0" spacing="10.0">
          <children>
-            <Button fx:id="btnAddGenre" mnemonicParsing="false" onAction="#btnAddGenreAction" prefWidth="100.0" text="Add Genre" />
-            <Button fx:id="btnDeleteGenre" mnemonicParsing="false" onAction="#btnDeleteGenreAction" prefWidth="100.0" text="Delete Genre" />
+            <Button fx:id="btnAddGenre" mnemonicParsing="false" onAction="#btnAddGenreAction" prefHeight="20.0" prefWidth="100.0" text="Add Genre" />
+            <Button fx:id="btnDeleteGenre" mnemonicParsing="false" onAction="#btnDeleteGenreAction" prefHeight="20.0" prefWidth="100.0" text="Delete Genre" />
          </children>
       </HBox>
-      <ListView fx:id="genreListView" layoutX="881.0" layoutY="4.0" prefHeight="78.0" prefWidth="200.0" />
+      <ListView fx:id="genreListView" layoutX="878.0" layoutY="326.0" prefHeight="250.0" prefWidth="210.0" />
    </children>
 </AnchorPane>

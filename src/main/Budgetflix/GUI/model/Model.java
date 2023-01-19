@@ -130,8 +130,8 @@ public class Model implements IModel {
     }
 
     public void deleteGenre(Genre genre){
-        logicManager.deleteGenre(genre);
         allGenres.remove(genre);
+        logicManager.deleteGenre(genre);
     }
 
     public void getGenreList(){

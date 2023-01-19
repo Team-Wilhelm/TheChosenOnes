@@ -88,26 +88,27 @@
 }
 
 /* Movie list css */
-#moviesList{
+.list-view{
     -fx-background-color: #DAD7CD;
 }
 
-#moviesList .list-cell{
+.list-view .list-cell{
     -fx-background-color: #DAD7CD;
     -fx-border-color: #CCC6B8;
 }
 
-#moviesList .list-cell:filled:focused:selected,
-#moviesList .scroll-bar .thumb{
+.list-view .list-cell:filled:focused:selected,
+.list-view .list-cell:filled:selected,
+.list-view .scroll-bar .thumb{
     -fx-background-color: #C2BDAD;
 }
 
-#moviesList .scroll-bar .increment-button:hover,
-#moviesList .scroll-bar .decrement-button:hover {
+.list-view .scroll-bar .increment-button:hover,
+.list-view .scroll-bar .decrement-button:hover {
     -fx-background-color: #C2BDAD;
 }
 
-#moviesList .scroll-bar{
+.list-view .scroll-bar{
     -fx-background-color: #CCC6B8;
 }
 

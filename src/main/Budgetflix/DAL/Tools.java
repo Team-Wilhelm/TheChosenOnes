@@ -8,7 +8,6 @@ import java.sql.SQLException;
 public class Tools {
     private static final BudgetConnection bc = new BudgetConnection();
     private static PreparedStatement preparedStatement;
-    public static int counter = 0;
 
     public static void executeSQLQuery(String query) throws SQLException {
         Connection connection = null;
@@ -19,7 +18,6 @@ public class Tools {
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.addBatch();
             preparedStatement.executeBatch();
-            counter++;
             connection.commit();
 
         }finally {
@@ -32,7 +30,6 @@ public class Tools {
         try{
             connection = bc.getConnection();
             preparedStatement = connection.prepareStatement(query);
-            counter++;
             return preparedStatement.executeQuery();
         }
         finally {

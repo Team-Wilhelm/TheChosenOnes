@@ -7,8 +7,6 @@ import Budgetflix.BudgetFlix;
 import Budgetflix.GUI.controller.cellFactory.MovieListCell;
 import Budgetflix.GUI.model.Model;
 import com.google.common.collect.Comparators;
-import javafx.beans.binding.Bindings;
-import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -45,8 +43,6 @@ public class MainController extends BudgetMother implements Initializable {
     private ListView<Genre> genreListView;
     @FXML
     private Slider sliderUserRating, sliderIMDBRating;
-    @FXML
-    private CheckComboBox<Genre> genresDropDown = new CheckComboBox<>(){};
     @FXML
     private Label lblUserValue, lblIMDBValue;
     @FXML
@@ -238,7 +234,6 @@ public class MainController extends BudgetMother implements Initializable {
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 for (Genre genre : genres){
                     model.deleteGenre(genre);
-                    //TODO broken again
                 }
                 refreshGenresItems();
                 refreshMovieItems();
@@ -271,5 +266,9 @@ public class MainController extends BudgetMother implements Initializable {
         else
             Collections.sort(listOfMovies,movieComparator.reversed());
         moviesList.setItems(listOfMovies);
+    }
+
+    public void btnClickMeAction(ActionEvent actionEvent) {
+        alertManager.getAlert("INFORMATION", "Have a nice day :)", actionEvent).showAndWait();
     }
 }
