@@ -14,10 +14,15 @@ public class Tools {
         Connection connection = null;
         try{
             connection = bc.getConnection();
+            connection.setAutoCommit(false);
+
             preparedStatement = connection.prepareStatement(query);
-            preparedStatement.execute();
+            preparedStatement.addBatch();
+            preparedStatement.executeBatch();
             counter++;
             System.out.println(query);
+            connection.commit();
+
         }finally {
             bc.releaseConnection(connection);
         }

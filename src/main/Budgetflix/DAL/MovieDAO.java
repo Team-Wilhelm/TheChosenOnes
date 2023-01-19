@@ -23,8 +23,8 @@ public class MovieDAO {
         String sql = "SELECT * FROM Movies";
         try (ResultSet rs = executeSQLQueryWithResult(sql)){
             while(rs.next()){
-                int id = rs.getInt("id");
-                allMovies.add(createMovieFromDatabase(rs, id));
+                int movieID = rs.getInt("id");
+                allMovies.add(createMovieFromDatabase(rs, movieID));
             }
             return allMovies;
         } catch (SQLException ex) {
@@ -146,7 +146,6 @@ public class MovieDAO {
      * @return
      */
     public List<Genre> getAllGenresFromMovie(int movieId){
-        //TODO less sql
         String sql = "SELECT * FROM MovieGenreLink WHERE movieId = " + movieId;
         List<Genre> genres = new ArrayList<>();
         List<Integer> genreIds = new ArrayList<>();
