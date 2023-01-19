@@ -17,6 +17,7 @@ public class Tools {
             preparedStatement = connection.prepareStatement(query);
             preparedStatement.execute();
             counter++;
+            System.out.println(query);
         }finally {
             bc.releaseConnection(connection);
         }
@@ -28,6 +29,7 @@ public class Tools {
             connection = bc.getConnection();
             preparedStatement = connection.prepareStatement(query);
             counter++;
+            System.out.println(query);
             return preparedStatement.executeQuery();
         }
         finally {

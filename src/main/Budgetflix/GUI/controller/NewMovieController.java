@@ -124,9 +124,11 @@ public class NewMovieController extends BudgetMother {
                     node.getScene().getWindow().hide();
                     mainController.refreshGenresItems();
                     mainController.refreshMovieItems();
+
                 }
-                else
+                else{
                     alertManager.getAlert("ERROR", "File path is already used by a different movie!", actionEvent).showAndWait();
+                }
             }
         }
     }

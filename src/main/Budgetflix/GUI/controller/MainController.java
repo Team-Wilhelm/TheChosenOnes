@@ -74,8 +74,8 @@ public class MainController extends BudgetMother implements Initializable {
 
         setUpSliderColors(sliderUserRating, sliderIMDBRating);
         isOldMovieCheckTrue();
-        refreshMovieItems();
-        refreshGenresItems();
+        moviesList.setItems(model.getAllMovies());
+        genresDropDown.getItems().setAll(FXCollections.observableList(model.getAllGenres()));
     }
 
     private void setUpListeners(){
@@ -241,8 +241,9 @@ public class MainController extends BudgetMother implements Initializable {
                     genresDropDown.getItems().clear();
                     //TODO broken again
                 }
-                genresDropDown.setTitle("Select Genre");
+                genresDropDown.getItems().clear();
                 refreshGenresItems();
+                genresDropDown.setTitle("Select Genre");
             }
         }
     }

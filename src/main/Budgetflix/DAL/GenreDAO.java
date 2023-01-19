@@ -81,4 +81,22 @@ public class GenreDAO {
             return null;
         }
     }
+
+    public List<Genre> getGenres(List<Integer> genreIds){
+        String idList = genreIds.toString().substring(1, genreIds.toString().length()-1);
+        String sql = "SELECT * FROM Genre WHERE id IN (" + idList + ")";
+        List<Genre> genreList = new ArrayList<>();
+
+        try (ResultSet rs = executeSQLQueryWithResult(sql)){
+            while (rs.next()){
+                int id = rs.getInt("id");
+                String name = rs.getString("genreName");
+                genreList.add(new Genre(id, name));
+            }
+            return genreList;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

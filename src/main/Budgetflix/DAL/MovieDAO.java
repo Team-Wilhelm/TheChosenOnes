@@ -120,19 +120,7 @@ public class MovieDAO {
      * Deletes multiple Movies from both the MoviesGenreLink and the Movies tables.
      * @param movies
      *
-    public void deleteMovies(List<Movie> movies){
-        for (Movie movie: movies){
-            int id = movie.getId();
-            String sql = String.join(",","DELETE FROM MovieGenreLink WHERE movieId = " + id + ";")
-                    + String.join(",","DELETE FROM Movies WHERE id = " + id);
-            try {
-                executeSQLQuery(sql);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
     }*/
-    //TODO make this work with a single query
     public void deleteMovies(List<Movie> movies){
         List<Integer> movieIds = new ArrayList<>();
 
@@ -158,14 +146,17 @@ public class MovieDAO {
      * @return
      */
     public List<Genre> getAllGenresFromMovie(int movieId){
+        //TODO less sql
         String sql = "SELECT * FROM MovieGenreLink WHERE movieId = " + movieId;
         List<Genre> genres = new ArrayList<>();
+        List<Integer> genreIds = new ArrayList<>();
         GenreDAO genreDAO = new GenreDAO();
+
         try (ResultSet rs = executeSQLQueryWithResult(sql)){
             while (rs.next()){
-                int genreId = rs.getInt("genreId");
-                genres.add(genreDAO.getGenre(genreId));
+                genreIds.add(rs.getInt("genreId")); //add all required IDs
             }
+            genres.addAll(genreDAO.getGenres(genreIds));
             return genres;
         } catch (SQLException e) {
             e.printStackTrace();
