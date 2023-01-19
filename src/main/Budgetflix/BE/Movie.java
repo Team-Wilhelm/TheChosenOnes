@@ -1,6 +1,7 @@
 package Budgetflix.BE;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Movie {
@@ -16,6 +17,7 @@ public class Movie {
         this.fileLink = fileLink;
         this.imdbRating = imdbRating;
         this.userRating = userRating;
+        this.genres = new ArrayList<>();
     }
 
     public Movie(String name, String fileLink, String moviePoster, LocalDate lastView, double imdbRating, double userRating){

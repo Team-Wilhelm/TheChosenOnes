@@ -20,12 +20,15 @@ public class MovieDAO {
      */
     public List<Movie> getAllMovies(){
         ArrayList<Movie> allMovies = new ArrayList<>();
+        List<Integer> movieIds = new ArrayList<>();
         String sql = "SELECT * FROM Movies";
         try (ResultSet rs = executeSQLQueryWithResult(sql)){
             while(rs.next()){
                 int movieID = rs.getInt("id");
+                movieIds.add(movieID);
                 allMovies.add(createMovieFromDatabase(rs, movieID));
             }
+            getAllGenresFromMovie(allMovies);
             return allMovies;
         } catch (SQLException ex) {
             ex.printStackTrace();
@@ -142,24 +145,42 @@ public class MovieDAO {
 
     /**
      * Gets a list of all genres linked to a specific Movie.
-     * @param movieId
+     * @param
      * @return
      */
-    public List<Genre> getAllGenresFromMovie(int movieId){
-        String sql = "SELECT * FROM MovieGenreLink WHERE movieId = " + movieId;
-        List<Genre> genres = new ArrayList<>();
-        List<Integer> genreIds = new ArrayList<>();
+    public void getAllGenresFromMovie(List<Movie> movies){
+        String sql = "SELECT * FROM MovieGenreLink;";
+
         GenreDAO genreDAO = new GenreDAO();
+        List<Genre> genres = genreDAO.getAllGenres();
 
         try (ResultSet rs = executeSQLQueryWithResult(sql)){
             while (rs.next()){
-                genreIds.add(rs.getInt("genreId")); //add all required IDs
+                Movie selMovie = movies.stream()
+                        .filter(movie -> {
+                            try {
+                                return movie.getId() == rs.getInt("movieId");
+                            } catch (SQLException e) {
+                                throw new RuntimeException(e);
+                            }
+                        })
+                        .findFirst()
+                        .get();
+
+                Genre selGenre = genres.stream()
+                        .filter(genre -> {
+                            try {
+                                return genre.getId() == rs.getInt("genreId");
+                            } catch (SQLException e) {
+                                throw new RuntimeException(e);
+                            }
+                        })
+                        .findFirst()
+                        .get();
+                selMovie.getGenres().add(selGenre);
             }
-            genres.addAll(genreDAO.getGenres(genreIds));
-            return genres;
         } catch (SQLException e) {
             e.printStackTrace();
-            return null;
         }
     }
 
@@ -207,7 +228,6 @@ public class MovieDAO {
         LocalDate lastView = rs.getDate("lastView").toLocalDate();
         double imdbRating = rs.getDouble("IMDBrating");
         double userRating = rs.getDouble("userRating");
-        List<Genre> genres = getAllGenresFromMovie(id);
-        return new Movie(id, movieName, fileLink, moviePoster, lastView, imdbRating, userRating, genres);
+        return new Movie(id, movieName, fileLink, moviePoster, lastView, imdbRating, userRating);
     }
 }
