@@ -98,13 +98,13 @@ public class MainController extends BudgetMother implements Initializable {
             else genresDropDown.setTitle("Select Genre");
         });
 
-        sliderUserRating.valueProperty().addListener((observable, oldValue, newValue) -> {
+        sliderUserRating.setOnMouseReleased(event -> {
             moviesList.setItems(model.filterMovies(searchBar.getText(), genresDropDown.getCheckModel().getCheckedItems(),
                     sliderIMDBRating.getValue(), sliderUserRating.getValue()));
             lblUserValue.setText(String.format(Locale.US,"%.1f",sliderUserRating.getValue()));
         });
 
-        sliderIMDBRating.valueProperty().addListener((observable, oldValue, newValue) -> {
+        sliderIMDBRating.setOnMouseReleased(event -> {
             moviesList.setItems(model.filterMovies(searchBar.getText(), genresDropDown.getCheckModel().getCheckedItems(),
                     sliderIMDBRating.getValue(), sliderUserRating.getValue()));
             lblIMDBValue.setText(String.format(Locale.US,"%.1f",sliderIMDBRating.getValue()));
