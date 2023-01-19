@@ -139,7 +139,8 @@ public class MovieDAO {
         for (Movie movie: movies) {
             movieIds.add(movie.getId());
         }
-        String idList = movieIds.toString();
+
+        String idList = movieIds.toString().substring(1, movieIds.toString().length()-1);
 
         String sql = "DELETE FROM MovieGenresLink WHERE movieID IN (" + idList + ");" +
                    "DELETE FROM Movies WHERE id IN (" + idList + ");";
@@ -148,8 +149,8 @@ public class MovieDAO {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-
     }
+
 
     /**
      * Gets a list of all genres linked to a specific Movie.
