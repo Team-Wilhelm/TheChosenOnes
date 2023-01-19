@@ -22,28 +22,29 @@ public class BudgetConnection {
     }
 
     /**
-     * Creates a connection to our database.
+     * If there is a connection, which is not in use, get the available connection.
+     * Otherwise, opens a new connection.
      * @return database connection.
      */
     public Connection getConnection() throws SQLException {
+        Connection connection;
         if (freeConnections.isEmpty()){
-            Connection connection = ds.getConnection();
-            usedConnections.add(connection);
-            return connection;
+            connection = ds.getConnection();
         }
         else{
-            Connection connection = freeConnections.remove(0);
-            if (connection.isValid(50)){
-                usedConnections.add(connection);
-                return connection;
-            } else{
+            connection = freeConnections.remove(0);
+            if (!connection.isValid(50)) {
                 connection = ds.getConnection();
-                usedConnections.add(connection);
-                return connection;
             }
         }
+        usedConnections.add(connection);
+        return connection;
     }
 
+    /**
+     * After a query is done, the connection is added to the pool of free connections to use again.
+     * @param connection The connection to release
+     */
     public void releaseConnection(Connection connection){
         if (usedConnections.contains(connection)){
             usedConnections.remove(connection);
@@ -51,6 +52,9 @@ public class BudgetConnection {
         }
     }
 
+    /**
+     * Closes all open connections
+     */
     public void closeAllConnections() {
         usedConnections.forEach(this::releaseConnection);
         for (Connection con : freeConnections){

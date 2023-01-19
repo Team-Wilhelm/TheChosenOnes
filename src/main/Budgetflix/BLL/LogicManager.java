@@ -11,6 +11,7 @@ public class LogicManager implements ILogicManager {
     private final MovieDAO movieDAO = new MovieDAO();
     private final GenreDAO genreDAO = new GenreDAO();
 
+    //Pass-through layer between Model and DAOs
     public String addMovie(Movie movie){
         return movieDAO.addMovie(movie);
     }

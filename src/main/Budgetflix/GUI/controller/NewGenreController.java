@@ -31,7 +31,7 @@ public class NewGenreController {
     }
 
     /**
-     * Enables an action to be cancelled.
+     * Closes the window
      */
     @FXML
     private void btnCancelAction(ActionEvent actionEvent) {

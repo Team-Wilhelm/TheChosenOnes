@@ -15,7 +15,7 @@ public class AlertManager {
 
     /**
      * Creates an Alert template, allowing it to be reused multiple times.
-     * @return
+     * @return an Alert
      */
     public Alert getAlert(String type, String text, Event actionEvent){
         alert.setAlertType(Alert.AlertType.valueOf(type));
@@ -30,8 +30,8 @@ public class AlertManager {
     }
 
     /**
-     * Makes AlertManager a singleton class.
-     * @return
+     * Makes AlertManager a singleton class, in order to reuse the same alert and avoid code repetition
+     * @return AlertManager
      */
     public static AlertManager getInstance(){
         if(instance == null){

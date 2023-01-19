@@ -25,6 +25,8 @@ public class Genre {
     public String toString() {
         return name;
     }
+
+    //TODO a useful comment (with a bit of explanation) could be nice
     @Override
     public boolean equals(Object obj){
         if(obj == null)

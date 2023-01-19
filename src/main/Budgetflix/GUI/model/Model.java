@@ -11,12 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Model implements IModel {
-    private static Model instance=null;
-    LogicManager logicManager = new LogicManager();
-    Movie movieToEdit;
+    private final ObservableList<Movie> oldMovieList;
     private static ObservableList<Movie> allMovies;
     private static ObservableList<Genre> allGenres;
-    private ObservableList<Movie> oldMovieList;
+    private static Model instance=null;
+    private LogicManager logicManager = new LogicManager();
+    private Movie movieToEdit;
+
 
     /**
      * Makes Model a singleton class.
@@ -39,10 +40,6 @@ public class Model implements IModel {
 
     /**
      * Enables the list of movies to be filtered based on different parameters and combine the results of these checks.
-     * @param query
-     * @param genres
-     * @param IMDBrating
-     * @param userRating
      * @return list of Movie after filtering.
      */
     public ObservableList<Movie> filterMovies(String query, ObservableList<Genre> genres, double IMDBrating, double userRating)
@@ -50,24 +47,27 @@ public class Model implements IModel {
         List<Movie> filtered = new ArrayList<>();
 
         for (Movie m : allMovies) {
+            //If there are no matches in the movie titles, return false
             var check1 = true;
             if(!query.isEmpty())
                 if(!m.getName().toLowerCase().contains(query.toLowerCase()))
                     check1 = false;
 
+            //If the movie doesn't contain all selected genres, return false
             var check2 = true;
             if(genres.size() != 0)
                 if(!m.getGenres().containsAll(genres))
                     check2 = false;
 
+            //If the rating of the movie is lower than the desired rating, return false
             var check3 = true;
             if (m.getImdbRating() < IMDBrating)
                 check3 = false;
-
             var check4 = true;
             if (m.getUserRating() < userRating)
                 check4 = false;
 
+            //When all checks are passed, add movie to the list of filtered movies
             if(check1 && check2 && check3 && check4)
                 filtered.add(m);
         }
@@ -86,6 +86,7 @@ public class Model implements IModel {
 
     public void deleteMovie(Movie movie){
         logicManager.deleteMovie(movie);
+        //Removing it from the lists of allMovies and oldMovieList, instead of reloading the list from the database speeds up the refreshing of the items
         allMovies.remove(movie);
         oldMovieList.remove(movie);
     }

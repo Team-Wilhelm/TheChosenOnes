@@ -5,7 +5,6 @@ import Budgetflix.BE.Movie;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,6 +15,7 @@ import static Budgetflix.DAL.Tools.*;
 public class MovieDAO {
     /**
      * Creates a Movie based on the contents of the columns in the database and adds all these Movies to a list.
+     * Simultaneously calls the getAllGenresFromMovie method, which populates the list of Genres in a Movie BE
      * @return List of all movies.
      */
     public List<Movie> getAllMovies(){
@@ -52,8 +52,10 @@ public class MovieDAO {
     }
 
     /**
-     * Adds a movie to the database and calls the addGenresToMovie method
-     * @return
+     * Adds a movie to the database and calls the addGenresToMovie method,
+     * which links the movie with its genres in the linking table
+     * @return An empty string, if no exception has been thrown,
+     * otherwise, return an exception message if the movie filepath is already in the database
      */
     public String addMovie(Movie movie){
         Date lastView = java.sql.Date.valueOf(movie.getLastView());
@@ -79,8 +81,8 @@ public class MovieDAO {
 
     /**
      * Updates the contents of a Movies column in the database as well as updating the genres attributed to the movie
-     * @param movie
-     * @return
+     * @return An empty string, if no exception has been thrown,
+     * otherwise, return an exception message if the movie filepath is already in the database
      */
     public String editMovie(Movie movie){
         String sql = "UPDATE Movies SET movieName = '" + validateStringForSQL(movie.getName()) + "', "
@@ -106,7 +108,6 @@ public class MovieDAO {
 
     /**
      * Deletes a Movie from both the MoviesGenreLink and the Movies tables.
-     * @param movie
      */
     public void deleteMovie(Movie movie){
         int id = movie.getId();
@@ -121,7 +122,6 @@ public class MovieDAO {
 
     /**
      * Deletes multiple Movies from both the MoviesGenreLink and the Movies tables.
-     * @param movies
      */
     public void deleteMovies(List<Movie> movies){
         List<Integer> movieIds = new ArrayList<>();
@@ -131,7 +131,6 @@ public class MovieDAO {
         }
 
         String idList = movieIds.toString().substring(1, movieIds.toString().length()-1);
-
         String sql = "DELETE FROM MovieGenreLink WHERE movieID IN (" + idList + ");" +
                    "DELETE FROM Movies WHERE id IN (" + idList + ");";
             try {
@@ -144,21 +143,19 @@ public class MovieDAO {
 
     /**
      * Gets a list of all genres linked to a specific Movie.
-     * @param
-     * @return
      */
     public void getAllGenresFromMovie(List<Movie> movies){
         String sql = "SELECT * FROM MovieGenreLink;";
-
         GenreDAO genreDAO = new GenreDAO();
         List<Genre> genres = genreDAO.getAllGenres();
 
+        //TODO Matej, please, add nice comments ;)
         try (ResultSet rs = executeSQLQueryWithResult(sql)){
             while (rs.next()){
                 Movie selMovie = movies.stream()
                         .filter(movie -> {
                             try {
-                                return movie.getId() == rs.getInt("movieId");
+                                return movie.getId() == rs.getInt("movieId"); //compare the current movie's id to the id in the database
                             } catch (SQLException e) {
                                 throw new RuntimeException(e);
                             }
@@ -169,14 +166,14 @@ public class MovieDAO {
                 Genre selGenre = genres.stream()
                         .filter(genre -> {
                             try {
-                                return genre.getId() == rs.getInt("genreId");
+                                return genre.getId() == rs.getInt("genreId"); //compare the current genre's id to the id in the database
                             } catch (SQLException e) {
                                 throw new RuntimeException(e);
                             }
                         })
                         .findFirst()
                         .get();
-                selMovie.getGenres().add(selGenre);
+                selMovie.getGenres().add(selGenre); //add a genre to the list of genres in Movie BE
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -185,15 +182,15 @@ public class MovieDAO {
 
     /**
      * Adds a link between a genre and a specific movie in the MoviesGenreLink table.
-     * @param movie
      */
     public void addGenresToMovie(Movie movie){
+        int movieId;
         List<Integer> genreIds = new ArrayList<>();
         for (Genre genre: movie.getGenres()){
             genreIds.add(genre.getId());
         }
 
-        int movieId;
+        //Gets the movie id from the database, otherwise, an issue with FOREIGN KEY CONSTRAINT arises
         String sql = "SELECT * FROM Movies WHERE fileLink = '" + movie.getFileLink() + "'";
         try (ResultSet resultSet = executeSQLQueryWithResult(sql)){
             resultSet.next();
@@ -218,7 +215,6 @@ public class MovieDAO {
     /**
      * Creates a Movie from the contents of the columns in the Movie table
      * @return Movie
-     * @throws SQLException
      */
     private Movie createMovieFromDatabase(ResultSet rs, int id) throws SQLException {
         String movieName = rs.getString("movieName");

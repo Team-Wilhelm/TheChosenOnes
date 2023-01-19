@@ -34,7 +34,8 @@ public class GenreDAO {
 
     /**
      * Adds a Genre to the Genre table in the database.
-     * @return
+     * @return An empty string, if no exception has been thrown,
+     * otherwise, return an exception message if the genre name is already in the database
      */
     public String addGenreToDatabase(String name) {
         String sql = "INSERT INTO Genre (genreName) VALUES ('" + validateStringForSQL(name) + "')";
@@ -52,7 +53,7 @@ public class GenreDAO {
 
     /**
      * Deletes a Genre from all tables in the database.
-     * @param genre
+     * @param genre to delete
      */
     public void deleteGenre(Genre genre){
         int id = genre.getId();
@@ -66,7 +67,7 @@ public class GenreDAO {
     }
 
     /**
-     * @param genreId
+     * Get genre by its respective id
      * @return Genre based on contents of a specific column in the Genre table
      */
     public Genre getGenre(int genreId) {
@@ -82,6 +83,10 @@ public class GenreDAO {
         }
     }
 
+    /**
+     * Get multiple genres based on their IDs
+     * @return a list of Genres
+     */
     public List<Genre> getGenres(List<Integer> genreIds){
         String idList = genreIds.toString().substring(1, genreIds.toString().length()-1);
         String sql = "SELECT * FROM Genre WHERE id IN (" + idList + ")";

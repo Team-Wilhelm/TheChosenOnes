@@ -39,10 +39,8 @@ public class NewMovieController extends BudgetMother {
     private TextField txtTitle, txtFilePath;
     @FXML
     private DatePicker dateLastView;
-    private boolean isEditing = false;
     @FXML
     private ImageView moviePoster;
-    private String moviePosterPath;
     @FXML
     private CheckComboBox<Genre> genresDropDown = new CheckComboBox<>(){};
     @FXML
@@ -51,13 +49,16 @@ public class NewMovieController extends BudgetMother {
     private final Model model = Model.getInstance();
     private final AlertManager alertManager = AlertManager.getInstance();
     private MainController mainController;
+    private String moviePosterPath;
+    private boolean isEditing = false;
+
 
     @FXML
     public void initialize(){
         isEditing = false;
         //Populates CheckComboBox
         genresDropDown.getItems().addAll(FXCollections.observableList(model.getAllGenres()));
-        dateLastView.setValue(LocalDate.now());
+        dateLastView.setValue(LocalDate.now()); //Adds today's date as the last watched date by default
         moviePoster.setImage(new Image(Objects.requireNonNull(BudgetFlix.class.getResourceAsStream("/images/bimbo.jpg"))));
 
         lookUp.setOnAction(event -> {
@@ -69,6 +70,7 @@ public class NewMovieController extends BudgetMother {
                 searchImdb(event);
         });
 
+        //Sets up listeners for rating sliders
         sliderUserRating.valueProperty().addListener((observable, oldValue, newValue) -> {
             lblUserValue.setText(String.format(Locale.US,"%.1f",sliderUserRating.getValue()));
         });
@@ -90,6 +92,7 @@ public class NewMovieController extends BudgetMother {
         String filepath = txtFilePath.getText().trim();
         LocalDate lastView = dateLastView.getValue();
         List<Genre> genres = genresDropDown.getCheckModel().getCheckedItems();
+        //Rounds the input from a slider to one decimal point
         double userRating = Double.parseDouble(String.format(Locale.US,"%.1f",sliderUserRating.getValue()));
         double imdbRating = Double.parseDouble(String.format(Locale.US,"%.1f",sliderIMDBRating.getValue()));
         String moviePosterPath = moviePoster.getImage().getUrl();
@@ -108,9 +111,11 @@ public class NewMovieController extends BudgetMother {
 
         else {
             if (isEditing){
+                //Checks if an exception message has been returned, if not, closes the window
                 if (model.editMovie(new Movie(title, filepath, moviePosterPath, lastView, imdbRating, userRating, genres)).isEmpty()){
                     Node node = (Node) actionEvent.getSource();
                     node.getScene().getWindow().hide();
+                    //Refreshes the items in the main view
                     mainController.refreshGenresItems();
                     mainController.refreshMovieItems();
                 }
@@ -119,9 +124,11 @@ public class NewMovieController extends BudgetMother {
             }
 
             else{
+                //Checks if an exception message has been returned, if not, closes the window
                 if (model.createMovie(new Movie(title, filepath, moviePosterPath, lastView, imdbRating, userRating, genres)).isEmpty()){
                     Node node = (Node) actionEvent.getSource();
                     node.getScene().getWindow().hide();
+                    //Refreshes the items in the main view
                     mainController.refreshGenresItems();
                     mainController.refreshMovieItems();
 
@@ -134,7 +141,7 @@ public class NewMovieController extends BudgetMother {
     }
 
     /**
-     * Enables an action to be cancelled.
+     * Closes the window.
      */
     @FXML
     private void btnCancelAction(ActionEvent actionEvent) {
@@ -173,6 +180,9 @@ public class NewMovieController extends BudgetMother {
         }
     }
 
+    /**
+     * If a movie is being edited, populate the corresponding fields with the previously saved data
+     */
     public void setIsEditing(){
         isEditing = true;
         Movie movieToEdit = model.getMovieToEdit();
@@ -187,12 +197,14 @@ public class NewMovieController extends BudgetMother {
             moviePoster.setImage(new Image(Objects.requireNonNull(BudgetFlix.class.getResourceAsStream("/images/bimbo.jpg"))));
         }
 
+        //Adds all genres to the CheckComboBox, checks the genres belonging to the movie
         List<Genre> genres = movieToEdit.getGenres();
         for (Genre genre: genres){
             genresDropDown.getCheckModel().check(genre);
         }
     }
 
+    //TODO you know what TODO
     private JSONObject getDataFromImdb(String searchData){
         HttpResponse<String> searchResponse = Unirest.get("http://www.omdbapi.com/?s="+searchData.trim()+"&apikey=b712184d")
                 .asString();

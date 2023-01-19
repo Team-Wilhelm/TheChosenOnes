@@ -13,6 +13,7 @@ import javafx.scene.layout.VBox;
 import java.util.Objects;
 
 public class MovieListCell extends ListCell<Movie> {
+    //TODO comments pretty pleaaaaaaaaaaaaaase
     private final Label title = new Label();
 
     private final Label genres = new Label();

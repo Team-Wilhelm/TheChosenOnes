@@ -24,7 +24,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-import org.controlsfx.control.CheckComboBox;
 
 import java.io.File;
 import java.io.IOException;
@@ -70,10 +69,10 @@ public class MainController extends BudgetMother implements Initializable {
                 }
         });
 
-        setUpSliderColors(sliderUserRating, sliderIMDBRating);
-        isOldMovieCheckTrue();
+        setUpSliderColors(sliderUserRating, sliderIMDBRating); //calls a method from super class
+        isOldMovieCheckTrue(); //check for any movies not watched in the past 2 years and with rating below 6
         moviesList.setItems(model.getAllMovies());
-        genreListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        genreListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE); //allows the selection of multiple genres at once
         genreListView.setItems(model.getAllGenres());
     }
 
@@ -166,6 +165,7 @@ public class MainController extends BudgetMother implements Initializable {
 
     /**
      * Deletes selected movie from the database and updates the ListView to reflect the change.
+     * Calls deleteMovie in super class.
      */
     @FXML
     private void btnDeleteMovieAction(ActionEvent actionEvent) {
@@ -174,6 +174,11 @@ public class MainController extends BudgetMother implements Initializable {
         moviesList.setItems(model.getAllMovies());
     }
 
+    /**
+     *
+     * @param resource the path of an fxml file to open
+     * @return an array holding an FXML Loader and the current Window
+     */
     private Object[] openNewWindow(String resource) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(BudgetFlix.class.getResource(resource));
         Stage stage = new Stage();
@@ -185,11 +190,11 @@ public class MainController extends BudgetMother implements Initializable {
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.centerOnScreen();
 
+        //The main window should only launch after all old movies have been reviewed and the window is closed
         if (resource.equals("/Budgetflix/GUI/view/OldMovieView.fxml"))
             stage.showAndWait();
         else
             stage.show();
-
         Window window = scene.getWindow();
         return new Object[]{fxmlLoader, window};
     }
@@ -217,11 +222,11 @@ public class MainController extends BudgetMother implements Initializable {
     @FXML
     private void btnAddGenreAction(ActionEvent actionEvent) throws IOException {
         Window window = (Window) openNewWindow("/Budgetflix/GUI/view/NewGenreView.fxml")[1];
-        window.setOnHiding(event -> refreshGenresItems());
+        window.setOnHiding(event -> refreshGenresItems()); //when the new genre window is closed, all genre items refresh
     }
 
     /**
-     * Deletes selected genres from database and refreshes the ComboChoiceBox with the changes.
+     * Deletes selected genres from database and refreshes the genreListView with the changes.
      */
     @FXML
     private void btnDeleteGenreAction(ActionEvent actionEvent) {
@@ -241,6 +246,7 @@ public class MainController extends BudgetMother implements Initializable {
         }
     }
 
+    //TODO Mateeeeeeej?
     public void btnNameSortAction(ActionEvent actionEvent) {
         sortData(Comparator.comparing(Movie::getName));
     }
@@ -268,6 +274,11 @@ public class MainController extends BudgetMother implements Initializable {
         moviesList.setItems(listOfMovies);
     }
 
+    /**
+     * Wishes the user a nice day :)
+     * (added for symmetry purposes of our buttons)
+     * (and a nice day)
+     */
     public void btnClickMeAction(ActionEvent actionEvent) {
         alertManager.getAlert("INFORMATION", "Have a nice day :)", actionEvent).showAndWait();
     }
