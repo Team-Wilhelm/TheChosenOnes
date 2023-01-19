@@ -159,9 +159,8 @@ public class MovieDAO {
      * @param movie
      */
     public void addGenresToMovie(Movie movie){
-        List<Genre> genres = movie.getGenres();
         List<Integer> genreIds = new ArrayList<>();
-        for (Genre genre: genres){
+        for (Genre genre: movie.getGenres()){
             genreIds.add(genre.getId());
         }
 
@@ -171,7 +170,7 @@ public class MovieDAO {
             resultSet.next();
             movieId = resultSet.getInt("id");
 
-            if (!genres.isEmpty()) {
+            if (!genreIds.isEmpty()) {
                 StringBuilder genreValues = new StringBuilder("(");
                 for (Integer genreId : genreIds) {
                     genreValues.append(movieId).append(", ").append(genreId).append(")").append(", (");
