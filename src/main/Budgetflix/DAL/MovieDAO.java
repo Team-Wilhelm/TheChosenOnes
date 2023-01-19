@@ -122,8 +122,7 @@ public class MovieDAO {
     /**
      * Deletes multiple Movies from both the MoviesGenreLink and the Movies tables.
      * @param movies
-     *
-    }*/
+     */
     public void deleteMovies(List<Movie> movies){
         List<Integer> movieIds = new ArrayList<>();
 

@@ -28,7 +28,7 @@
                   <Button fx:id="btnDeleteGenre" mnemonicParsing="false" onAction="#btnDeleteGenreAction" prefWidth="100.0" text="Delete Genre" />
                </children>
             </HBox>
-            <CheckComboBox fx:id="genresDropDown" prefHeight="25.0" prefWidth="210.0" title="Select Genre" />
+            <CheckComboBox fx:id="genresDropDown" prefHeight="25.0" prefWidth="210.0" title="Select Genres" />
          </children>
       </Group>
       <TextField fx:id="searchBar" alignment="CENTER_RIGHT" layoutX="600.0" layoutY="22.0" prefHeight="25.0" prefWidth="250.0" promptText="Search" />
