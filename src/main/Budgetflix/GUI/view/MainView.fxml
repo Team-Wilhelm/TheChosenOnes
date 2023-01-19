@@ -5,7 +5,6 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
-<?import org.controlsfx.control.*?>
 
 <AnchorPane fx:id="backgroundPane" prefHeight="600.0" prefWidth="1117.0" stylesheets="@css/main.css" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Budgetflix.GUI.controller.MainController">
    <children>
@@ -20,17 +19,7 @@
             <Button fx:id="btnDeleteMovie" mnemonicParsing="false" onAction="#btnDeleteMovieAction" prefHeight="50.0" prefWidth="100.0" text="Delete Movie" />
          </children>
       </VBox>
-      <Group layoutX="913.0" layoutY="22.0" AnchorPane.rightAnchor="30.0">
-         <children>
-            <HBox layoutY="39.0" spacing="10.0">
-               <children>
-                  <Button fx:id="btnAddGenre" mnemonicParsing="false" onAction="#btnAddGenreAction" prefWidth="100.0" text="Add Genre" />
-                  <Button fx:id="btnDeleteGenre" mnemonicParsing="false" onAction="#btnDeleteGenreAction" prefWidth="100.0" text="Delete Genre" />
-               </children>
-            </HBox>
-            <CheckComboBox fx:id="genresDropDown" prefHeight="25.0" prefWidth="210.0" title="Select Genres" />
-         </children>
-      </Group>
+      <Group layoutX="913.0" layoutY="22.0" AnchorPane.rightAnchor="30.0" />
       <TextField fx:id="searchBar" alignment="CENTER_RIGHT" layoutX="600.0" layoutY="22.0" prefHeight="25.0" prefWidth="250.0" promptText="Search" />
       <ListView fx:id="moviesList" layoutX="30.0" layoutY="68.0" onMouseClicked="#playMovie" prefHeight="400.0" prefWidth="820.0" />
       <ButtonBar layoutX="-14.0" layoutY="14.0" prefHeight="40.0" prefWidth="548.0">
@@ -75,5 +64,12 @@
          </font>
       </Label>
       <Label contentDisplay="CENTER" layoutX="875.0" layoutY="450.0" prefHeight="18.0" prefWidth="210.0" text="Select movie to edit or delete:" />
+      <HBox layoutX="877.0" layoutY="88.0" spacing="10.0">
+         <children>
+            <Button fx:id="btnAddGenre" mnemonicParsing="false" onAction="#btnAddGenreAction" prefWidth="100.0" text="Add Genre" />
+            <Button fx:id="btnDeleteGenre" mnemonicParsing="false" onAction="#btnDeleteGenreAction" prefWidth="100.0" text="Delete Genre" />
+         </children>
+      </HBox>
+      <ListView fx:id="genreListView" layoutX="881.0" layoutY="4.0" prefHeight="78.0" prefWidth="200.0" />
    </children>
 </AnchorPane>

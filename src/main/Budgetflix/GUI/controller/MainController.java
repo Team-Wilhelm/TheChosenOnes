@@ -42,6 +42,8 @@ public class MainController extends BudgetMother implements Initializable {
     @FXML
     private ListView<Movie> moviesList;
     @FXML
+    private ListView<Genre> genreListView;
+    @FXML
     private Slider sliderUserRating, sliderIMDBRating;
     @FXML
     private CheckComboBox<Genre> genresDropDown = new CheckComboBox<>(){};
@@ -75,7 +77,8 @@ public class MainController extends BudgetMother implements Initializable {
         setUpSliderColors(sliderUserRating, sliderIMDBRating);
         isOldMovieCheckTrue();
         moviesList.setItems(model.getAllMovies());
-        genresDropDown.getItems().setAll(FXCollections.observableList(model.getAllGenres()));
+        genreListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        genreListView.setItems(model.getAllGenres());
     }
 
     private void setUpListeners(){
@@ -88,26 +91,21 @@ public class MainController extends BudgetMother implements Initializable {
         });
 
         searchBar.textProperty().addListener((observable, oldValue, newValue) -> {
-            moviesList.setItems(model.filterMovies(searchBar.getText(),genresDropDown.getCheckModel().getCheckedItems(), sliderIMDBRating.getValue(),sliderUserRating.getValue()));
+            moviesList.setItems(model.filterMovies(searchBar.getText(),genreListView.getSelectionModel().getSelectedItems(), sliderIMDBRating.getValue(),sliderUserRating.getValue()));
         });
 
-        genresDropDown.getCheckModel().getCheckedItems().addListener((ListChangeListener<? super Genre>) observable -> {
-            moviesList.setItems(model.filterMovies(searchBar.getText(),genresDropDown.getCheckModel().getCheckedItems(),sliderIMDBRating.getValue(),sliderUserRating.getValue()));
-            if(!genresDropDown.getCheckModel().getCheckedItems().isEmpty()) {
-                genresDropDown.setTitle(genresDropDown.getCheckModel().getCheckedItems().toString().replace('[',' ').replace(']', ' ').trim());
-            }
-            else
-                genresDropDown.setTitle("Select Genre");
+        genreListView.getSelectionModel().getSelectedItems().addListener((ListChangeListener<? super Genre>) observable -> {
+            moviesList.setItems(model.filterMovies(searchBar.getText(),genreListView.getSelectionModel().getSelectedItems(),sliderIMDBRating.getValue(),sliderUserRating.getValue()));
         });
 
         sliderUserRating.setOnMouseReleased(event -> {
-            moviesList.setItems(model.filterMovies(searchBar.getText(), genresDropDown.getCheckModel().getCheckedItems(),
+            moviesList.setItems(model.filterMovies(searchBar.getText(), genreListView.getSelectionModel().getSelectedItems(),
                     sliderIMDBRating.getValue(), sliderUserRating.getValue()));
             lblUserValue.setText(String.format(Locale.US,"%.1f",sliderUserRating.getValue()));
         });
 
         sliderIMDBRating.setOnMouseReleased(event -> {
-            moviesList.setItems(model.filterMovies(searchBar.getText(), genresDropDown.getCheckModel().getCheckedItems(),
+            moviesList.setItems(model.filterMovies(searchBar.getText(), genreListView.getSelectionModel().getSelectedItems(),
                     sliderIMDBRating.getValue(), sliderUserRating.getValue()));
             lblIMDBValue.setText(String.format(Locale.US,"%.1f",sliderIMDBRating.getValue()));
         });
@@ -126,9 +124,7 @@ public class MainController extends BudgetMother implements Initializable {
      */
     public void refreshGenresItems(){
         model.getGenreList();
-        genresDropDown.setTitle("Select Genre");
-        genresDropDown.getItems().setAll(FXCollections.observableList(model.getAllGenres()));
-        genresDropDown.getCheckModel().clearChecks();
+        genreListView.setItems(model.getAllGenres());
     }
 
     /**
@@ -233,7 +229,7 @@ public class MainController extends BudgetMother implements Initializable {
      */
     @FXML
     private void btnDeleteGenreAction(ActionEvent actionEvent) {
-        ArrayList<Genre> genres = new ArrayList<>(genresDropDown.getCheckModel().getCheckedItems());
+        ArrayList<Genre> genres = new ArrayList<>(genreListView.getSelectionModel().getSelectedItems());
         if (genres.size() == 0)
             alertManager.getAlert("ERROR", "Please, select a genre to delete!", actionEvent).showAndWait();
         else{
@@ -242,7 +238,6 @@ public class MainController extends BudgetMother implements Initializable {
             if (result.isPresent() && result.get() == ButtonType.OK) {
                 for (Genre genre : genres){
                     model.deleteGenre(genre);
-                    genresDropDown.getItems().clear();
                     //TODO broken again
                 }
                 refreshGenresItems();
