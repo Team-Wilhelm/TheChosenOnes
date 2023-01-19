@@ -32,6 +32,7 @@ public class BudgetFlix extends Application {
     }
 
     public void stop(){
+        //TODO delete
         System.out.println(Tools.counter);
         Tools.closeAllConnections();
     }

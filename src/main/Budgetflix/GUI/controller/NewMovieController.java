@@ -50,6 +50,7 @@ public class NewMovieController extends BudgetMother {
 
     private final Model model = Model.getInstance();
     private final AlertManager alertManager = AlertManager.getInstance();
+    private MainController mainController;
 
     @FXML
     public void initialize(){
@@ -57,6 +58,7 @@ public class NewMovieController extends BudgetMother {
         //Populates CheckComboBox
         genresDropDown.getItems().addAll(FXCollections.observableList(model.getAllGenres()));
         dateLastView.setValue(LocalDate.now());
+        moviePoster.setImage(new Image(Objects.requireNonNull(BudgetFlix.class.getResourceAsStream("/images/bimbo.jpg"))));
 
         lookUp.setOnAction(event -> {
             searchImdb(event);
@@ -109,6 +111,8 @@ public class NewMovieController extends BudgetMother {
                 if (model.editMovie(new Movie(title, filepath, moviePosterPath, lastView, imdbRating, userRating, genres)).isEmpty()){
                     Node node = (Node) actionEvent.getSource();
                     node.getScene().getWindow().hide();
+                    mainController.refreshGenresItems();
+                    mainController.refreshMovieItems();
                 }
                 else
                     alertManager.getAlert("ERROR", "File path is already used by a different movie!", actionEvent).showAndWait();
@@ -118,9 +122,13 @@ public class NewMovieController extends BudgetMother {
                 if (model.createMovie(new Movie(title, filepath, moviePosterPath, lastView, imdbRating, userRating, genres)).isEmpty()){
                     Node node = (Node) actionEvent.getSource();
                     node.getScene().getWindow().hide();
+                    mainController.refreshGenresItems();
+                    mainController.refreshMovieItems();
+
                 }
-                else
+                else{
                     alertManager.getAlert("ERROR", "File path is already used by a different movie!", actionEvent).showAndWait();
+                }
             }
         }
     }
@@ -195,8 +203,7 @@ public class NewMovieController extends BudgetMother {
             HttpResponse<String> movieResponse = Unirest.get("http://www.omdbapi.com/?i="+imdbID+"&apikey=b712184d")
                     .asString();
             return new JSONObject(movieResponse.getBody());
-        }catch (Exception e)
-        {
+        }catch (Exception e) {
             return null;
         }
     }
@@ -228,5 +235,9 @@ public class NewMovieController extends BudgetMother {
         }else {
             alertManager.getAlert("WARNING", "No movie found.", event).showAndWait();
         }
+    }
+
+    public void setMainController(MainController mainController) {
+        this.mainController = mainController;
     }
 }

@@ -35,8 +35,6 @@ import java.util.*;
 import java.awt.Desktop;
 
 public class MainController extends BudgetMother implements Initializable {
-    private final Model model = Model.getInstance();
-    private final AlertManager alertManager = AlertManager.getInstance();
     @FXML
     public Button nameSortButton, categorySortButton, userRatingSortButton, imdbRatingSortButton;
     @FXML
@@ -51,6 +49,8 @@ public class MainController extends BudgetMother implements Initializable {
     private Label lblUserValue, lblIMDBValue;
     @FXML
     private ImageView moviePoster;
+    private final Model model = Model.getInstance();
+    private final AlertManager alertManager = AlertManager.getInstance();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -74,8 +74,8 @@ public class MainController extends BudgetMother implements Initializable {
 
         setUpSliderColors(sliderUserRating, sliderIMDBRating);
         isOldMovieCheckTrue();
-        refreshMovieItems();
-        refreshGenresItems();
+        moviesList.setItems(model.getAllMovies());
+        genresDropDown.getItems().setAll(FXCollections.observableList(model.getAllGenres()));
     }
 
     private void setUpListeners(){
@@ -114,7 +114,7 @@ public class MainController extends BudgetMother implements Initializable {
     /**
      * Updates ListView with any changes made to the movies in the database.
      */
-    private void refreshMovieItems(){
+    public void refreshMovieItems(){
         model.getMovieList();
         moviesList.setItems(model.getAllMovies());
     }
@@ -122,7 +122,7 @@ public class MainController extends BudgetMother implements Initializable {
     /**
      * Updates ComboCheckBox with changes made to the genres in the database.
      */
-    private void refreshGenresItems(){
+    public void refreshGenresItems(){
         model.getGenreList();
         genresDropDown.getItems().setAll(FXCollections.observableList(model.getAllGenres()));
     }
@@ -145,11 +145,9 @@ public class MainController extends BudgetMother implements Initializable {
      */
     @FXML
     private void btnAddMovieAction(ActionEvent actionEvent) throws IOException {
-        Window window = (Window) openNewWindow("/Budgetflix/GUI/view/NewMovieView.fxml")[1];
-        window.setOnHiding(event -> {
-            refreshMovieItems();
-            refreshGenresItems();
-        });
+        FXMLLoader fxmlLoader = (FXMLLoader) openNewWindow("/Budgetflix/GUI/view/NewMovieView.fxml")[0];
+        NewMovieController newMovieController = fxmlLoader.getController();
+        newMovieController.setMainController(this);
     }
 
     /**
@@ -166,12 +164,7 @@ public class MainController extends BudgetMother implements Initializable {
             FXMLLoader fxmlLoader = (FXMLLoader) objects[0];
             NewMovieController newMovieController = fxmlLoader.getController();
             newMovieController.setIsEditing();
-
-            Window window = (Window) objects[1];
-            window.setOnHiding(event -> {
-                refreshMovieItems();
-                refreshGenresItems();
-            });
+            newMovieController.setMainController(this);
         }
     }
 
@@ -248,7 +241,9 @@ public class MainController extends BudgetMother implements Initializable {
                     genresDropDown.getItems().clear();
                     //TODO broken again
                 }
+                genresDropDown.getItems().clear();
                 refreshGenresItems();
+                genresDropDown.setTitle("Select Genre");
             }
         }
     }

@@ -5,6 +5,7 @@ import Budgetflix.BE.Movie;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
@@ -118,18 +119,24 @@ public class MovieDAO {
     /**
      * Deletes multiple Movies from both the MoviesGenreLink and the Movies tables.
      * @param movies
-     */
+     *
+    }*/
     public void deleteMovies(List<Movie> movies){
-        for (Movie movie: movies){
-            int id = movie.getId();
-            String sql = String.join(",","DELETE FROM MovieGenreLink WHERE movieId = " + id + ";")
-                    + String.join(",","DELETE FROM Movies WHERE id = " + id);
+        List<Integer> movieIds = new ArrayList<>();
+
+        for (Movie movie: movies) {
+            movieIds.add(movie.getId());
+        }
+
+        String idList = movieIds.toString().substring(1, movieIds.toString().length()-1);
+
+        String sql = "DELETE FROM MovieGenreLink WHERE movieID IN (" + idList + ");" +
+                   "DELETE FROM Movies WHERE id IN (" + idList + ");";
             try {
                 executeSQLQuery(sql);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        }
     }
 
 
@@ -139,14 +146,17 @@ public class MovieDAO {
      * @return
      */
     public List<Genre> getAllGenresFromMovie(int movieId){
+        //TODO less sql
         String sql = "SELECT * FROM MovieGenreLink WHERE movieId = " + movieId;
         List<Genre> genres = new ArrayList<>();
+        List<Integer> genreIds = new ArrayList<>();
         GenreDAO genreDAO = new GenreDAO();
+
         try (ResultSet rs = executeSQLQueryWithResult(sql)){
             while (rs.next()){
-                int genreId = rs.getInt("genreId");
-                genres.add(genreDAO.getGenre(genreId));
+                genreIds.add(rs.getInt("genreId")); //add all required IDs
             }
+            genres.addAll(genreDAO.getGenres(genreIds));
             return genres;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -159,9 +169,8 @@ public class MovieDAO {
      * @param movie
      */
     public void addGenresToMovie(Movie movie){
-        List<Genre> genres = movie.getGenres();
         List<Integer> genreIds = new ArrayList<>();
-        for (Genre genre: genres){
+        for (Genre genre: movie.getGenres()){
             genreIds.add(genre.getId());
         }
 
@@ -171,7 +180,8 @@ public class MovieDAO {
             resultSet.next();
             movieId = resultSet.getInt("id");
 
-            if (!genres.isEmpty()) {
+            //Creates a string of all values to be inserted
+            if (!genreIds.isEmpty()) {
                 StringBuilder genreValues = new StringBuilder("(");
                 for (Integer genreId : genreIds) {
                     genreValues.append(movieId).append(", ").append(genreId).append(")").append(", (");
