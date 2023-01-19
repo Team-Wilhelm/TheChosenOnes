@@ -57,6 +57,7 @@ public class NewMovieController extends BudgetMother {
         //Populates CheckComboBox
         genresDropDown.getItems().addAll(FXCollections.observableList(model.getAllGenres()));
         dateLastView.setValue(LocalDate.now());
+        moviePoster.setImage(new Image(Objects.requireNonNull(BudgetFlix.class.getResourceAsStream("/images/bimbo.jpg"))));
 
         lookUp.setOnAction(event -> {
             searchImdb(event);
@@ -195,8 +196,7 @@ public class NewMovieController extends BudgetMother {
             HttpResponse<String> movieResponse = Unirest.get("http://www.omdbapi.com/?i="+imdbID+"&apikey=b712184d")
                     .asString();
             return new JSONObject(movieResponse.getBody());
-        }catch (Exception e)
-        {
+        }catch (Exception e) {
             return null;
         }
     }

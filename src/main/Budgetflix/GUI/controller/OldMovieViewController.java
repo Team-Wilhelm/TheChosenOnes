@@ -32,7 +32,6 @@ public class OldMovieViewController extends BudgetMother implements Initializabl
     /**
      * Deletes a movie from the list and the database.
      */
-    //TODO BudgetMother?
     public void btnDeleteMovieAction(ActionEvent actionEvent) {
         Movie movie = moviesList.getSelectionModel().getSelectedItem();
         deleteMovie(actionEvent, movie);
