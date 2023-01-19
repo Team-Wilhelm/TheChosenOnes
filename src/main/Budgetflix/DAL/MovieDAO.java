@@ -5,6 +5,7 @@ import Budgetflix.BE.Movie;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -122,7 +123,7 @@ public class MovieDAO {
     /**
      * Deletes multiple Movies from both the MoviesGenreLink and the Movies tables.
      * @param movies
-     */
+     *
     public void deleteMovies(List<Movie> movies){
         for (Movie movie: movies){
             int id = movie.getId();
@@ -134,8 +135,25 @@ public class MovieDAO {
                 e.printStackTrace();
             }
         }
-    }
+    }*/
+    //TODO make this work with a single query
+    public void deleteMovies(List<Movie> movies){
+        List<Integer> movieIds = new ArrayList<>();
 
+        for (Movie movie: movies) {
+            movieIds.add(movie.getId());
+        }
+        String idList = movieIds.toString();
+
+        String sql = "DELETE FROM MovieGenresLink WHERE movieID IN (" + idList + ");" +
+                   "DELETE FROM Movies WHERE id IN (" + idList + ");";
+            try {
+                executeSQLQuery(sql);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+    }
 
     /**
      * Gets a list of all genres linked to a specific Movie.
