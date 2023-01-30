@@ -29,9 +29,9 @@ import java.util.Objects;
 
 public class NewMovieController extends BudgetMother {
     @FXML
-    public Label lblUserValue, lblIMDBValue;
+    private Label lblUserValue, lblIMDBValue;
     @FXML
-    public Button lookUp;
+    private Button lookUp;
     @FXML
     private TextField txtTitle, txtFilePath;
     @FXML
@@ -58,9 +58,7 @@ public class NewMovieController extends BudgetMother {
         dateLastView.setValue(LocalDate.now()); //Adds today's date as the last watched date by default
         moviePoster.setImage(new Image(Objects.requireNonNull(BudgetFlix.class.getResourceAsStream("/images/bimbo.jpg"))));
 
-        lookUp.setOnAction(event -> {
-            searchImdb(event);
-        });
+        lookUp.setOnAction(event -> searchImdb(event));
 
         txtTitle.setOnKeyPressed(event -> {
             if(event.getCode() == KeyCode.ENTER)

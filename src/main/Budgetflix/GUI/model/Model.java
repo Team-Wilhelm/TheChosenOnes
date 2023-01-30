@@ -14,7 +14,7 @@ public class Model implements IModel {
     private static ObservableList<Movie> allMovies;
     private static ObservableList<Genre> allGenres;
     private static Model instance=null;
-    private LogicManager logicManager = new LogicManager();
+    private final LogicManager logicManager = new LogicManager();
     private Movie movieToEdit;
 
 
@@ -125,6 +125,7 @@ public class Model implements IModel {
         return allGenres;
     }
 
+    //Genre methods
     public String addGenre(String genre){
         return logicManager.addGenre(genre);
     }

@@ -27,8 +27,6 @@ import java.awt.Desktop;
 
 public class MainController extends BudgetMother implements Initializable {
     @FXML
-    public Button nameSortButton, categorySortButton, userRatingSortButton, imdbRatingSortButton;
-    @FXML
     private TextField searchBar;
     @FXML
     private ListView<Movie> moviesList;
@@ -242,7 +240,6 @@ public class MainController extends BudgetMother implements Initializable {
 
     /**
      * Sort data by Name
-     * @param actionEvent
      */
     public void btnNameSortAction(ActionEvent actionEvent) {
         sortData(Comparator.comparing(Movie::getName));
@@ -250,7 +247,6 @@ public class MainController extends BudgetMother implements Initializable {
 
     /**
      * Sort data by Genres
-     * @param actionEvent
      */
     public void btnCategorySortAction(ActionEvent actionEvent) {
         sortData(Comparator.comparing(Movie::getGenresToString));
@@ -258,7 +254,6 @@ public class MainController extends BudgetMother implements Initializable {
 
     /**
      * Sort data by UserRating
-     * @param actionEvent
      */
     public void btnUserRatingSortAction(ActionEvent actionEvent) {
         sortData(Comparator.comparing(Movie::getUserRating));
@@ -266,7 +261,6 @@ public class MainController extends BudgetMother implements Initializable {
 
     /**
      * Sort data by ImdbRating
-     * @param actionEvent
      */
     public void btnImdbRatingSortAction(ActionEvent actionEvent) {
         sortData(Comparator.comparing(Movie::getImdbRating));

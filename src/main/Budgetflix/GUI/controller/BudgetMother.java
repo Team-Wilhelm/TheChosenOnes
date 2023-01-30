@@ -20,9 +20,10 @@ public class BudgetMother {
     Model model = Model.getInstance();
 
     //Formatting for filling a slider with the chosen colour based on the slider value
-    private static final String SLIDER_STYLE_FORMAT =
+    private final String SLIDER_STYLE_FORMAT =
             "-slider-track-color: linear-gradient(to right, -slider-filled-track-color 0%%, "
                     + "-slider-filled-track-color %1$f%%, -fx-base %1$f%%, -fx-base 100%%);";
+    //In general the format is %[argument_index$][flags][width][.precision]conversion.
 
     //Sliders change colour when the thumb is moved
     protected void setUpSliderColors(Slider sliderUserRating, Slider sliderIMDBRating){
@@ -55,5 +56,4 @@ public class BudgetMother {
             }
         }
     }
-
 }

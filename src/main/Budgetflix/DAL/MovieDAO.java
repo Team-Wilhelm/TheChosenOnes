@@ -19,12 +19,10 @@ public class MovieDAO {
      */
     public List<Movie> getAllMovies(){
         ArrayList<Movie> allMovies = new ArrayList<>();
-        List<Integer> movieIds = new ArrayList<>();
         String sql = "SELECT * FROM Movies";
         try (ResultSet rs = executeSQLQueryWithResult(sql)){
             while(rs.next()){
                 int movieID = rs.getInt("id");
-                movieIds.add(movieID);
                 allMovies.add(createMovieFromDatabase(rs, movieID));
             }
             getAllGenresFromMovie(allMovies);
@@ -153,14 +151,14 @@ public class MovieDAO {
             while (rs.next()){
                 //Get the movie from already loaded movies.
                 Movie selMovie = movies.stream()
-                        .filter(movie -> { //Selects the movie where the current row movieId equals to Id of a movie
+                        .filter(movie -> { //Selects the movie where the current row movieId equals the Id of a movie
                             try {
                                 return movie.getId() == rs.getInt("movieId"); //compare the current movie's id to the id in the database
                             } catch (SQLException e) {
                                 throw new RuntimeException(e);
                             }
                         })
-                        .findFirst() //Even though the movieId is unique we need to select the first Movie, because the current output is list and not a single element.
+                        .findFirst() //Even though the movieId is unique we need to select the first Movie, because the current output is a list and not a single element.
                         .get();
                 //Get the genre from already loaded genres.
                 Genre selGenre = genres.stream()
